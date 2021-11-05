@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Frequencies>
+  <Options>
+    <Option>UseFreeSatTables</Option>
+  </Options>
+  <DVBTTuning>
+    <Frequency>562000</Frequency>
+    <BandWidth>8</BandWidth>
+    <CollectionType>EIT</CollectionType>
+  </DVBTTuning>
+  <DVBTTuning>
+    <Frequency>578000</Frequency>
+    <BandWidth>8</BandWidth>
+    <CollectionType>EIT</CollectionType>
+  </DVBTTuning>
+  <DVBTTuning>
+    <Frequency>626000</Frequency>
+    <BandWidth>8</BandWidth>
+    <CollectionType>EIT</CollectionType>
+  </DVBTTuning>
+  <DVBTTuning>
+    <Frequency>650000</Frequency>
+    <BandWidth>8</BandWidth>
+    <CollectionType>EIT</CollectionType>
+  </DVBTTuning>
+  <DVBTTuning>
+    <Frequency>666000</Frequency>
+    <BandWidth>8</BandWidth>
+    <CollectionType>EIT</CollectionType>
+  </DVBTTuning>
+  <DVBTTuning>
+    <Frequency>674000</Frequency>
+    <BandWidth>8</BandWidth>
+    <CollectionType>EIT</CollectionType>
+  </DVBTTuning>
+</Frequencies>
+

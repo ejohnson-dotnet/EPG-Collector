@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Frequencies>
+  <CountryCode>PL</CountryCode>
+  <DVBTTuning>
+    <Frequency>610000</Frequency>
+    <BandWidth>8</BandWidth>
+    <CollectionType>EIT</CollectionType>
+  </DVBTTuning>
+  <DVBTTuning>
+    <Frequency>498000</Frequency>
+    <BandWidth>8</BandWidth>
+    <CollectionType>EIT</CollectionType>
+  </DVBTTuning>
+  <DVBTTuning>
+    <Frequency>538000</Frequency>
+    <BandWidth>8</BandWidth>
+    <CollectionType>EIT</CollectionType>
+  </DVBTTuning>
+  <DVBTTuning>
+    <Frequency>549000</Frequency>
+    <BandWidth>8</BandWidth>
+    <CollectionType>EIT</CollectionType>
+  </DVBTTuning>
+  <DVBTTuning>
+    <Frequency>514000</Frequency>
+    <BandWidth>8</BandWidth>
+    <CollectionType>EIT</CollectionType>
+  </DVBTTuning>
+  <DVBTTuning>
+    <Frequency>198500</Frequency>
+    <BandWidth>7</BandWidth>
+    <CollectionType>EIT</CollectionType>
+  </DVBTTuning>
+</Frequencies>

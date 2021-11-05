@@ -1,0 +1,794 @@
+EPG Collector V4.3 Fixpak 30 Release Notes
+==========================================
+
+1. Installation
+===============
+
+From the release of v4.3 fixpack 25 onward a fixpack is a complete release of the EPG Collector package. You do not need to install any base version
+or earlier fixpacks before installing this release. It is released in the form of an 'msi' file. Fixpacks prior to this one were released as zip files.
+
+The file version number for this fixpak is 4.3.7519.x except for the following
+
+	HttpProxy.exe		1.0.7424.22476
+	PSIMemoryShare		Dated 20/02/2020 9.54pm
+	DVBLogicCPPPlugin.dll	Dated 13/03/2020 2.31pm Reports as version 4.3.0 in DVBLink Configuration EPG Scan tab.    
+	
+The file version numbers are listed in the general log when EPG Centre is loaded or can be seen by hovering the mouse over the file.
+
+Fixpacks are cumulative. All the fixes and enhancements in previous fixpacks are incorporated into this one.
+
+1.1 IMPORTANT NOTES
+===================
+
+1.1.1 DVBLogic Plugin Users
+===========================
+
+If you are using the DVBLogic plugin it is necessary to update the DVBLogic plugin using EPG Centre after this fixpack is 
+installed.
+
+Additional steps are needed in addition to installing the fixpack to transfer the plugin module to the location required
+by TVSource. There is also an additional step if the fixpack is installed from a network drive.
+
+EPG Centre is used to transfer the plugin module to the correct location and it is necessary to have Administrator privileges to do this 
+because the TVSource EPG directory is in the Windows programs directory structure. The easiest way to ensure this is to use 
+'Run as Administrator' when loading EPG Centre. This is available either by right clicking on the desktop icon or by navigating to 
+the file EPG Centre.exe and right clicking on it.
+
+The additional steps are as follows:
+
+	1. Load EPG Centre with Administrator privileges. 
+
+	3. Select File - Update DVBLogic Plugin.
+
+	4. Select the path to the TVSource EPG directory.
+
+	5. If the DVBLink server process has used the plugin previously a message will be displayed indicating that the plugin is in use.
+	   The option is provided to stop and restart the DVBLink server process so that the plugin can be updated.
+
+	5. The plugin module will be transferred to the selected directory.
+
+	6. Repeat for any other TVSource EPG directories if there is more than one source defined in TVSource.
+
+If additional sources are added to TVSource at a later time repeat this process for the newly created EPG directory.
+
+If the fixpack was installed from a network drive using the Windows Extract option there is one additional step 
+needed due to the Windows security system.
+
+Navigate to the install directory and right click on the file named DVBLogicPlugin.dll and select Properties. Then click on the 
+Unblock button.
+
+As noted above, this final step is only needed if
+
+	- the files are extracted using the Windows Extract option (not extracted using WinZip)
+	- the files are extracted from a network drive
+
+2. Fixpack 30 contents
+======================
+
+Change	TV lookups now use the TVDB API version 4.
+
+		====================================================================================================	
+
+3. Previous fixpacks
+====================
+
+Fixpack 29
+==========
+
+Fix	One of the files created during the Windows Media Center process was created in the default data directory even if the EPGC_DATA_DIR 
+	environment directory was present.
+
+Fix	Movie lookups could fail because the file BroLib32.dll was missing from the installation.
+
+Fix	The tuning file for ATSC channel 21 was incorrect.
+
+Fix	The Windows Media Center import process could create a negative duration for a programme which caused Windows Media Center to fail.
+
+Fix	Part of the programme description could be duplicated when processing EIT data.
+
+Fix	Lookups accessed both TMDB and TVDB even if they were not enabled.
+
+Fix	The season and episode numbers for OpenTV data for Sky UK were not extracted correctly.
+
+Fix	It was not possible to use the menu option Change Tuning Parameters to change a frequency.
+
+Fix	Importing to DVBViewer version 7 did not work if the data came from an import file.
+
+Change	The Files tab has been changed to add options for creating a Satellite Definition file and a Channel Definitions file.
+
+Change	The format of the channel ID for XMLTV output now includes the channel name.
+
+Change	Tuning for the VBox server updated to work with VBox software 2.66.27 or later. Earlier versions will still work.
+
+Change	An option has been added to the Import tab to prevent the creation of new channels ie those not in the list of scanned channels.
+
+Change	The UK DVB-T tuning files have been updated.
+
+
+Fixpack 28
+==========
+
+This fixpack was not made officially available.
+
+Fixpack 27
+==========
+
+Fix	The option to duplicate channel data for channels with the same name did not duplicate
+	Zap2it reference numbers.
+
+Fix	The option to duplicate channel data duplicated the data even if the destination channel had 
+	it's own data.
+
+Fix	The import to Windows Media Center could duplicate the cast and crew information every time a 
+	programme was imported.
+
+Fix 	The Create Debug Package function in EPG Centre could fail to include the Windows Media Center
+	database or backup on 64 bit Windows.
+
+Fix	The date was extracted incorrectly for UK EIT data leading to movie metadata lookup failing. In 
+	addition any season and episode information was extracted incorrectly.
+
+Fix	The category translation files were not consistent when translating movie categories for Windows
+	Media Center. They now all correctly identify the category as 'Movies' which matches the usage in
+	Windows Media Center itself.
+
+Change 	Brazil-Santos DVB-T tuning file added.
+
+Change	An option has been added to the XMLTV import parameters that allows for the 'Live' tag to annotate
+	the programme description.
+
+Fixpack 26
+==========
+
+Fix	Editing XMLTV programme categories in EPG Centre could cause an exception.
+
+Change 	The category 'movies' has been added to the XMLTV programme categories.
+
+Change	Movie metadata lookup will now no longer lookup data for a programme if it 
+	has a series or episode number.
+
+Change	An option has been added to EPG Centre under the 'Run - Windows Media Center Maintenance' menu 
+	option to clear the programme guide.
+
+	This can be used to reset a corrupt guide or to reorganize a Windows Media Center database.
+
+Change	An option has been added to EPG Centre under the 'Help' menu option to create a deubug package.
+
+	This is a convenient way to combine and compress al the files that may be needed when reporting
+	faults. 
+
+Change	Lists of channels in EPG Centre now show an indication of the sort order in the column headings.
+
+Fixpack 25
+==========
+
+Fix	The Windows Media Center import process flagged programmes that were not series incorrectly.
+
+Fix	If metadata lookup icons were stored using the programme title they were not imported into
+	Windows Media Center.
+
+Fix	The timezone on the Import tab was not processed correctly.
+	
+	This field only needs to be set if the timzeone offset is not present in the import file for
+	each programme.
+
+Fix	Continuation characters in an EIT description (...) were not always processed correctly.
+
+Fix 	Channel logos for stations whose names contained characters that were illegal for a filename
+	could not be output to an XMLTV file.
+
+	Any illegal characters are now replaced by the '_' character.
+
+Fix	The Windows Media Center import now correctly sets up the character played by actors which is
+	visible with the cast and crew.
+
+Fix	MHW2 collections assigned the EPG data to the wrong channels in some cases.
+
+Fix	Metadata lookup now sets the correct category information for all types of output and includes all
+	categories returned by TMDB or TVDB.
+
+Change 	On the Import tab it is now possible to select one of 4 settings for storing images locally.
+
+	None - no channel or programme images are downloaded,
+	Channels - only channel images will be downloaded.
+	Programmes - only programme images will be downloaded.
+	Channels and Programmes - both channel and programme images will be downloaded. 
+
+Change	It is now possible to import data from the Schedules Direct EPG subscription service. A description
+	of the this feature can be found in the User Guide.
+
+
+Change	The Windows Media Center import process now correctly processes programme updates where a generic
+	description of a programme is replaced by the detailed description nearer to the time of broadcast.
+	This change also improves the accuracy of series recordings.
+
+	This change only affect Schedules Direct formatted data.
+
+Change	Two new options have been added to the Run menu in EPG Centre. They both exist under the Windows
+	Media Center Maintenance menu option.
+
+	Remove channel logos
+
+	This menu option will remove all channel logos from the channels in the Windows Media Center
+	database.
+
+	Remove affiliates
+
+	This menu option will remove all affiliates from the channels in the Windows Media Center
+	database.
+
+Change	Channel lists on the Channels, Import and Schedules Direct tabs can now be excluded or included by
+	selecting all the channels required using the CTRL key and, while still holding down the CTRL key,
+	clicking on the Excluded checkbox.
+
+	All the channels selected will be changed to the same setting.
+
+Change	Metadata lookup now has an option for TV data lookup to select the priority when searching for matching
+	programmes. The 2 values available are
+
+	Series and episode numbers - this is the default value and will attempt to match on season and episode
+	numbers first
+
+	Subtitle - the subtitle will be used first when searching for a match.
+
+	In both cases if the field(s) are not present the other field(s) will be used.
+
+Change 	Metadata lookup will overwrite season and episode numbers broadcast if the option is set for lookup data
+	to overwrite broadcast data and the matching mode is 'exact' or 'contains'.
+
+Fixpack 24
+==========
+
+This fixpack was not made officially available.
+
+Fixpack 23
+==========
+
+Fix	An exclamation mark in a programme title could corrupt Windows Media Center series recordings.
+
+Fix	The Windows Media Center import file was created in the wrong directory if the environment variable to 
+	relocate EPG Collector files (EPGC_DATA_DIR) was used.
+
+Fix	Display faults with the Channel Scan feature have been corrected.
+
+Change 	The options for Series and repeats used by the Windows Media Centre import have been changed.
+
+	The entry labelled 'Not used' has been renamed 'Use programme title without merge' although the processing
+	behind it stays the same.
+
+	The remaining 2 options are now labelled
+
+		Use programme title with merge
+		Use broadcaster references
+
+	Both of these options result in a different structure to the MXF import file to that previously used which
+	will result in an improved experience when recording series in Windows Media Center.
+
+	In particular, 'Use broadcaster references' used with Zap2it or Schedules Direct import files should
+	produce similar results to the original data provided by Microsoft if used in conjunction with the new
+	import option for setting the previously shown date to a default value (see next change).
+
+	Changing from any one of these options to another will result in all current series recordings scheduled
+	in Windows Media Center being lost and they will need to be set up again.
+
+Change	The Import feature now has an option to set a default previously shown date. Some import files, notably
+	from Zap2it, can have previously shown tags present for programmes but without a date. If this option
+	is set the date in this case is set to 1st January 1970.
+
+	It will be visible in Windows Media Center as the original air date.
+
+	If the import file is from Zap2it and the Series and recordings option is set to 'Use programme title
+	with merge' or 'Use broadcaster reference' it is advisable to set this option.
+
+Change	It is now possible to change the timeouts used during a Channel Scan. They can be changed either before
+	the scan is started or while it is running.
+
+Change	It is now possible to transfer the results of a Channel Scan into the Selected Frequencies list on the
+	Tuning tab.
+
+	This is most relevant to ATSC broadcasts where it may not be known which frequencies carry the channels
+	and hence the EPG data.
+
+	In this case a Channel Scan can be run and the 'Load From Scan' button used to transfer all the frequencies
+	that resulted in channels being located to 'Selected Frequencies' list.
+
+Change	The tab order when creating or changing collection parameters has been altered slightly to group them in
+	a more logical way. The order is now
+
+	Tabs that define input data
+
+		Tuning
+		Input (DVBLogic parameters only)
+		Import
+
+	Tabs that define output data
+
+		Output
+		Files
+
+	The rest of the tabs that manipulate the collected data in various ways retain the previous order.
+
+Change	If a 'Live' tag is now present for a programme in an import file it will set the relevant indicator for
+	data imported to Windows Media Center.
+
+Change	TV Lookup no longer overwrites the programme description broadcast with any retrieved by metadata lookup. This
+	option, that was introduced in a recent fixpack, now only applied to movie metadata.
+
+	This has been change because, in the event that the wrong episode was located and used by the metadata lookup,
+	the programme description could reflect the wrong episode.
+
+Fixpack 22
+==========
+
+Fix	The Windows Media Center import could fail when creating the import file if auto channel matching was selected and 
+	the match name could not be found in the Media Center database and the Channels tab had been populated. It affected all 
+	types of data except DVB-S.
+
+Change	An initial release of a channel scan feature is available from the EPG Centre Run menu.
+
+	This is a beta level release which has been tested for DVB-S channels only. It is not a 'blind' scan but uses the
+	contents of the appropriate tuning file to tune frequencies and detect channels.
+
+	In this initial release the data is merely displayed in EPG Centre and does not update any information. It is 
+	possible in future releases that it may be used to update the Windows Media Center database by adding, deleting 
+	or modifying channels avoiding the necessity for manual updating.
+
+Fixpack 21
+==========
+
+Fix	The Windows Media Center import could fail with an exception importing ATSC data if the
+	match name could not be found in the Media Center database.
+
+Fix	The Translate tab did not reload the list of channels correctly if parameters were changed.
+
+Fix	The Windows Media Center import could leave the call sign blank if it could not be found
+	in the Media Center database.
+
+Fix	Any editing specified on the Edit tab was not applied to imported data.
+
+Change	The Import tab has been changed to allow a custom call sign to be entered for each channel. This
+	is only applicable to ATSC data that is then imported to Windows Media Center.
+
+Change	Additional Zap2it categories have been added to the XMLTV category configuration.
+
+Fixpack 20
+==========
+
+Fix	Using the Edit tab to replace text that occurs anywhere in a title or description with the same text
+	and remove all text following resulted in an infinite program loop and collection timeout.
+
+Fix	If a file was imported and merged with broadcast data an exception could occur.	
+
+Fixpack 19
+==========
+
+Change	An option has been added to the Lookup tab to enable data from the online databases TMDB and TVDB to
+	overwrite the broadcast data.
+
+Change	It is now not necessary to change the mode for HDHomerun tuners to J River for a collection to get all 
+	the EPG data from a broadcast. Previously it was necessary to set the tuner into 'J River' mode or only
+	a subset of the EPG data would be received.
+
+	Note however that this change does not affect EPG Centre functions Find EPG data, analyze transport stream
+	and dump transport stream. If these functions are to be used with the HDHomerun tuner please read appendix
+	1.4 of the User Guide for instructions.	
+
+Fixpack 18
+==========
+
+Fix	ATSC OTA data did not import into Windows Media Center correctly.
+
+Fix	The Windows Media Center import could create an incorrect guide if channels were merged.
+
+Fixpack 17
+==========
+
+Fix	Setting the XMLTV option for the icon tag prefix to none did not work.
+
+Fix	The Windows Media Centre programme guide could be corrupted with programmes linked to the wrong channels. In
+	practice this could only occur with ATSC data.		
+
+Fix	Dummy affiliates were not removed if the Windows Media Centre import name was not blank.
+
+Fixpack 16
+==========
+
+Fix	Movie metadata lookup did not download images.This fault was introduced in fixpack 15.
+
+Change	It is now possible to translate broadcast text to a different language. A new tab, Translate, has been
+	added to EPG Centre to configure the translation. See the User Guide for full details.
+
+Change	An option has been added to the Import options to allow the prefix 'New' to be added to the description if
+	there is a New tag in the import file.
+
+Change	An option has been added to the Output tab Windows Media Centre options to not create dummy affiliates.
+
+	The Windows Media Centre import process creates dummy affiliates to enable channels to be uniquely identified
+	when matching the channel with the EPG data manually. 
+
+	It is useful when a broadcast stream contains multiple channels with the same name and the result is 
+	that Windows Media Centre will identify the channel as, for example, Duke - EPG Collector or, if there is 
+	more than one channel with the same name, TVNZ1 - Epg Collector - 1035 where the number is the channel's 
+	service ID.
+
+	If this option is set Windows Media Centre will show just the channel name. Any existing dummy affiliates
+	created by EPG Collector will be removed.
+
+Change	The option on the Lookups tab to enter a prefix to be added to the icon tag path for XMLTV ouptut has been
+	moved to the Output tab XMLTV options and renamed Icon tag path prefix.
+
+	If this field is left blank the default prefix of file:// is used. Entering the word none in this field suppresses
+	the addition of any prefix.
+
+Change	An option has been added to the Ouput tab Windows Media Centre options that enables the Media Centre tasks for
+	reindexing the new data and updating the PVR schedules to be run automatically once the import has finished
+	successfully.
+
+Fixpack 15
+==========
+
+Fix	Importing data to Windows Media Center could cause it to fail with an Overflow exception if
+	the data had originated from an import file where the date tag contained more than just the year.
+
+Fix	Importing data to Windows Media Center on a 64-bit machine did not automatically link the data to the 
+	channels correctly.
+
+Change	Metadata lookup now uses a separate proxy to acess the TMDB and TVDB web sites. This is to ensure that
+	lookups will still function if those sites implement TSL security rather than SSL.
+
+Fixpack 14
+==========
+
+Fix	Any collection type that did not include programme category information in the broadcast data
+	would fail if the data was imported to Windows Media Centre.
+
+Fix	The Windows Media Centre import would fail if there was a thumbnail file in the movie or TV series
+	directories that did not have a valid GUID as its filename.
+
+Fix 	Importing ATSC channel data to Windows Media Centre did not work.
+
+
+Fix	Movies were not correctly identified when importing data to Windows Media Centre if the data came
+	from the metadata lookup function.
+
+Fix	For Sky UK and Australia subtitles are now only extracted from the description if they sre present
+	in the first third of the description.
+
+	Previously the presence of the subtitle terminator semicolon anywhere in the description could result
+	in corrupted subtitles and descriptions.
+
+Change	The format of an entry on the Import tab has changed. The 'append data' option has been removed and
+	incorporated into the 'Processing mode' selection. Any existing parameters will be automatically 
+	transferred.
+
+Change	An additional processing mode of 'Replace broadcast with import' has been added to the Import tab. This 
+	mode will result in all the data for a channel that is received OTA being replaced by the import data.
+
+	Note that the processing mode is irrelevant if the collection does not include any OTA data. 
+
+Change	On the Import tab it is now possible to have images specified in an import file downloaded and stored 
+	locally.
+
+	They will be stored in the Imports directory at the same location as the movie and TV series images. On each
+	run only those images that do not exist locally will be downloaded. Images will be deleted after 14 days if
+	they are not referenced in the import data.
+
+	Links to the images in both XMLTV output and the Windows Media Centre import wil point to the locally stored
+	images.
+
+Change 	The format of the channel ID on the Import tab can now be specified as Zap2it/Schedules Direct ATSC.
+
+Fixpack 13
+==========
+
+This fixpack was not made officially available.
+
+Fixpack 12
+==========
+
+Fix	TV series metadata lookup could report a null reference exception.
+
+Fix	XMLTV import did not handle start and stop times if they were not the local time.
+
+Fix	XMLTV import could not process files created by Ice TV.
+
+Fix	Sat>IP and stream input did not work in a Mono or Wine environment.
+
+Fix	Previously shown dates could be incorrect if they came from an XMLTV import file.
+
+Fix	Windows Media Center movie genres were set up incorrectly.
+
+Fix	The programme categories imported from an XMLTV file were incorrect when output to DVBViewer.
+
+Fix	MegaSat Sat>IP servers did not work.
+
+Fix 	The duration for long ATSC programmes was incorrect.
+
+Change	The original air date is now imported to Windows Media Center from TV series metadata lookup. It
+	will also appear in the previously-shown tag for XMLTV output.
+
+Change	An option has been added to the Output tab so that, in the event of no data being collected, 
+	no output file is created.
+
+Change	On the Lookups tab a threshold has been added for the matching type of nearest. Setting this parameter
+	can result in less incorrect lookups.
+
+change	For XMLTV output the location of the channel logos can now be specified.
+
+Change 	It is now possible to specify the RTSP port on the Sat>IP config dialog.	
+
+Change	There is a new option on the Output tab to enable part numbers to be omitted for the episode-num tag
+	in XMLTV output.
+
+Change	More formats for season and episode numbers have been added for Sky UK collections.
+
+Change	New channels are now not automatically added if a channel scan has been done.
+
+Change	Movie metadata lookup now looks for matches one year each side of the broadcast date in the EPG data.
+
+Change	For XMLTV imports it is now possible to select the timezone if the file is non-standard and has no 
+	UTC offsets present.
+
+Change	The Edit tab now allows for the | (bar) character to be used in the original text and replacement
+	text in place of a comma.
+
+Change	An option has been added to the Output tab for XMLTV output to enable Plex compatible episode-num tags
+	to be created.
+
+Fixpack 11
+==========
+
+Fix	South Korean ATSC cable broadcasts could not be tuned using the HD Homerun.
+
+Fix	Frequencies could not be tuned when the Sat>IP server was TVHeadEnd.
+
+Fix	Spanish MHW2 collections could fail with an error code 5.
+
+Fix	Importing of XMLTV data didn't ignore excluded channels which could result in XMLTV data being lost.
+
+Fix	Running collections from EPG Centre under Mono did not work because of a command line error.
+
+Fix	Huffman decoding for UK EIT data could insert invalid XML characters into the title or description causing an 
+	error code 5 when the output was an XMLTV file or data was imported to WMC.
+
+Change	DVB-T tuning files added for Poland.
+
+Change	DVB-C tuning files have been added for Denmark.
+
+Change	ATSC tuning files added for South Korea.
+
+change	On the Output tab in the XMLTV options it is now possible to select as the episode tag a format that is
+	compatible with the VBOX tuner/software.
+
+Change 	It is now possible to specify a location for the data directory rahter than use the default location. It is
+	specified by using the environment variable EPGC_DATA_DIR.
+
+	Not that files are not automatically transferred from the default data directory when this variable is
+	present. Any existing files must be copied manually.
+
+Change	It is now possible to collect a specialized format of EIT data used by CanalSat and Horizon Switzerland by
+	selecting the appropriate carousel profile on the Advanced dialog.
+
+Change	The import of XMLTV files now allows for the channel name to be used when matching channels. This is relevant
+	if files created by the WebGrab utility are imported.
+
+Change	The extraction of data from MHW2 broadcasts in Spain has been improved.
+
+Change	The import of XMLTV files can now specify that new data is to be appended to any existing data for a channel
+	by using a new option on the Import tab.
+
+Fixpack 10
+==========
+
+Fix	Singapore cable season/episode numbers were not extracted correctly as the broadcaster had changed the format.
+
+Fix	New Zealand terrestrial MHEG5 colections did not work as the broadcaster had changed the name of the directory
+	holding the EPG data.
+
+Fix	Taiwan EIT data not processed correctly.
+
+Change	The DVBLogic channel update feature now allows for XMLTV as the EPG type for new channels.
+
+Change	Terrestrial tuning parameters for Taiwan added.	
+
+Change	An option has been added to the Output tab to enable any season and episode numbers found to be appended
+	to the programme description.
+
+Fixpack 9
+=========
+
+Fix	DVBS-2 tuning didn't work for various types of tuner.
+
+Fix	The DVBLink option did not work for DVB-C channels.
+
+Fix	When running under Mono, FreeSat and EIT collections did not work due to an error
+ 	in the names of the Huffman translation files.
+
+Change	Season, episode and subtitles are now extracted for Singapore cable channels.
+
+Change	Chinese is now available as an input language.	
+
+Change	An option has been added to the Output tab to enable any season and episode numbers found to be appended
+	to the programme description.
+
+Fixpack 8
+=========
+
+Fix	If the option to create an area/region file was selected the file contained all areas and regions even
+	if an area/region had been selected.
+
+Change	Categories can now be output to the XMLTV file with each element of the category contained within it's own
+	tag.
+
+	A new option on the Output tab XMLTV section controls this behaviour.
+
+Change	The TV series meta data lookup now uses the region from the machine on which the collection is run to try
+	and better identiy a TV series.
+
+	For example, if the collection is run in Australia and a series title is found of 'Come Dine With Me (Australia)'
+	then the details for that series will be used rather than the series entitled just 'Come Dine With Me'.
+
+Change	Support has been added for the VBox TV server. The option needs to be enabled from the File menu in EPG Centre
+	and any VBox units located will then appear as available tuners.
+
+Change	It is now possible to specify the PID to be used in collections for the Service Description information. This is
+	only needed in very limited circumstances.
+
+Change	Arabic has been added as one of the possible input languages.
+
+Change	If data is collected from the NileSat satellite and the country is selected as Egypt, episode numbers and the	
+	production date will be extracted from the broadcast data and appear in any output.
+
+Fixpack 7
+=========
+
+Fix	When updating DVB-S parameters in EPG Centre the parameters output could have an incorrect Satellite line.
+
+Fix	The timeouts introduced in fixpack 6 for accessing metadata from the TMDB and TVDB internet sites was too
+	short to load TV posters or thumbnails.
+
+Fixpack 6
+=========
+
+Fix	The DVBViewer Recording Service port number was lost when parameters were updated in EPG Centre.
+
+Fix	Sat>IP collections using the DVBViewer Recording Service could sometimes fail to tune.
+
+Fix 	Sat>IP collections would report errors in the log when non-standard attributes were used the the 
+	DVBViewer Recording Service.
+
+Fix	New Zealand EIT collections could fail due to errors in the Huffman decompression routines.
+
+Fix	Australian MHEG5 collections could fail with and error 5.
+
+Fix	Huffman decompression sometimes resulted in characters being duplicated.
+
+Change	MHEG5, EIT and FreeSat collections no longer stop if an error occurs when processing EPG entries. The
+	error is logged and the collection process continues.
+
+Change	The timeouts when accessing the internet databases for metadata lookup are now fixed at 30 seconds.
+
+Change	THe DVB-T tuning parameters for the New Zealand Wairarapa - Popoiti transmitter have been updated.
+
+Fixpack 5
+=========
+
+Fix	Further errors that showed up as errors in the log during lookup processing have been fixed.
+
+Fixpack 4
+=========
+
+Fix	An out of date version the the library used to access the TVDB online database was released in fixpack 3. It
+	worked correctly most of the time but would sometimes report serialization and null reference exceptions in
+	the log.
+
+	The assembly version numbers of both the TVDB library and the TMDB library are now reported in the log along
+	with the version numbers of all the other dll's in the package. 
+
+Fixpack 3
+=========
+
+Fix	A second transport stream dump would cause an exception in EPG Centre if it used Sat>IP or stream input.
+
+Fix 	A transport stream dump using Sat>IP would fail if any pid's were specified.
+
+Fix	The message at the end of a transport stream dump did not accurately reflect the size of the file.
+
+Fix	The Advanced dialog parameters were all lost when DVBLogic plugin parameters were changed in EPG Centre.
+
+Fix	NZ MHEG5 collections did not correctly extract the season and episode numbers for one of the possible formats.
+
+Fix	Mixing NZ MHEG5 collections and OpenTV collections could cause the channel TV2 to not collect any data.
+
+Fix 	TV series metadata lookup could set the subtitle/episode name incorrectly.
+
+Fix	DVB-S2 tuning when using Sat>IP did not work.
+
+Fix	NZ MHEG5 collections could fail if the season/episode numbers were in a particular format.
+
+Fix	FreeSat collection could result in duplicate characters in the title and descriptions due to a fault in the
+	Huffman decompression.
+
+Fix	The channel update feature would display an error if the DVBLink server was already stopped when the update
+	process attempted to stop it.
+
+Change	If an XMLTV file is created it is output in channel ID sequence.
+
+Change	The CRC checking of data received from the broadcaster has been changed to ensure that corrupted data can
+	be detected more reliably.
+
+Change	The DVB Recording Service can now be used as a Sat>IP server.
+
+Change	Metadata lookups now create programme categories/genres in a format that is appropriate to the output medium.
+
+Change	Movie metadata lookup now has a facility to identify specific programmes that are not to be treated as movies.
+
+	In some cases (eg omnibus editions) a TV series could appear to be a movie by having a duration that fitted 
+	into the movie parameters. If the programme happenened to also have a matching movie title on the Movie database 
+	it was incorrectly identified as a movie.
+
+Change	The interface to the TVDB database has been updated to the latest version (V2) used by the database providers.
+
+	At some point in the near future the previous interface will be switched off by the database providers and earlier
+	versions of EPG Collector that used that interface for metadata lookup will stop working.
+
+Fixpack 2
+=========
+
+Fix	OpenTV collections would fail with an exception if the programme description was not braodcast.
+
+Fix 	New Zealand MHEG5 collections did not correctly exclude channels if an area was selected.
+
+Fix	On the Input tab for DVBLogic parameters the Selected Freqeuncy box could sometimes be too small so the
+	scroll bar obscured the frequency.
+
+Fix	For DVBLogic parameters the Channel scan in EPG Centre only worked for satellite receivers. For all other types
+	of receiver the tuning parameters dialog reported a validation error.
+
+Change	It is now possible on the Output tab to select more than one type of output.
+
+	For normal collections any combination of the output methods can be chosen so that, for example, an XMLTV file can
+	be created in the same run as importing to Windows Media Centre.
+
+	For DVBLogic plugin collections an XMLTV file can be created at the same time as either importing to TVServer or
+	importing to Windows Media Centre.
+
+Fixpack 1
+=========
+
+Fix	The Windows Media Center import could fail with an exception if DVBLink was installed but not used.
+
+Fix	Some Sky UK season/episode numbers were not extracted correctly.
+
+Fix	FreeSat titles could be wrong if the title extended into the description and was terminated by a colon.
+
+Fix	If EPG Centre was used to create parameters for multiple file or stream input the resulting parameter
+	file was incorrect.
+
+Fix	If a frequency in a multi-frequency collection timed out it would cause an exception later in the run.
+
+Fix	The DVBViewer parameters on the Output tab were lost when the parameters were loaded back into EPG
+	Centre.
+
+Fix	Loading DVBLink parameters into EPG Centre and attempting a channel scan caused an exception.
+
+Fix	Importing an XMLTV file caused an exception.
+
+Fix	EPG Centre would display a message suggesting that the DVB-S parameters needed updating before they
+	could be saved if the DiSEqC switch setting was anything other than 'None'.
+
+Change	When matching EIT EPG data with the channels it is now possible to use just the service ID.
+
+	Normally the network ID, transport stream ID and service ID are used to match EIT EPG data with the
+	correct channel.
+
+	However, in certain rare circumstances, only the service ID is correct in the EPG data so an extra
+	option has been added to the Advanced Parameters dialog to restict the matching to service ID.
+
+change	More explanatory log messages have been added to the DVBViewer import to aid in fault finding.
+
+Change	Minor TV series lookup enhancements have been made to improv the hit rate when subtitles are present
+	in the broadcast.		
+
+=================================================== End Of ReadMe ================================================= 
+

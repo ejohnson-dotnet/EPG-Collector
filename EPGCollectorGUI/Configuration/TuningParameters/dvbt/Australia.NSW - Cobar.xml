@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Frequencies>
+  <CountryCode>AUS</CountryCode>
+  <DVBTTuning>
+    <Frequency>177500</Frequency>
+    <BandWidth>7</BandWidth>
+    <CollectionType>EIT</CollectionType>
+  </DVBTTuning>
+  <DVBTTuning>
+    <Frequency>191500</Frequency>
+    <BandWidth>7</BandWidth>
+    <CollectionType>EIT</CollectionType>
+  </DVBTTuning>
+  <DVBTTuning>
+    <Frequency>219625</Frequency>
+    <BandWidth>7</BandWidth>
+    <CollectionType>EIT</CollectionType>
+  </DVBTTuning>
+  <DVBTTuning>
+    <Frequency>529500</Frequency>
+    <BandWidth>7</BandWidth>
+    <CollectionType>EIT</CollectionType>
+  </DVBTTuning>
+  <DVBTTuning>
+    <Frequency>543500</Frequency>
+    <BandWidth>7</BandWidth>
+    <CollectionType>EIT</CollectionType>
+  </DVBTTuning>
+  <DVBTTuning>
+    <Frequency>557500</Frequency>
+    <BandWidth>7</BandWidth>
+    <CollectionType>EIT</CollectionType>
+  </DVBTTuning>
+</Frequencies>

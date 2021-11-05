@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Frequencies>
+  <CountryCode>PL</CountryCode>
+  <DVBTTuning>
+    <Frequency>626000</Frequency>
+    <BandWidth>8</BandWidth>
+    <CollectionType>EIT</CollectionType>
+  </DVBTTuning>
+  <DVBTTuning>
+    <Frequency>634000</Frequency>
+    <BandWidth>8</BandWidth>
+    <CollectionType>EIT</CollectionType>
+  </DVBTTuning>
+  <DVBTTuning>
+    <Frequency>642000</Frequency>
+    <BandWidth>8</BandWidth>
+    <CollectionType>EIT</CollectionType>
+  </DVBTTuning>
+</Frequencies>

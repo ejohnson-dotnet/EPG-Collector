@@ -1,6 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31129.286
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EPGCollector", "EPGCollector\EPGCollector.csproj", "{3C5CB90D-FD89-4ECA-8177-E04DB8464158}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DirectShow", "EPGCollector\DirectShow\DirectShow.csproj", "{5527E0AC-14A4-47CE-AD86-DD3B10DDEA54}"
@@ -8,8 +10,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DVBServices", "EPGCollector\DVBServices\DVBServices.csproj", "{2162B6D8-871F-4B2E-8D97-0FA2C8DA76D1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainObjects", "EPGCollector\DomainObjects\DomainObjects.csproj", "{691C6EB5-D035-43E6-B3A9-F5131BF09916}"
-EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Install", "Install\Install.vdproj", "{BB492B6D-5EB8-4B84-8651-FE6A15F4EAD9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EPGCentre", "EPGCollectorGUI\EPGCentre.csproj", "{AF2657C1-7B32-4F61-B68F-1CA9FAC77B2C}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -48,12 +48,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchedulesDirect", "Schedule
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DebugPackageViewer", "DebugPackageViewer\DebugPackageViewer.csproj", "{7EE083EA-E137-478C-85CE-2BDA67FFE69F}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "InstallDebugPackageViewer", "InstallDebugPackageViewer\InstallDebugPackageViewer.vdproj", "{6C91A4DB-9482-4A6C-A11C-30773C9E987A}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BaseClasses", "directshow\baseclasses\baseclasses.vcxproj", "{E8A3F6FA-AE1C-4C8E-A0B6-9C8480324EAA}"
 EndProject
 Global
-	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = EPGCollector.vsmdi
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -75,8 +72,6 @@ Global
 		{691C6EB5-D035-43E6-B3A9-F5131BF09916}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{691C6EB5-D035-43E6-B3A9-F5131BF09916}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{691C6EB5-D035-43E6-B3A9-F5131BF09916}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BB492B6D-5EB8-4B84-8651-FE6A15F4EAD9}.Debug|Any CPU.ActiveCfg = Debug
-		{BB492B6D-5EB8-4B84-8651-FE6A15F4EAD9}.Release|Any CPU.ActiveCfg = Release
 		{AF2657C1-7B32-4F61-B68F-1CA9FAC77B2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AF2657C1-7B32-4F61-B68F-1CA9FAC77B2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AF2657C1-7B32-4F61-B68F-1CA9FAC77B2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -141,10 +136,18 @@ Global
 		{7EE083EA-E137-478C-85CE-2BDA67FFE69F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7EE083EA-E137-478C-85CE-2BDA67FFE69F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7EE083EA-E137-478C-85CE-2BDA67FFE69F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6C91A4DB-9482-4A6C-A11C-30773C9E987A}.Debug|Any CPU.ActiveCfg = Debug
-		{6C91A4DB-9482-4A6C-A11C-30773C9E987A}.Release|Any CPU.ActiveCfg = Release
+		{E8A3F6FA-AE1C-4C8E-A0B6-9C8480324EAA}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{E8A3F6FA-AE1C-4C8E-A0B6-9C8480324EAA}.Debug|Any CPU.Build.0 = Debug|Win32
+		{E8A3F6FA-AE1C-4C8E-A0B6-9C8480324EAA}.Release|Any CPU.ActiveCfg = Release|Win32
+		{E8A3F6FA-AE1C-4C8E-A0B6-9C8480324EAA}.Release|Any CPU.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FFD108E4-CCCA-485F-9F09-B79FC5960F80}
+	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = EPGCollector.vsmdi
 	EndGlobalSection
 EndGlobal
