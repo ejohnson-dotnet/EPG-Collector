@@ -1,0 +1,784 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{AF2657C1-7B32-4F61-B68F-1CA9FAC77B2C}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EPGCentre</RootNamespace>
+    <AssemblyName>EPGCentre</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <ManifestCertificateThumbprint>52C13AB928923FE87DF42887B781F6C19F2FF99C</ManifestCertificateThumbprint>
+    <ManifestKeyFile>EPGCollectorGUI_TemporaryKey.pfx</ManifestKeyFile>
+    <GenerateManifests>true</GenerateManifests>
+    <SignManifests>true</SignManifests>
+    <StartupObject>
+    </StartupObject>
+    <ApplicationIcon>Television.ico</ApplicationIcon>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>2.0.17.0</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisLogFile>bin\Debug\EPGCentre.exe.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;C:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisLogFile>bin\Release\EPGCentre.exe.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;C:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <DocumentationFile>bin\Release\EPGCentre.XML</DocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="About.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="About.Designer.cs">
+      <DependentUpon>About.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AdvancedParameters.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AdvancedParameters.Designer.cs">
+      <DependentUpon>AdvancedParameters.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BaseChangeCategoryControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BaseChangeCategoryControl.Designer.cs">
+      <DependentUpon>BaseChangeCategoryControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ChangeBellTVCategoriesControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ChangeBellTVCategoriesControl.Designer.cs">
+      <DependentUpon>ChangeBellTVCategoriesControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ChangeCustomCategoriesControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ChangeCustomCategoriesControl.Designer.cs">
+      <DependentUpon>ChangeCustomCategoriesControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ChangeDishNetworkCategoriesControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ChangeDishNetworkCategoriesControl.Designer.cs">
+      <DependentUpon>ChangeDishNetworkCategoriesControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ChangeDvbsDetails.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChangeDvbsDetails.Designer.cs">
+      <DependentUpon>ChangeDvbsDetails.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ChangeMHWCategoriesControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ChangeMHWCategoriesControl.Designer.cs">
+      <DependentUpon>ChangeMHWCategoriesControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ChangeNotMovieList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChangeNotMovieList.Designer.cs">
+      <DependentUpon>ChangeNotMovieList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ChangeProgramCategoryControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ChangeProgramCategoryControl.Designer.cs">
+      <DependentUpon>ChangeProgramCategoryControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ChangeProgramContentControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ChangeProgramContentControl.Designer.cs">
+      <DependentUpon>ChangeProgramContentControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ChangePSIPCategoriesControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ChangePSIPCategoriesControl.Designer.cs">
+      <DependentUpon>ChangePSIPCategoriesControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ChangeSdLineups.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChangeSdLineups.Designer.cs">
+      <DependentUpon>ChangeSdLineups.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ChannelScanControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ChannelScanControl.Designer.cs">
+      <DependentUpon>ChannelScanControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ChannelScanResult.cs" />
+    <Compile Include="CollectorParametersControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CollectorParametersControl.Designer.cs">
+      <DependentUpon>CollectorParametersControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConfigureSatIp.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConfigureSatIp.Designer.cs">
+      <DependentUpon>ConfigureSatIp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ControlStatus.cs" />
+    <Compile Include="ChangeXMLTVCategoriesControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ChangeXMLTVCategoriesControl.Designer.cs">
+      <DependentUpon>ChangeXMLTVCategoriesControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ChangeDvbtDetails.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChangeDvbtDetails.Designer.cs">
+      <DependentUpon>ChangeDvbtDetails.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ChangeDvbcDetails.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChangeDvbcDetails.Designer.cs">
+      <DependentUpon>ChangeDvbcDetails.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ChangeAtscDetails.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChangeAtscDetails.Designer.cs">
+      <DependentUpon>ChangeAtscDetails.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ChangeClearQamDetails.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChangeClearQamDetails.Designer.cs">
+      <DependentUpon>ChangeClearQamDetails.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ChangeIsdbsDetails.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChangeIsdbsDetails.Designer.cs">
+      <DependentUpon>ChangeIsdbsDetails.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ChangeIsdbtDetails.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChangeIsdbtDetails.Designer.cs">
+      <DependentUpon>ChangeIsdbtDetails.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConfigureVBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConfigureVBox.Designer.cs">
+      <DependentUpon>ConfigureVBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ChangeSdCategoriesControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ChangeSdCategoriesControl.Designer.cs">
+      <DependentUpon>ChangeSdCategoriesControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CreateDebugPackage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CreateDebugPackage.Designer.cs">
+      <DependentUpon>CreateDebugPackage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RunWMCMaintenanceControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RunWMCMaintenanceControl.Designer.cs">
+      <DependentUpon>RunWMCMaintenanceControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FindIPAddress.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FindIPAddress.Designer.cs">
+      <DependentUpon>FindIPAddress.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SelectIsdbt.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SelectIsdbt.Designer.cs">
+      <DependentUpon>SelectIsdbt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SelectIsdbs.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SelectIsdbs.Designer.cs">
+      <DependentUpon>SelectIsdbs.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SelectClearQam.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SelectClearQam.Designer.cs">
+      <DependentUpon>SelectClearQam.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SelectAtsc.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SelectAtsc.Designer.cs">
+      <DependentUpon>SelectAtsc.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SelectDvbc.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SelectDvbc.Designer.cs">
+      <DependentUpon>SelectDvbc.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SelectDvbt.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SelectDvbt.Designer.cs">
+      <DependentUpon>SelectDvbt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DVBLogicParametersControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DVBLogicParametersControl.Designer.cs">
+      <DependentUpon>DVBLogicParametersControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FilterText.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FilterText.Designer.cs">
+      <DependentUpon>FilterText.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FindText.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FindText.Designer.cs">
+      <DependentUpon>FindText.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FindEPGControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FindEPGControl.Designer.cs">
+      <DependentUpon>FindEPGControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrequencySelectionControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FrequencySelectionControl.Designer.cs">
+      <DependentUpon>FrequencySelectionControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InProgress.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InProgress.Designer.cs">
+      <DependentUpon>InProgress.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaces.cs" />
+    <Compile Include="MainWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainWindow.Designer.cs">
+      <DependentUpon>MainWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OutputFileUnformattedControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="OutputFileUnformattedControl.Designer.cs">
+      <DependentUpon>OutputFileUnformattedControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SelectDvbs.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SelectDvbs.Designer.cs">
+      <DependentUpon>SelectDvbs.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ViewSatIPControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ViewSatIPControl.Designer.cs">
+      <DependentUpon>ViewSatIPControl.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="About.resx">
+      <DependentUpon>About.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AdvancedParameters.resx">
+      <DependentUpon>AdvancedParameters.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChangeBellTVCategoriesControl.resx">
+      <DependentUpon>ChangeBellTVCategoriesControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChangeCustomCategoriesControl.resx">
+      <DependentUpon>ChangeCustomCategoriesControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChangeDishNetworkCategoriesControl.resx">
+      <DependentUpon>ChangeDishNetworkCategoriesControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChangeDvbsDetails.resx">
+      <DependentUpon>ChangeDvbsDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChangeMHWCategoriesControl.resx">
+      <DependentUpon>ChangeMHWCategoriesControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChangeNotMovieList.resx">
+      <DependentUpon>ChangeNotMovieList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChangeProgramCategoryControl.resx">
+      <DependentUpon>ChangeProgramCategoryControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChangeProgramContentControl.resx">
+      <DependentUpon>ChangeProgramContentControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChangePSIPCategoriesControl.resx">
+      <DependentUpon>ChangePSIPCategoriesControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChangeSdLineups.resx">
+      <DependentUpon>ChangeSdLineups.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChannelScanControl.resx">
+      <DependentUpon>ChannelScanControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CollectorParametersControl.resx">
+      <DependentUpon>CollectorParametersControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChangeXMLTVCategoriesControl.resx">
+      <DependentUpon>ChangeXMLTVCategoriesControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChangeDvbtDetails.resx">
+      <DependentUpon>ChangeDvbtDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChangeDvbcDetails.resx">
+      <DependentUpon>ChangeDvbcDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChangeAtscDetails.resx">
+      <DependentUpon>ChangeAtscDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChangeClearQamDetails.resx">
+      <DependentUpon>ChangeClearQamDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChangeIsdbsDetails.resx">
+      <DependentUpon>ChangeIsdbsDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChangeIsdbtDetails.resx">
+      <DependentUpon>ChangeIsdbtDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConfigureSatIp.resx">
+      <DependentUpon>ConfigureSatIp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConfigureVBox.resx">
+      <DependentUpon>ConfigureVBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChangeSdCategoriesControl.resx">
+      <DependentUpon>ChangeSdCategoriesControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CreateDebugPackage.resx">
+      <DependentUpon>CreateDebugPackage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RunWMCMaintenanceControl.resx">
+      <DependentUpon>RunWMCMaintenanceControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FindIPAddress.resx">
+      <DependentUpon>FindIPAddress.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SelectIsdbt.resx">
+      <DependentUpon>SelectIsdbt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SelectIsdbs.resx">
+      <DependentUpon>SelectIsdbs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SelectClearQam.resx">
+      <DependentUpon>SelectClearQam.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SelectAtsc.resx">
+      <DependentUpon>SelectAtsc.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SelectDvbc.resx">
+      <DependentUpon>SelectDvbc.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SelectDvbt.resx">
+      <DependentUpon>SelectDvbt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DVBLogicParametersControl.resx">
+      <DependentUpon>DVBLogicParametersControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FilterText.resx">
+      <DependentUpon>FilterText.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FindText.resx">
+      <DependentUpon>FindText.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FindEPGControl.resx">
+      <DependentUpon>FindEPGControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrequencySelectionControl.resx">
+      <DependentUpon>FrequencySelectionControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InProgress.resx">
+      <DependentUpon>InProgress.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainWindow.resx">
+      <DependentUpon>MainWindow.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OutputFileUnformattedControl.resx">
+      <DependentUpon>OutputFileUnformattedControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RunCollectionControl.resx">
+      <DependentUpon>RunCollectionControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChannelScanParameters.resx">
+      <DependentUpon>ChannelScanParameters.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SaveMHWCategoryFile.resx">
+      <DependentUpon>SaveMHWCategoryFile.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SelectCategoryFile.resx">
+      <DependentUpon>SelectCategoryFile.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SelectContentFile.resx">
+      <DependentUpon>SelectContentFile.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SelectDvbs.resx">
+      <DependentUpon>SelectDvbs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SelectLog.resx">
+      <DependentUpon>SelectLog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SelectMHWCategoryFile.resx">
+      <DependentUpon>SelectMHWCategoryFile.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SelectTask.resx">
+      <DependentUpon>SelectTask.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TransportStreamAnalyzeControl.resx">
+      <DependentUpon>TransportStreamAnalyzeControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TransportStreamDumpControl.resx">
+      <DependentUpon>TransportStreamDumpControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ViewHistoryControl.resx">
+      <DependentUpon>ViewHistoryControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ViewLogControl.resx">
+      <DependentUpon>ViewLogControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="ViewSatIPControl.resx">
+      <DependentUpon>ViewSatIPControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="app.config" />
+    <None Include="Properties\DataSources\DomainObjects.ProgramCategory.datasource" />
+    <None Include="Properties\DataSources\DomainObjects.SchedulesDirectChannel.datasource" />
+    <None Include="Properties\DataSources\DomainObjects.XmltvChannelChange.datasource" />
+    <None Include="Properties\DataSources\DomainObjects.XmltvProgramCategory.datasource" />
+    <None Include="Properties\DataSources\DVBServices.BellTVProgramCategory.datasource" />
+    <None Include="Properties\DataSources\DVBServices.DishNetworkProgramCategory.datasource" />
+    <None Include="Properties\DataSources\Lookups.TVDBProgramCategory.datasource" />
+    <None Include="Properties\DataSources\SchedulesDirect.SchedulesDirectProgramCategory.datasource" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="RunCollectionControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RunCollectionControl.Designer.cs">
+      <DependentUpon>RunCollectionControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ChannelScanParameters.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChannelScanParameters.Designer.cs">
+      <DependentUpon>ChannelScanParameters.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SaveMHWCategoryFile.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SaveMHWCategoryFile.Designer.cs">
+      <DependentUpon>SaveMHWCategoryFile.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SelectCategoryFile.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SelectCategoryFile.Designer.cs">
+      <DependentUpon>SelectCategoryFile.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SelectContentFile.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SelectContentFile.Designer.cs">
+      <DependentUpon>SelectContentFile.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SelectLog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SelectLog.Designer.cs">
+      <DependentUpon>SelectLog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SelectMHWCategoryFile.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SelectMHWCategoryFile.Designer.cs">
+      <DependentUpon>SelectMHWCategoryFile.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SelectTask.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SelectTask.Designer.cs">
+      <DependentUpon>SelectTask.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TransportStreamAnalyzeControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TransportStreamAnalyzeControl.Designer.cs">
+      <DependentUpon>TransportStreamAnalyzeControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TransportStreamDumpControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TransportStreamDumpControl.Designer.cs">
+      <DependentUpon>TransportStreamDumpControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ViewHistoryControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ViewHistoryControl.Designer.cs">
+      <DependentUpon>ViewHistoryControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ViewLogControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ViewLogControl.Designer.cs">
+      <DependentUpon>ViewLogControl.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ChannelUpdate\ChannelUpdate.csproj">
+      <Project>{57424001-DB19-4179-AD1C-53453DC36DA3}</Project>
+      <Name>ChannelUpdate</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EPGCollector\DirectShow\DirectShow.csproj">
+      <Project>{5527E0AC-14A4-47CE-AD86-DD3B10DDEA54}</Project>
+      <Name>DirectShow</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EPGCollector\DomainObjects\DomainObjects.csproj">
+      <Project>{691C6EB5-D035-43E6-B3A9-F5131BF09916}</Project>
+      <Name>DomainObjects</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EPGCollector\DVBServices\DVBServices.csproj">
+      <Project>{2162B6D8-871F-4B2E-8D97-0FA2C8DA76D1}</Project>
+      <Name>DVBServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Lookups\Lookups.csproj">
+      <Project>{1ACA1BAD-FE74-4CF1-B368-5052152BD106}</Project>
+      <Name>Lookups</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MxfParser\MxfParser.csproj">
+      <Project>{52063A2C-ACC3-4C68-AB5B-D5D29C06CCA5}</Project>
+      <Name>MxfParser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetReceiver\NetReceiver.csproj">
+      <Project>{E48FD22E-A2A3-46FD-9C88-3B8620CCD5D2}</Project>
+      <Name>NetReceiver</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetworkProtocols\NetworkProtocols.csproj">
+      <Project>{258FC2B2-82ED-4DD0-83C2-A1806D90AC23}</Project>
+      <Name>NetworkProtocols</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SatIp\SatIp.csproj">
+      <Project>{C53C3ABC-4054-4A89-BABE-5C641F4DED6C}</Project>
+      <Name>SatIp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SchedulesDirect\SchedulesDirect.csproj">
+      <Project>{6CCD2058-C0CE-473B-90DB-87870BF23B29}</Project>
+      <Name>SchedulesDirect</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VBox\VBox.csproj">
+      <Project>{4C4A02FD-1297-4D4B-85A3-293DBE428A9A}</Project>
+      <Name>VBox</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\XmlParser\XmltvParser.csproj">
+      <Project>{89AB1DA3-F6BD-4FEA-86DD-CB884B06A0B4}</Project>
+      <Name>XmltvParser</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\DataSources\DomainObjects.TVStation.datasource" />
+    <None Include="Properties\DataSources\DVBServices.AtscPsipProgramCategory.datasource" />
+    <None Include="Properties\DataSources\DVBServices.CustomProgramCategory.datasource" />
+    <None Include="Properties\DataSources\DVBServices.EITProgramContent.datasource" />
+    <None Include="Properties\DataSources\DVBServices.MediaHighwayProgramCategory.datasource" />
+    <None Include="Properties\DataSources\DVBServices.OpenTVProgramCategory.datasource" />
+    <None Include="Properties\DataSources\INIFile.datasource" />
+    <None Include="Resources\QuestionMark.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Television.ico" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

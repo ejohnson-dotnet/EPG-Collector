@@ -1,0 +1,2588 @@
+﻿EPG Centre Field Descriptions
+=============================
+
+Contents
+========
+
+	1. Introduction	
+		
+		1.1 Overview
+
+	2. The Tuning tab
+
+		2.1 DVB Satellite
+			2.1.1 General settings
+			2.1.2 Tuners
+			2.1.3 DiSEqC options
+			2.1.4 Buttons
+
+		2.2	DVB Terrestrial
+			2.2.1 General settings
+			2.2.2 Tuners
+			2.2.3 Buttons
+
+		2.3	DVB Cable
+			2.3.1 General settings
+			2.3.2 Tuners
+			2.3.3 Buttons
+
+		2.4	ATSC
+			2.4.1 General settings
+			2.4.2 Tuners
+			2.4.3 Buttons
+
+		2.5	Clear QAM
+			2.5.1 General settings
+			2.5.2 Tuners
+			2.5.3 Buttons
+
+		2.6	File
+			2.6.1 General settings
+			2.6.2 Buttons
+
+		2.7	Stream
+			2.6.1 General settings
+			2.6.2 Buttons
+
+		2.8 Selected frequencies
+
+			2.8.1 Frequency list
+			2.8.2 Buttons
+	
+	3. The Input tab
+
+		3.1 DVB Satellite
+		3.2	DVB Terrestrial
+		3.3	DVB Cable
+		3.4	ATSC
+		3.5	Clear QAM
+		
+		3.6 Selected frequencies
+			3.6.1 Frequency list
+			3.6.2 Buttons
+
+	4. The Imports tab
+
+		4.1 File
+		4.2 Selected files
+		4.3 Channel changes
+
+	5. The Schedules Direct tab
+
+		4.1 File
+		4.2 Selected files
+		4.3 Channel changes
+	
+	6. The Output tab
+
+		6.1 General options
+		6.2 TVSource options
+		6.3 XMLTV options
+		6.4 Windows Media Center options
+		6.5 DVBViewer options
+	
+	7. The Files tab
+
+		7.1 Area/region channel file
+		7.2 Bladerunner channel file
+		7.3 SageTV frequency file
+	
+	8. The Channels tab
+
+		8.1 Channel list
+		8.2 Buttons
+	
+	9. The Filters tab
+
+		9.1 Included channels
+		9.2 Miscellaneous
+	
+	10. The Timeshift tab
+
+		10.1 Channels
+		10.2 Selected channels
+		10.3 Buttons
+	
+	11. The Repeats tab
+
+		11.1 Options
+		11.2 Exclusions
+	
+	12. The Edit tab
+
+		12.1 Current entry
+		12.2 List of text edits
+	
+	13. The Lookups tab
+
+		13.1 Movie lookup
+		13.2 TV series lookup
+		13.3 Miscellaneous
+	
+	14. The Update tab
+
+	15. The Translate tab
+	
+	16. The Advanced tab
+
+		16.1 Miscellaneous options
+		16.2 Timeouts
+		16.3 Manual time adjustment
+	
+	17. The Diagnostics tab
+	
+	18. Dialogs
+		
+		18.1 The Advanced frequency parameters
+			 18.1.1 Miscellaneous options
+			 18.1.2 Location information
+			 18.1.3 Custom pids
+		18.2 Maintain the 'not a movie' list
+
+1. Introduction
+===============
+
+	1.1 Overview		
+	============
+
+	This document gives detailed information on all the fields and settings that can be made when creating or changing collection
+	parameters using EPG Centre.
+
+	Most of the fields and settings are grouped by the tabs on which they appear in EPG Centre. Separate sections details those
+	that occur on dialogs that can appear while filling in the tabs.
+	
+2. The Tuning Tab
+=================
+
+The tuning tab itself contains other tabs, one for each type of delivery system (eg satellite) plus a tab for file inputs (MPEG2
+ts files) and a tab for streaming inputs. Only tabs that have the relevant hardware installed will be shown.
+
+Any number of frequencies, files or streams can be selected. When a collection is run they will be processed in the order they
+have been entered and the EPG data collected combined into a single output as defined on the Output tab.
+
+Note that DVBLogic virtual tuners cannot be used for collections as do not pass the relevant control information from the 
+broadcast data.
+
+	2.1 DVB Satellite
+	=================
+
+		2.1.1 General settings
+		======================
+	
+		Satellite
+
+			Contains a list of all the satellites defined in the DVB-S configuration parameters.
+
+		Frequency
+
+			Once a satellite is selected contains the frequencies in kilohertz and the polarization
+			defined for that satellite in the configuration parameters.
+
+		Collection Type
+	
+			Once a frequency is selected contains the default data type for that frequency. However, any
+			required collection type can be chosen.
+			
+		Sat>IP Frontend
+
+			Allows the tuner to be selected when using a Sat>IP server. If this field is set to 'n/a' the Sat>IP server
+			will use any available tuner.	
+
+		LNB Low Band
+
+			Set with the LNB low oscillator setting in kilohertz.
+
+		LNB High Band
+
+			Set with the LNB high band oscillator setting in kilohertz.
+
+		LNB Switch
+
+			Set with the LNB switch value in kilohertz. If you set the LNB switch value to zero, when the collection
+			is run a very high number (20000000) is used to ensure the tuner driver does not turn on the 22kHz signal. This
+			is consistent with other applications that control LNB's
+
+		LNB Type
+
+			This parameter is only relevant to North America and, in addition, will only be enabled for 
+			those satellites with band stacking.
+
+			It contains a list of the types of LNB available with the Dish or Bell TV networks.
+
+			If Legacy is selected the tuning parameters are used as selected.
+
+			If DSS or FSS is selected the frequency and polarization are adjusted as necessary prior to tuning. Conversion only
+			occurs if the polarization for the selected frequency is linear horizontal or circular left. 
+
+		Defaults
+
+			There is a list of default LNB settings that are accessed by repeatedly pressing this button The list 
+			represents the following
+				
+				9750000,  10600000, 11700000	standard universal LNB (commonly found in Europe)
+				10750000, 10750000, 0		single oscillator LNB
+				11300000, 11300000, 0		single oscillator LNB
+				10700000, 10700000, 0		single oscillator LNB
+				10600000, 10600000, 0		single oscillator LNB
+				11250000, 11250000, 0		single oscillator LNB (North America)
+			
+		2.1.2 Tuners
+		============
+	
+		The list shows the satellite tuners available. 
+
+		If the option to use any available tuner is selected, when the collection is run the first tuner that is not in use 
+		and is appropriate for the frequency being collected is used.
+
+		Except in the case of Sat>IP tuners, EPG Collector requires exclusive access to the tuner during the collection process. This
+		includes VBox servers.
+		
+		2.1.3 DiSEqC options
+		====================
+
+		Switch
+
+			Specifies the DiSEqC switching requirements for multiple dish configurations.
+
+			The list supports the following ports:
+
+			1. Simple port A or B.
+			2. Ports AA, AB, BA or BB. These use committed commands for switches supporting DiSEqC 1.0 and may 
+			   also be known as ports A - D.
+			3. Port 1 - 16. These use uncommitted commands for switches supporting DiSEqC 1.1.
+			4. Port AA1 through AB4. These use a combination of committed and uncommitted commands for switches that 
+			   support both DiSEqC 1.0 and 1.1.
+
+			As an alternative you can enter custom DiSEqC commands in the box at the top of the list. Each command is 
+			entered as a series of hex values with one or more spaces separating each byte. Multiple commands can be 
+			entered separated by the ':' (colon) character. Multiple commands are transmitted to the switch separated by
+			a 150 msec gap.
+
+			So, for example, the uncommitted command to switch to port 2 would be entered as e0 10 39 01. DiSEqC commands
+			specify port numbers starting from zero.
+
+			Note that values entered manually are not validated. If the correct switching does not occur first check 
+			the EPG Collector log which lists the DiSEqC commands as they are transmitted. If a manually entered value
+			is formatted incorrectly the transmitted value will be seen in the log as a string of zeros.
+
+		DiSEqC handler
+
+			Normally EPG Collector will automatically select the correct handler for the tuner hardware so the entry
+			in this list can be left at Default.
+
+			However in special circumstances a specific selection can be made from this list. 
+
+		Check tuner is not in use before changing DiSEqC switch
+
+			With some tuner hardware it is possible to change a DiSEqC switch even though the tuner is in use by another
+			program. 
+
+			Select this option to ensure that can't happen.
+
+		Repeat DiSEqC command if first attempt fails
+
+			Some tuner drivers report an error on the first attempt to change a DiSEqC but change it correctly on a second
+			attempt.
+
+			Select this option if that is the case.
+
+		Change DiSEqC switch only when graph running
+
+			Some tuner drivers will only change a DiSEqC switch once the DirectShow graph that contains them is in the
+			running state.
+
+			Select this option is this is the case.
+
+		Change DiSEqC switch only after tune request
+
+			Some tuner drivers will only change a DiSEqC switch once the request to tune has already been made.
+
+			Select this option is this is the case.
+
+		Use DiSEqC commands instead of LNB source
+
+			Some tuner drivers only change a DiSEqC switch using DiSEqC commands rather than the Windows API.
+
+			Select this option if that is the case. This option is only relevant to the generic DiSEqC handler.
+
+		Disable driver DiSEqC commands
+
+			Some tuner drivers will send their own commands to a DiseQc switch causing EPG Collectors changes to fail.
+
+			Select this option to stop that happening. This option is only relevant to the generic DiSEqC handler.
+
+		2.1.4 Buttons
+		=============
+
+		Update
+
+			This button adds the current settings for the fields to the list at the bottom of the tab of selected
+			frequencies.
+
+			The advanced frequency parameters dialog will be displayed to enable frequency level parameters to be entered.
+
+	2.2 DVB Terrestrial
+	===================
+
+		2.2.1 General settings
+		======================
+
+		Country
+
+			Contains a list of all the countries that have tuning files.
+
+		Area
+
+			Once a country is selected countains a list of areas for that country in the tuning files.
+
+		Frequency
+
+			Once a country and area is selected contains the frequencies in kilohertz and the polarization
+			defined for the country and area in the tuning files.
+
+		Collection Type
+
+			Once a frequency is selected contains the default data type for that frequency. However, any
+			required collection type can be chosen.
+
+		Sat>IP Frontend
+
+			Allows the tuner to be selected when using a Sat>IP server. If this field is set to 'n/a' the Sat>IP server
+			will use any available tuner.
+
+		2.2.2 Tuners
+		============
+	
+		The list shows the terrestrial tuners available. 
+
+		If the option to use any available tuner is selected, when the collection is run the first tuner that is not in use 
+		and is appropriate for the frequency being collected is used.
+
+		Except in the case of Sat>IP tuners, EPG Collector requires exclusive access to the tuner during the collection process. This
+		includes VBox servers.
+
+		2.2.3 Buttons
+		=============
+
+		Update
+
+			This button adds the current settings for the fields to the list at the bottom of the tab of selected
+			frequencies.
+
+			The advanced frequency parameters dialog will be displayed to enable frequency level parameters to be entered.
+
+	2.3 DVB Cable
+	=============
+
+		2.3.1 General settings
+		======================
+
+		Provider
+
+			Contains a list of cable providers.
+
+		Frequency
+
+			Once a provider is selected contains the frequencies in kilohertz and the polarization
+			defined for that provider in the tuning files.
+
+		Collection Type
+
+			Once a frequency is selected contains the default data type for that frequency. However, any
+			required collection type can be chosen.
+
+		Sat>IP Frontend
+
+			Allows the tuner to be selected when using a Sat>IP server. If this field is set to 'n/a' the Sat>IP server
+			will use any available tuner.
+
+		2.3.2 Tuners
+		============
+	
+		The list shows the cable tuners available. 
+
+		If the option to use any available tuner is selected, when the collection is run the first tuner that is not in use 
+		and is appropriate for the frequency being collected is used.
+
+		Except in the case of Sat>IP tuners, EPG Collector requires exclusive access to the tuner during the collection process. This
+		includes VBox servers.
+
+		2.3.3 Buttons
+		=============
+
+		Update
+
+			This button adds the current settings for the fields to the list at the bottom of the tab of selected
+			frequencies.
+
+			The advanced frequency parameters dialog will be displayed to enable frequency level parameters to be entered.
+			
+	2.4 ATSC
+	========
+
+		2.4.1 General settings
+		======================
+
+		Provider
+
+			Contains a list of ATSC providers.
+
+		Channel
+
+			Once a provider is selected contains the channels defined for that provider in the tuning files.
+
+		Collection Type
+
+			Once a frequency is selected contains the default data type for that frequency. However, any
+			required collection type can be chosen.
+
+		2.4.2 Tuners
+		============
+	
+		The list shows the ATSC tuners available. 
+
+		If the option to use any available tuner is selected, when the collection is run the first tuner that is not in use 
+		and is appropriate for the frequency being collected is used.
+
+		Except in the case of Sat>IP tuners, EPG Collector requires exclusive access to the tuner during the collection process. This
+		includes VBox servers.
+
+		2.4.3 Buttons
+		=============
+
+		Update
+
+			This button adds the current settings for the fields to the list at the bottom of the tab of selected
+			frequencies.
+
+			The advanced frequency parameters dialog will be displayed to enable frequency level parameters to be entered.
+		
+	2.5 Clear QAM
+	=============
+
+		2.5.1 General settings
+		======================
+
+		Provider
+
+			Contains a list of Clear QAM providers.
+
+		Channel
+
+			Once a provider is selected contains the channels defined for that provider in the tuning files.
+
+		Collection Type
+
+			Once a frequency is selected contains the default data type for that frequency. However, any
+			required collection type can be chosen.
+
+		2.5.2 Tuners
+		============
+	
+		The list shows the Clear QAM tuners available. 
+
+		If the option to use any available tuner is selected, when the collection is run the first tuner that is not in use 
+		and is appropriate for the frequency being collected is used.
+
+		Except in the case of Sat>IP tuners, EPG Collector requires exclusive access to the tuner during 
+		the collection process.
+
+		2.5.3 Buttons
+		=============
+
+		Update
+
+			This button adds the current settings for the fields to the list at the bottom of the tab of selected
+			frequencies.
+
+			The advanced frequency parameters dialog will be displayed to enable frequency level parameters to be entered.
+
+	2.6 File
+	========
+
+		2.6.1 General settings
+		======================
+
+		Path
+
+			The full path to the file containg the MPEG2 transport stream data.
+		
+		Browse
+
+			This button can be used to search for the file.
+
+		Collection Type
+
+			The list of possible collection types.
+
+		2.6.2 Buttons
+		=============
+
+		Update
+
+			This button adds the current settings for the fields to the list at the bottom of the tab of selected
+			frequencies.
+
+			The advanced frequency parameters dialog will be displayed to enable frequency level parameters to be entered.	
+
+	2.7 Stream
+	==========
+
+		2.7.1 General settings
+		======================
+
+		Protocol
+
+			Choose RTSP, RTP, UDP or HTTP.
+
+		IP address
+			
+			The IP address of the stream. This can be entered in the form nnn.nnn.nnn.nn (eg 192.168.0.50)
+			or as an internet address ( eg www.bbc.co.uk).
+
+			Note that this field only contains the IP address. Any additional path information is entered 
+			separately in the Path field.
+
+		Find
+
+			This button can be used to find a local IP address.
+
+		Port number
+
+			The port number of the stream.
+
+		Path
+
+			The path for an HTTP stream.
+
+		Collection Type
+
+			The list of possible collection types.
+
+		2.7.2 Buttons
+		=============
+
+		Update
+
+			This button adds the current settings for the fields to the list at the bottom of the tab of selected
+			frequencies.
+
+			The advanced frequency parameters dialog will be displayed to enable frequency level parameters to be entered.
+
+	2.8 Selected Frequencies
+	========================
+
+		2.8.1 Frequency list
+		====================
+
+		The list contains all the frequencies files or streams that will be scanned for data. They will be processed in the order
+		of the list.
+
+		If an entry already exists in the list when the Update button is used there is an option to either overwrite it
+		or to add the same entry again. This enables different types of data to be collected on the same frequency, file or
+		stream.
+
+		2.8.2 Buttons
+		=============
+
+		Change
+
+			If a frequency, file or stream in the list is selected, using this button will fill the appropriate tab with the 
+			details	to enable them to be changed.
+
+			The Update button on the tab can then be used to put the changed information back into the list.
+
+		Delete
+
+			Enables entries to be deleted from the list. The button will be available if an entry in the list is 
+			selected.
+
+		Advanced
+
+			Displays the advanced frequency parameters for the selected entry. Information can be changed and the update
+			information put back in the list.
+
+		Details
+
+			Enables all the details for a selected frequency to be displayed. The button will not be available if a file or stream 
+			in the list is selected.
+
+			A dialog appropriate for the delivery system will appear and changes to the tuning details can be entered.
+
+		Load From Scan
+
+			This button enables the results of the Run - Channel Scan feature to be transferred into the frequency list. It will
+			only be available if the Run - Channel Scan featrue has been used and some frequencies found that had channels
+			associated with them.
+
+			All frequencies that resulted in channels being found will be transferred into the Frequency list. These frequencies
+			can then be updated to set any advanced collection parameters.
+
+			Th Run - Channel Scan feature and this button are useful for those types of data where the EPG data is broadcast on
+			many different frequencies. This includes ATSC and Clear-QAM but does not include DVB-S, DVB-T and DVB-C where there
+			is generally one main frequency carrying the EPG data.
+			
+3. The Input Tab
+================
+
+The Input tab is used to define the input for a DVBLink plugin collection. It differs from the Tuning tab because only a single
+frequency can be selected and none of the other tuning parameters are required as DVBlink carries out the tuning procedure
+using it's own tuning files.
+
+	3.1 DVB Satellite
+	=================
+
+	Satellite
+
+		Contains a list of all the satellites defined in the DVB-S configuration parameters.
+
+	Frequency
+
+		Once a satellite is selected contains the frequencies in kilohertz and the polarization
+		defined for that satellite in the configuration parameters.
+
+	Collection Type
+	
+		Once a frequency is selected contains the default data type for that frequency. However, any
+		required collection type can be chosen.
+
+	Update
+
+		This button adds the current settings for the fields to the list at the bottom of the tab of selected
+		frequencies.
+
+		The advanced frequency parameters dialog will be displayed to enable frequency level parameters to be entered.
+		
+	3.2 DVB Terrestrial
+	===================
+
+	Country
+
+		Contains a list of all the countries that have tuning files.
+
+	Area
+
+		Once a country is selected countains a list of areas for that country in the tuning files.
+
+	Frequency
+
+		Once a country and area is selected contains the frequencies in kilohertz and the polarization
+		defined for the country and area in the tuning files.
+		
+	Collection Type
+
+		Once a frequency is selected contains the default data type for that frequency. However, any
+		required collection type can be chosen.
+		
+	Update
+
+		This button adds the current settings for the fields to the list at the bottom of the tab of selected
+		frequencies.
+
+		The advanced frequency parameters dialog will be displayed to enable frequency level parameters to be entered.		
+
+ 	3.3 DVB Cable
+	=============
+	
+	Provider
+
+		Contains a list of cable providers.
+
+	Frequency
+
+		Once a provider is selected contains the frequencies in kilohertz and the polarization
+		defined for that provider in the tuning files.
+
+	Collection Type
+
+		Once a frequency is selected contains the default data type for that frequency. However, any
+		required collection type can be chosen.
+		
+	Update
+
+		This button adds the current settings for the fields to the list at the bottom of the tab of selected
+		frequencies.
+
+		The advanced frequency parameters dialog will be displayed to enable frequency level parameters to be entered.
+		
+	3.4 ATSC
+	========
+	
+	Provider
+
+		Contains a list of ATSC providers.
+
+	Channel
+
+		Once a provider is selected contains the channels defined for that provider in the tuning files.
+
+	Collection Type
+	
+		Once a frequency is selected contains the default data type for that frequency. However, any
+		required collection type can be chosen.
+		
+	Update
+
+		This button adds the current settings for the fields to the list at the bottom of the tab of selected
+		frequencies.
+
+		The advanced frequency parameters dialog will be displayed to enable frequency level parameters to be entered.
+		
+	3.5 Clear QAM
+	=============
+	
+	Provider
+
+		Contains a list of Clear QAM providers.
+
+	Channel
+
+		Once a provider is selected contains the channels defined for that provider in the tuning files.
+
+	Collection Type
+
+		Once a frequency is selected contains the default data type for that frequency. However, any
+		required collection type can be chosen.
+		
+	Update
+
+		This button adds the current settings for the fields to the list at the bottom of the tab of selected
+		frequencies.
+
+		The advanced frequency parameters dialog will be displayed to enable frequency level parameters to be entered.
+		
+	3.6 Selected Frequency
+	======================
+
+		3.6.1 Frequency list
+		====================
+
+		The list contains the frequencies selected for collecting the data. The list can only contain a single entry.
+
+		3.6.2 Buttons
+		=============
+
+		Delete
+
+			Enables the entry to be deleted from the list. The button will be available if the entry in the list is 
+			selected.
+
+		Advanced
+
+			Displays the advanced frequency parameters for the entry. Information can be changed and the updated
+			information put back in the list.
+
+4. The Imports Tab
+==================
+
+The Imports tab enables files conforming to the XMLTV or MXF specification to be merged with the data received over the air. If
+MXF files are selected thaey must have been created by EPG Collector or BSEPG.
+
+Any number of files can be specified.
+
+Channels loaded from the files can be excluded, renamed or have a user channel number assigned to them in the same way
+as if they had been scanned over the air.
+
+	4.1 File
+	========
+
+	Path	
+		
+		The full path name of the XMLTV or MXF file.
+
+	Browse
+
+		Enables the file to be searched for.
+
+	Language
+
+		Selects the language to use for a multi-language file. If the file only contains a single language this field can
+		be set to undefined. Only applies to XMLTV files.
+
+		If the language cannot be located in the XMLTV tags then the first tag without a language will be used.
+
+	Processing mode
+
+		Specifies which data takes precedence if an imported programme also exists in the broadcast data.
+
+			Merge, broadcast data takes precedence
+
+				Where broadcast and import data matches the broadcast data takes precedence
+
+			Merge, import takes precedence
+
+				Where broadcast and import data matches the imported data takes precedence.
+
+			Append import to broadcast
+
+				Where data matches the broadcast data is used and the import datas is ignored. Import
+				data is added to the end of the broadcast data.
+
+			Replace broadcast with import
+
+				The broadcast data for any channel that has dataimport file is ignored and the import
+				data used in its place.
+
+		Where collections consist only of import files the setting for this parameter is ignored.
+
+	Format of the channel ID
+
+		Specifies the format of the channel ID tag in an XMLTV file
+		
+		Undefined
+		
+			The format of the tag is unknown.
+			
+		Service ID
+		
+			The channel ID tag specifies the service ID of the channel. The channel will be created with the original network
+			ID and the transport stream ID set to -1.
+			
+		User channel number
+		
+			The channel ID tag specifies the user channel number of the channel. The channels will be created with a sequential
+			service ID and the original network	ID and the transport stream ID set to -1. 
+			
+		Full channel identification
+		
+			The channel ID tag is in the format created by EPG Collectro when it creates an XMLTV file
+			
+				original network ID : transport stream ID : service ID : channel name
+				
+			This format of the tag enables the imported channel to be created exactly as if it had been detected in data
+			received in the broadcast.
+			
+		Channel name
+		
+			The channel name is used to identify the channel. This option is designed to import files create by the WebGrab
+			utility.
+
+		Schedules Direct
+		
+			The import file contains the format of channel identification used by this provider.
+
+	Time zone
+
+		If the imported file does not contain time zone information for each programme entry it is necessary to
+		specify it using this parameter.
+
+		The normal setting for this parameter is 'Local'.
+
+	Store images locally
+	
+		Any images reference by icon tags with an HTTP or HTTPS location will be downloaded and stored locally. The output medium
+		(eg XMLTV file or Windows Media Centre) will reference the local location.
+
+		Images downloaded will be retained for 14 days and then deleted if they are no longer referenced by the collected data. Each
+		time a collection is run only those images not already stored locally will be downloaded.
+
+		The option has 4 possible values:
+
+			None			No images are downloaded or stored.
+			Channels		Only channel logos will be downloaded.
+			Programmmes		Only programme logos will be downloaded.
+			Both			Channel and programme logos will be downloaded.
+			
+		Note that if this setting is 'None' or 'Programmes' and the data is imported to Windows Media Center any existing channel
+		logos will be removed. 
+
+	Don't lookup metadata for imported data
+
+		Select this option if the imported file already contains comprehensive metadata. If metadata lookup processing
+		is enabled it will ignore any EPG entries from the file.
+		
+	Ignore non-standard episode tags
+	
+		Only XMLTV standard format episode-num tags will be processed. Other formats will be ignored. 	
+
+	Annotate new programmes if tag present
+
+		If this option is set and there is a 'new' tag in the import file for a programme the programme description will
+		be prefixed by the word 'New'.
+
+	Set empty previously shown tags to default date
+
+		Some XMLTV files contain previously-shown tags without a start date. Setting this option will set the previously shown date
+		in this situation to 1st January 1970.
+
+		Note that this is particularly relevant to Zap2it files where the data is imported to Windows Media Center when the 
+		recording of series and detection of repeats by Windows Media Center will be influenced by this option being set. 
+
+	Add
+
+		Adds the file to the list of files to process.
+
+	Don't create channels not in the list
+
+		Setting this option prevents channels that are not present in the list from being being created.
+
+	4.2 Selected Files
+	==================
+
+	File list
+
+		The list of files to be processed.
+
+	Delete
+
+		Deletes the selected file from the list.
+
+	4.3 Channel Changes
+	===================
+
+	Load this list after the files have been specified by pressing the Load Files button.
+
+	Display Name
+	
+		The name of the channel.
+
+	Excluded
+
+		Select this option to ignore the channel in the import file.
+	
+	Channel Number
+
+		The user channel number.
+
+	New Name
+
+		The new name of the channel.
+
+	Call Sign
+
+		This field is only relevant to ATSC data which is subsequently imported to Windows Media Center. It enables
+		the default call sign for the channel to be set to a different value.
+
+	Load Files
+
+		Loads the specified import files so they can be excluded, renamed or have a user channel number assigned. If no channels
+		are to be excluded, renamed of have channel numbers assigned it is not necessary to use this button.
+
+	Clear
+
+		Clears the list.
+
+	Include All
+
+		Clears the excluded flag for all channels in the list.
+
+	Exclude All
+
+		Flags all the channels in the list as excluded.
+
+5. The Schedules Direct Tab
+===========================
+
+The Schedules Direct tab is used to configure the downloading of data via a Schedules Direct account. A Schedules Direct
+account must be set up prior to enabling this option.
+
+Note that data downloaded from Schedules Direct can only be imported to Windows Media Center. It cannot be used to create
+data for any of the other output options. This is a restriction of the Schedules Direct service.
+
+A full description of the Schedules Direct features available using EPG Collector can be found in the User Guide.
+
+The various fields and options are as follows:
+
+	Enabled
+
+		Enables the feature. If the Schedules Direct user name and password have already be entered and lineups selected on
+		the Schedules Direct Change Lineups dialog (available using the File menu Configure Schedules Direct option or
+		Change Lineups button) the various other fields wil be filled in with lineup data from the Schedules Direct web site
+		and the channel data held locally.
+
+	Lineups
+
+		A list of the lineups selected using the Schedules Direct Change Lineups dialog and held at the Schedules Direct
+		web site.
+
+	Change Lineups
+
+		Displays the dialog that enables the user name and password of the Schedules Direct account to be entered and
+		lineups of channels selected.
+
+	Add Channels
+
+		Adds all the channels from the selected lineup to the Selected Channels list.
+
+	Remove Channels
+
+		Removes all the channels from the selected lineup from the Selected Channels list.
+
+	Selected Channels
+
+		The channels that can have EPG data downloaded. Only channels in this list that are not excluded will have data
+		downloaded from the Schedules Direct service. The various fields in the list are as follows:
+		
+		Name
+		
+			The display name of the channel
+			
+		Call Sign
+		
+			The call sign of the channel.
+
+		Lineup
+
+			The name of the lineup which contains the channel.
+
+		Identification
+
+			The channel idetification varies depending on the type of channel
+
+			DVB 		Original network ID: transportStream ID: service ID
+			ATSC		Channel number: subnumber
+			ATSC cable	Channel number
+
+		Excluded 
+
+			Select this option to exclude this channel from the download process.
+
+		New Name
+
+			The new display name of the channel. Optional.
+
+		New Channel No
+
+			The new channel number. Optional.
+
+		New Call Sign
+
+			The new call sign. Optional.
+
+	Include All
+
+		Clears the excluded flag for all channels in the list.
+
+	Exclude All
+
+		Flags all the channels in the list as excluded.
+
+	Clear
+
+		Removes all channels from the list.
+
+	Store images locally
+
+		Any images specified in the Schedules Direct data will be downloaded and stored locally. The images will then be visible
+		in the Windows Media Center guide.
+
+		Images downloaded will be retained for 14 days and then deleted if they are no longer referenced by the collected data. Each
+		time a collection is run only those images not already stored locally will be downloaded.
+
+		The option has 4 possible values:
+
+			None			No images are downloaded or stored.
+			Channels		Only channel logos will be downloaded.
+			Programmmes		Only programme logos will be downloaded.
+			Both			Channel and programme logos will be downloaded.
+			
+		Note that if this setting is 'None' or 'Programmes' when the data is imported to Windows Media Center any existing channel
+		logos will be removed.
+		
+	Use long descriptions
+	
+		The Schedules Direct data has two different sets of descriptions. The first set is up to 100 characters long and
+		the second set up to 1,000 characters long.
+		
+		If this option is set the longer descriptions will be output to Windows Media Center. 
+			
+6. The Output Tab
+=================
+
+The output tab defines where the collected data should go and what processing should be applied prior to output. 
+
+The various fields and options are used as follows:
+
+	6.1 General Options
+	===================
+
+	Create data for channels with the same name
+
+		Some broadcasters have channels with the same name on which they transmit the identical programmes with regionalised 
+		advertising. The EPG data can sometimes be omitted for the duplicate stations to reduce bandwidth and selecting
+		this option creates data for those channels that would otherwise not have any data or the data does not correspond.
+
+	Create data for channels with the same name if data not present
+
+		This option has the same effect as the one above except that duplication only occurs if the destination channel
+		has no EPG data already.
+
+	Round the programme times to the nearest 5 minutes
+
+		If this option is selected programme times that are not multiples of 5 minutes will be adjusted. Any time up to 
+		3 minutes over will be rounded down and any time over 3 minutes will be rounded up. The duration of the programme
+		will be adjusted accordingly.
+
+	Only output data if channel relevent
+
+		Sometimes broadcasters transmit EPG data for channels that cannot be received (eg regional broadcasting). If this
+		option is set that data is ignored during the collection process.
+
+		Restrictions: This option is only relevant to DVB terrestrial and DVB cable transmissions.
+
+	Don't remove extracted data from titles and descriptions
+
+		The collection process scans programme titles and descriptions looking for information such as cast and series and
+		episode information.
+
+		If this information is located it is extracted into the relevant fields for output and removed from where it was
+		found.
+
+		If this option is selected it is not removed and will still be visible when the EPG data is viewed in a media player.
+
+		Restrictions: This option is only relevant to MHEG5 and OpenTV data.
+
+	Don't log small gaps between programmes
+
+		Some broadcasters allow for the advert breaks in the EPG data. These will be reported as gaps in the collection log
+		unless this option is selected.
+
+	Don't log excluded channels
+
+		Some types of data, notably Dish Network data, has a very large number of channels and most of them will be excluded
+		from the collection.
+
+		To reduce the length of the log and make it more readable select this option.
+
+	Append season/episode numbers to description
+
+		This option can be used where the broadcaster provides season and/or episode numbers in the broadcast stream and it they
+		are to be added to the programme descption.
+
+		Note that if they are already present in the description they will be duplicated.
+
+	Don't create an output file if no data collected
+
+		If this option is set and no data is collected, the output file will not exist. If it is not set and no data is collected
+		an empty file will be created.
+
+	Don't create entries with incorrect start or end times
+	
+		Setting this option prevents entries being created if the duration is zero or negative.		
+
+	6.2 TVSource Options
+	====================
+
+	Enabled
+
+		Enable output direct to TVSource.
+
+	Format of the channel ID
+
+		Allows the format of the channel ID tag passed to TVSource to be defined. The possible values are:
+
+			Service ID
+			User channel number
+			Sequential number
+			Full channel identification
+
+		The sequential number option numbers the first channel 1 and increments by 1 for each subsequent channel. Note that
+		successive runs won't necessarily produce the same channel ID's.
+
+		The user channel number may not available for all data types.
+
+		The full channel identification option creates the channel ID tag with the network ID, transport stream ID, service ID
+		and channel name. Use this format if the file is to be imported into another run of EPG Collector.
+		
+	6.3 XMLTV Options
+	=================
+
+	Enabled
+
+		Enable XMLTV output.
+
+	Path	
+	
+		The full path name of the XMLTV file to be created.
+
+		The default file name is TVGuide.xml and it is placed in the data directory. It will overwrite any existing version
+		each time a collection is run.
+
+	Browse
+
+		Enables a search for the path to be made.
+
+	Channel logo path	
+	
+		The full path name of the user suppplied channel logos. The default path if the field is left blank is the Images 
+		subdirectory of the data directory. The contents of the field are not validated.
+
+		Any channel logos supplied by the user and pointed to by this field must have a filename of 'channel name.png'. 
+		If the path begins with	'http://' or 'https://' the channel name will be correctly escaped for a URI.
+
+		If the field is left blank and the user supplies icons in the default location the name of the file can be
+		'service ID.png' as well as 'channel name.png'.
+
+	Browse
+
+		Enables a search for the channel logo path to be made.	
+
+	Format of the channel ID
+
+		Allows the format of the channel ID tag in the XMLTV file to be defined. The possible values are:
+
+			Service ID
+			User channel number
+			Sequential number
+			Full channel identification
+
+		The sequential number option numbers the first channel 1 and increments by 1 for each subsequent channel. Note that
+		successive runs won't necessarily produce the same channel ID's.
+
+		The user channel number may not available for all data types.
+
+		The full channel identification option creates the channel ID tag with the network ID, transport stream ID, service ID
+		and channel name. Use this format if the file is to be imported into another run of EPG Collector.
+
+	Format of the episode tag.
+
+		Allows the format of the episode tag in the XMLTV file to be defined. The possible values are:
+
+			Valid season and episode numbers only
+			BSEPG compatible
+			Full content reference ID
+			Numeric part of content reference ID
+			VBOX compatible
+			Not output
+
+		Valid season and episode numbers are not always available and depend on the data from the broadcaster.
+
+		The options using the content reference ID are also dependent of the data broadcast. These options should
+		be used if the software that processes the XMLTV file can use the episode tags in a non-standard format. The system
+		attribute is set to 'crid' for the full content reference ID and 'numeric_crid' for the numeric format.
+
+	Icon tag path prefix
+
+		Specifies a custom prefix to be added to the path for any icon tags. Normally the XMLTV file will contain the full path 
+		to any image preceeded by 'file://'. Use this field to specify a different prefix.
+
+		If no prefix is required set the field to the word none.
+		
+
+	Create an LCN tag containing the user channel number
+
+		If this option is selected an 'lcn' element will be added to each channel in the XMLTV file containing the user
+		channel number.
+
+		The user channel number may not available for all data types.			
+
+	Create an audio description tag
+
+		If this option is selected an 'audio-description' element will be written to the XMLTV file indicating if an
+		audio description is present in the data broadcast.
+
+		This tag is not part of the XMLTV standard and is therefore only of use to any custom software that may
+		process the XMLTV file.
+
+	Output category elements in separate tags
+
+		If this option is selected each element of a programme category will appear in the XMLTV file uder a separate
+		tag.
+
+	Omit part number from episode tag
+
+		If this option is selected the part number will not be present in the episode tag if it is zero.
+		
+	Prefix description with air date
+	
+		If this option is set and the original air date is available it will prefix the description in the 
+		output file.
+		
+	Prefix subtitle with season/episode number
+	
+		If this option is set and season and/or episode numbers are available they will prefix the subtitle if it
+		is also available.
+		
+	Create Plex compatible tags
+	
+		The file will be created such that it is compatible with Plex. 
+
+	6.4 Windows Media Center Options
+	================================
+
+	Enabled
+
+		Enable direct output to Windows Media Center.
+
+	Import name
+
+		The import name is used to identify and group the channels involved in the import process to Windows Media Center. It 
+		will appear in Windows Media Center if the channels are manually edited to link them to the EPG data.
+
+		If multiple EPG collections of different sets of channels are imported to Windows Media Center it is essential that 
+		each collection has a different import name. If this is not the case each succeeding collection will remove the
+		channels from the previous collection and they will not be accessible in Windows Media Center.
+
+		If this field is not completed the default name of 'EPG Collector' will be used.
+
+	Series and repeats
+
+		This field determins the data used to group series and control the recording of programme repeats. The possible values
+		are:
+
+			Use programme title without merge (previously labelled 'Not used')
+
+				The programme title is used to control the creation of series. All programmes with the same title will be 
+				grouped into the same series.
+
+				Programme repeats within a series may not be detected unless the Repeats tab is used. This is the least
+				preferred setting for this field.
+			
+			Use programme title with merge
+			
+				The programme title is used to control the creation of series. All programmes with the same title will be 
+				grouped into the same series.
+
+				Programme repeats are detected using the programme title and season and episode numbers if they are present. 
+				If season and episode numbers are not available the programme description is used.
+
+				This setting cannot be used at the same time as enabling the Repeats tab.
+				
+			Use broadcaster references
+			
+				The links from the broadcaster such as content reference ID's or series links will be used to group programmes
+				into series.
+
+				If broadcaster links are not available the 'Use programme title with merge' will be used.
+
+				This is the preferred setting being the most accurate way to group programmes into seasons and detect repeats. However 
+				not all data contains the necessary reference ID's. Some that do are
+
+					New Zealand Freeview
+					UK FreeSat
+					OpenTV (all locations)
+					Zap2it/Schedules Direct import files
+
+				The log will indicate the percentage of programmes in a collection that have the relevant reference ID's. Only 
+				Zap2it/Schedules Direct import files are known to have 100% of programmes with reference ID's.
+				
+				In most	cases this is the best setting for this field if it is not known if the reference ID's are present
+				because if they are not then any programmes without them will use the second best setting of 'Use programme title 
+				with merge'.
+				
+		If this option is changed it will be necessary to recreate all series recordings in Windows Media Center.
+
+	Automatically map EPG data to channels
+
+		If this option is selected the collection process interrogates the Windows Media Center database to enable it to
+		link the data received with the channels defined in Windows Media Center.
+
+		If this option is not selected it is necessary to use the Edit Channel function in Windows Media Center to manually
+		link the data received with the channel defined in the Windows Media Center TV guide. This will only need to be 
+		done once after the first data collection has been made or if the Windows Media Center database is recreated.
+
+	Flag 4 star rated programmes as special
+
+		If this option is set any programme that is rated as 4-star will be flagged with the special attribute and will 
+		appear coloured orange in the programme guide.
+
+		Note that star ratings are not always available from the broadcast data but may be downloaded using the metadata
+		lookup feature (see section 4.3).
+
+	Disable in-band guide loader
+
+		Windows Media Center has it's own in-built EPG loader. In most cases it doesn't matter if this is running in
+		addition to EPG Collector but in a some cases it can cause corruption of the programme guide.
+
+		Selecting this option sets the registry entries that stop the built in EPG loader from running. Note that the 
+		machine must be rebooted the first time EPG Collector is run with this setting for it to take effect.
+
+	Don't create dummy affiliates
+
+		When the Windows Media Center import file is created the channels are assigned an affiliate name based on the
+		Import Name field above. Furthermore channels with the same name will have the service ID appended to the
+		affiliate name.	This enables channels to be identified when manually mapping EPG data to channels using 
+		Windows Media Center.
+
+		If there are no duplicate channels or manula EPG mapping is not necessary this option can be set to inhibit
+		the creation of the dummy affiliates.
+
+		In addition, it will remove any affiliates that were created previously with the Import Name.
+
+	Run standard tasks after import
+
+		If this option is set the Windows Media Center tasks for reindexing the new data and scheduling any new
+		recordings will be run following a successful import.
+
+	6.5 DVBViewer Options
+	=====================
+
+	Enabled
+
+		Enable direct output to DVBViewer or the Recording Service.
+
+	Create the output file in a format that can be processed by Xepg
+
+		If this option is selected the tags in the XMLTV file will be created in the format expected by Xepg.
+
+	Import the data to DVBViewer directly
+
+		If this option is selected the data collected will be transferred directly into DVBViewer. An XMLTV file will
+		not be created.
+
+	Import the data to the Recording Service
+
+		If this option is selected the data collected will be transferred directly into the DVBViewer Recording Service. An
+		XMLTV file will not be created.
+
+	Format data so that subtitle is visible
+
+		Setting this option changes the layout of the program guide when viewed in DVBViewer or the Recording Service.
+
+	Clear existing data before importing
+
+		The option to import into the Recording Service must be selected for this option to be available. It will clear 
+		existing EPG data from the Recording Service before the data just collected is imported.
+
+		If this option is not selected the data just collected will be added or will overwrite existing data. In most cases
+		selecting this option is the correct course of action.
+
+	Use IP Address(es)
+
+		Normally EPG Collector will import the data to the Recording Service on the local machine. This field enables the data
+		to be loaded to any machine on the local network that is running the Recording Service.
+
+		The field is entered as a list of semicolon delimited IP addresses with optional usernames and passwords if the
+		port on the remote machine has been secured.
+
+		IP address(username/password);IP address(username/password)....
+
+		Note that if a list is entered and the local machine is to be included it is specified as 127.0.0.1
+
+		Example
+
+			127.0.0.1;192.168.0.30(myname/mypassword);192.168.0.31
+
+		Three machines will be loaded including the local machine. The second machine requires a username and password as
+		the port is secured.
+
+		If this field is left blank EPG Collector will import to the local machine.
+
+	Port
+
+		Specifies the UDP port to use to transfer the data to the Recording Service. The default value is 8089. If this value
+		does not match that set up in the Recording Service the import will fail.
+
+		If a list of IP addresses is entered the same port must be used on all the machines.
+
+7. The Files Tab
+================
+
+The Files tab enables additional files not related to EPG data to be created as a by-product of the collection process. Three
+types of file can currently be created.
+
+All three files need the broadcast data to contain channel specific information. If this information is not present the file 
+cannot be created.
+
+The files are created after the normal collection process is complete.	
+
+	7.1 Area/region channel file
+	============================
+
+	   Enabled
+
+		If this option is enabled an additional file  will be created containing cross-reference information that can 
+		be used in other software to maintain channel information.		
+
+	   Path
+
+		The full path of the output file. If this field is left blank the file will be created in the application
+		data directory with the name AreaRegionChannelInfo.xml.
+
+	7.2 BladeRunner channel file
+	============================
+
+	    Enabled
+
+		If this option is enabled an additional file will be created that can be used as input to the BladeRunner software.
+
+	    Path
+
+		The full path of the output file. If this field is left blank the file will be created in the application
+		data directory with the name ChannelInfo.xml.
+
+	7.3 SageTV frequency file
+	=========================
+
+	    Enabled
+
+		If this option is enabled an additional file will be created that contains channel definitionas in the format
+		required by SageTV.
+
+		Important note:
+
+		    If the file will contain channels carried over DVB-T2 it may be necessary to include all the DVB-T2 frequencies
+		    from the broadcaster in a single collection to enable the correct frequency informarion to be collected.
+
+		    This is definitely the case with DVB-T2 transmissions in the UK. 
+
+	    Path
+
+		The full path of the output file. If this field is left blank the file will be created in the application
+		data directory with the name SageTV.frq.
+
+	    Don't create channel if no EPG data present
+
+		If this option is selected only channels that contain EPG data will be present in the frequency file.
+		
+	    Satellite number
+
+		This field is only relevant to DVB-S and then only to multi-satellite installations. It should be set to the
+		SageTV satellite number for the satellite being processed.
+
+8. The Channels Tab
+===================
+
+The Channels tab enables channels to be excluded, renamed and/or renumbered on an indivdual basis. It is used for those broadcasts
+that contain small numbers of channels and should be used instead of the Filters tab in that situation.
+
+The list is initially empty. To fill it complete the Tuning tab with the frequencies to scan and then press the Start Scan button.
+
+All the frequencies selected will be scanned and the list filled with the channels located. They can then be excluded, renumbered
+or renamed.
+
+If a channel scan has already been carried out for the Timeshift tab it is not necessary to scan again and the list will appear
+already filled.
+
+	8.1 Channel list
+	================
+
+	Excluded
+
+		If selected omits the channel from the collection process.
+
+	Channel number
+
+		The user channel number. A new number can be entered if required and will appear in any XMLTV file if the option
+		to output user channel numbers in place of the service ID is chosen.
+
+	New name
+
+		The new name of the channel. This field is optional and if it is entered will be output to the XMLTV file in place
+		of the original channel name.
+
+	8.2 Buttons
+	===========
+
+	Start/Stop Scan
+
+		Starts or stops scanning of the frequencies entered on the Tuning tab for channel information.
+
+		Each attempt at scanning will add any new channels to the list. New frequencies can be entered on the Tuning tab and
+		the Start Scan button used as often as required.
+
+	Clear
+
+		Clears the list.
+
+	Include all
+
+		Clears all the excluded settings.
+
+	Exclude all
+
+		Sets all the excluded settings.
+
+	Ignore tuning errors
+
+		When there are many entries in the list to be scanned it is sometimes useful to ignore errors that would require user
+		intervention. Setting this option inhibits the message to the user when tuning fails.
+
+		The EPG Collector log can be viewed to determine which frequencies failed to tune.
+
+9. The Filters Tab
+==================
+
+The Filters tab enables channels to be excluded on a bulk basis. It is used for those broadcasts that contain large numbers of 
+channels and should be used instead of the Channels tab in that situation. 
+
+Channels that are to be included in the collection process are specified on this tab with all others being excluded.
+
+The various fields and options are used as follows:
+
+	9.1 Included Channels
+	=====================
+
+	Frequency
+
+		The frequency the filter is to be applied to. This field is only relevant when a single collection run has
+		multiple frequencies.
+
+		The list will contain all the frequencies entered on the Tuning tab.
+
+	Original network ID
+
+		The original network ID of the channels to be included in the collection process. This field is optional.
+
+		If it is present all the channels that have a matching original network ID and satisfy any other fields 
+		entered will be included in the collection process. 
+
+	Transport stream ID
+
+		The transport stream ID of the channels to be included in the collection process. This field is optional.
+
+		If it is present all the channels that have a matching transport stream ID and satisfy any other fields 
+		entered will be included in the collection process. 		
+
+	Start service ID
+
+		The first service ID of a range of channels to be included in the collection process. This field is optional.
+
+		If it is present all the channels that have a service ID less than it and satisfy any other fields entered
+		will be included in the collection process. 
+
+		If it is ommited the end service ID field cannot be entered.
+
+	End service ID
+
+		The last service ID of a range of channels to be included in the collection process. This field is optional.
+
+		If it is present all the channels that fall within the range of the start and end service ID's and
+		satisfy any other fields entered will be included in the collection process. 
+
+		If it is ommited the start service ID field cannot be entered.
+
+	Add
+		Creates a new entry from the fields completed and adds it to the list.
+
+	Delete
+
+		Deletes entries from the list. This button will be available when an entry is selected.
+
+	9.2 Miscellaneous
+	=================
+
+	Maximum service ID
+
+		This field is optional and specifies the maximum service ID for channels that are to be included in the
+		collection process.
+
+		If it omitted there is no restriction on the maximum service ID that will be accepted.
+
+
+10. The Timeshift Tab
+=====================
+
+The timeshift tab enables data to be created for time shifted channels (eg +1 channels) when the broadcaster doesn't provide 
+any. It is necessary to fill in the Tuning tab before data can be entered on this tab.
+
+If a channel scan has already been carried out on the Channels tab the results will appear in the Source Channel and Destination
+Channel lists. Otherwise it is necessary to use the Scan button to scan for channels using the data set up on the Tuning tab. 
+
+A source and destination channel are selected and the offset in hours selected. The data is then added to the list at the bottom
+of the tab using the Add button.
+
+Any number of entries can be added to the list and the same channel can be used as a source as often as required.
+
+The various fields and options are used as follows:
+
+	10.1 Channels
+	=============
+
+	Source Channel
+
+		Contains a list of the channels that have been found by scanning the frequencies entered on the Tuning tab. Defines
+		where the EPG data is to come from.
+
+	Destination Channel
+
+		Contains a list of the channels that have been found by scanning the frequencies entered on the Tuning tab. Defines
+		which channel the EPG data is created for.
+
+	Offset
+
+		Defines the adjustment needed in hours from the source channel to the destination channel.
+
+	Add
+
+		Adds the current data to the list at the bottom of the tab.
+
+	10.2 Selected Channels
+	======================
+
+	Channel list
+
+		Contains an entry for each offset channel that has been added.
+
+	Delete
+
+		Enables entries to be deleted from the list. The button will be available if an entry in the list is 
+		selected.
+
+	10.3 Buttons
+	============
+
+	Start/Stop Scan
+
+		Starts or stops scanning of the frequencies entered on the Tuning tab for channel information.
+
+		Each attempt at scanning will add any new channels to the list. New frequencies can be entered on the Tuning tab and
+		the Start Scan button used as often as required.
+	
+	Ignore tuning errors
+
+		When there are many entries in the list to be scanned it is sometimes useful to ignore errors that would require user
+		intervention. Setting this option inhibits the message to the user when tuning fails.
+
+		The EPG Collector log can be viewed to determine which frequencies failed to tune.
+  
+
+11. The Repeats Tab
+===================
+
+The Repeats tab contains data that controls the repeat checking process. This marks programmes as repeats and can be used to
+avoid duplicate recordings.
+
+The repeat checking process uses the programme title and description to identify repeats. In some cases this may cause programmes
+to be flagged as repeats even though they are not.
+
+For example, a daily news programme could always have the same title and description even though the contents are different each
+day. In that case, if it is required to record the program it may be advisable to define the programme in this tab to avoid each
+programme being flagged as a repeat.
+
+The various fields and options are used as follows:
+
+	11.1 Options
+	===-========
+
+	Check for programme repeats
+
+		If this option is selected the programme information collected will be checked to determine if a programme is being
+		re-broadcast.
+
+		The result depends on the output method.
+
+		If an XMLTV file is created the previous play date tag will be created where appropriate. If Windows Media Center 
+		direct import is selected the original air date will be created and if data is passed directly to TVSource by the
+		DVBLogic plugin the appropriate tag is used.
+
+		Repeats are detected by using the programme information to match against the data received and, if Windows
+		Media Center is installed, by checking the existing programme recordings.
+
+	Don't flag simulcast programmes as repeats
+
+		If this option is selected, programmes that would have been flagged as repeats that are broadcast on the
+		same date and at the same time but on a different channel will not be flagged as repeats.
+
+		Note that if the programme also occurs earlier in the data collected both simulcast programmes will be flagged
+		as repeats.
+
+	Ignore Windows Media Center recordings
+
+		If this option is set any existing Windows Media Center recrodings are not included in the repeat checking
+		process.
+
+		This option may need to be set if a switch has been made to another media player (eg DVBViewer) and any existing
+		recordings are no longer relevant.
+
+	11.2 Exclusions
+	===============
+
+	Title
+
+		All or part of the title of the programme. This field is optional but if it is omitted the description field must 
+		be completed.
+
+		Partial matching is specified in the following ways
+
+			<text 		will match the text with the start of the title
+			text>		will match the text with the end of the title
+			<text>		will match the text with anywhere in the title
+
+		If none of the above are specified the data entered must exactly match the programme title. All comparisons are
+		case insensitive.
+
+	Description
+
+		All or part of the description of the programme. This field is optional but if it is omitted the title field must 
+		be completed.
+
+		Partial matching is specified in the following ways
+
+			<text 		will match the text with the start of the description
+			text>		will match the text with the end of the description
+			<text>		will match the text with anywhere in the description
+
+		If none of the above are specified the data entered must exactly match the programme description. All comparisons are
+		case insensitive.
+
+	Add
+
+		Adds the title and/or the description to the list of programmes to be excluded from the repeat checking process.
+
+	Delete
+
+		Enables programmes already in the list to be deleted. The button will only be available after an entry is 
+		selected.
+
+	Phrases to ignore
+
+		Sometimes the title or description of a repeated programme is slightly different from the original. This field
+		enables phrases to be ignored when examining titles and descriptions for a match.
+
+		Multiple phrases can be entered in which case they are separated by a comma. The phrases are processed in a case
+		insensitive manner.
+
+		The phrases (R) and (Repeat) are ignored by default and do not need to be entered.
+
+12. The Edit Tab
+================
+
+The Edit tab contains options and fields that are used to replace or remove text from programme titles and descriptions. 
+Broadcasters often embellish titles and descriptions with text (eg New Series) that is unnecessary and can cause series recording
+and duplicate recording detection to fail. It can also reduce the success rate of metadata lookup.
+
+The various fields and options are used as follows:
+
+	12.1 Current Entry
+	==================
+
+	Text to change
+
+		The text in the title or description that is to be replaced or removed. This field is case sensitive so the text
+		New Series is not the same as New series.
+
+	Apply to
+
+		Defines the fields to apply the editing to. If in doubt select Titles and descriptions.
+
+	Location
+
+		Defines where in the title and/or the description the text to change is searched for. Most embellishments occur
+		at the start of a title or description.
+
+	Replacement text
+
+		The text that replaces the text to change. If the text to change is to be removed rather than replaced leave
+		this field blank.
+
+	Add
+
+		Adds the entry to the list of text edits.
+
+	12.2 List Of Text Edits
+	=======================
+
+	Entries are added to this list when the Add button is pressed.
+
+	Delete	Deletes the selected entry from the list. Select an entry from the list by clicking on it. 
+
+13. The Lookups Tab
+===================
+
+The Lookups tab contains data that controls the downloading of programme metadata from online databases. Information for movies
+and TV series can be downloaded.
+
+	13.1 Movie Lookup
+	=================
+
+	Enabled
+
+		Enables the lookup of movie information.
+
+	Type of image to download
+
+		Poster				Downloads a full size portrait poster
+		Thumbnail			Downloads a smaller portrait poster
+		None				No image downloaded
+
+	Minimum duration of a programme to be considered a movie
+
+		It is not always possible to determine that a programme is a movie from the information that is broadcast as
+		not all broadcast data is categorized. This parameter enables a more general check to detect a programme as a
+		movie.
+
+		The minimum programme duration is entered in minutes.
+
+	Maximum duration of a programme to be considered a movie
+
+		It is not always possible to determine that a programme is a movie from the information that is broadcast as
+		not all broadcast data is categorized. This parameter enables a more general check to detect a programme as a
+		movie.
+
+		The maximum programme duration is entered in minutes.
+
+	Phrases used to identify a movie
+
+		This field is used to enter phrases that may help to identify a programme as a movie. For example if
+		the field is entered as
+
+			Movie,Premiere:,Blockbuster
+
+		then any programme title with the word Movie, Premiere: or Blockbuster will be looked up in the movie internet
+		database.
+
+		Note that these phrases are checked only if the minimum and maximum duration excludes a programme as a movie.
+
+	Separator
+
+		The normal separator for phrases used to identify a movie is a comma. If it is necessary to specifiy a comma 
+		in any phrase use a different separator character and select it with this field.
+
+	Programmes that are not movies
+
+		Sometimes it is necessary to indicate that a programme is definitely not a movie and should be processed as a
+		TV series even if it fits the criteria for a movie. This list fulfills that purpose.
+		
+	Change
+		
+		Enables the list of programmes that are not movies to be maintained. 
+
+	13.2 TV Lookup
+	==============
+
+	Enabled
+
+		Enables the lookup of TV series information.
+
+	Type of image to download
+
+		Poster				Downloads a full size portrait poster
+		Banner				Downloads a full size banner
+		Fanart				Downloads a full size landscape poster
+		Thumbnail poster	Downloads a smaller portrait poster
+		Thumbnail fanart	Downloads a smaller landscape poster
+		None				No image downloaded
+
+	Process every programme that is not a movie as a TV series
+
+		The metadata lookup process checks each programme to determine if it is a movie first and the lookup parameters
+		described above aid in this process.
+
+		If a programme is not considered a movie or cannot be found in the movie database it is examined to determine 
+		if it is a TV series. This means that a series link, a content reference ID or season/episode numbers need
+		to be present in the broadcast data.
+
+		If there is no automatic way of determining that a programme is a TV series, setting this option will cause
+		every programme that is not considered a movie to be checked against the TV series database.
+
+		Setting this option will normally increase the processing time but it ensures that all potential TV series are 
+		processed.
+
+	13.3 Miscellaneous
+	==================
+
+	Reload all metadata
+
+		Setting this option causes all existing local metadata including posters and thumbnails to be deleted before
+		the lookup process begins resulting in a complete reload of the data.
+
+	Always lookup programmes that return no matching entries
+
+		The online database that are used are dynamic in nature as they are constantly being updated by the user
+		community. Normally when a programme is not located by the lookup process it will not be searched for again
+		in the current or subsequent collections.
+
+		Setting this option overrides that processing and ensures that the programme will be looked up during 
+		subsequent collections. This means that the lookup times will be increased but there may be more data successfully
+		downloaded.
+
+	Ignore categories from broadcaster
+
+		Sometimes, when the broadcasts contain program categories, they are inaccurate. For example serials or soaps
+		are categorised as Movies and this results in the wrong internet database being accessed when looking up metadata.
+
+		Setting this option causes any broadcast category to be ignored when deciding whether a programme is a movie or 
+		TV series.	
+
+	Lookup matching method when multiple results returned
+
+		The online databases are accessed using the title of the programme. In many cases this results in a list of
+		programmes being returned and the lookup process scans this list using the method selected for this field.
+
+		'Exact' means that the title of a returned entry must exactly match the programme title. If there is no entry
+		returned that satisfies this condition no metadata is added. This option results in the most accurate
+		matching but the lowest hit rate.
+
+		'Contains' means that the title of a returned entry must contain the programme title somewhere but it need not
+		be an exact match. The returned entry that contains the programme title and is nearest in length to the programme
+		title will be used for adding metadata. This option is less accurate than 'Exact' but has a better hit rate.
+
+		'Nearest' uses a fuzzy matching algorithm so that the returned entry that most closely matches with the programme
+		title will be used to add metadata. This is the least accurate option but results in the highest hit rate.
+
+		'Exact' and 'Contains' may mean that no returned entry is used. 'Nearest' always uses one of the returned
+		entries.
+
+	Threshold for nearest matching
+
+		If the matching method is selected as 'nearest' a threshold for returning a hit can be set.
+
+		A value of zero means that as long as the online database returns some possible candidates one will be selected
+		as the result irrespective of how close it matches the programme.
+
+		Setting the threshold can reduce the number of mistaken hits. A lower value is more selectective than a high 
+		value and it is normally not necessary to go above 10-15 as very few programmes would then result in no
+		cnadidate being selected ie a high value gives similar results to a value of zero.
+
+	Phrases used to ignored when matching
+
+		Broadcasters ofter decorate programme titles with phrases such as 'Premiere' or 'Movie:'. These cause the database
+		lookups to fail to return any entries.
+
+		This field enables phrases to be specified that are removed from the programme tite before the internet databases
+		are accessed.
+
+		A good examples is 
+
+			Movie:,All New,: The Final Season,Best Of,Omnibus
+
+		Note that data entered on the Edit tab need not be entered again here.
+
+	Separator
+
+		The normal separator for phrases to be ignored is a comma. If it is necessary to specifiy a comma in any phrase
+		use a different separator character and select it with this field.
+
+	Maximum time allowed for lookup processing
+
+		Set this parameter to a high value for the initial collections until the EPG Collector log indicates that the 
+		lookup process completed rather than timed out. At this point all available information for the current set of
+		EPG entries will have been downloaded.
+
+		Then reduce this parameter to a lower value. Trial and error will indicate the correct value to use under normal
+		circumstances for the volume of data you are collecting.
+
+	Maximum number of consecutive errors before abandoning
+
+		This parameter is used to stop lookup processing in the event of an irrecoverable error while accessing the online
+		databases. For example, it would stop the lookup processing if the machine became disconnected from the internet.
+
+		The default value of 5 is normally sufficient.
+
+	Base path for movie and TV images
+
+		This field can be set to point to a location for storing the downloaded images. The movie images will be stored
+		in a sub-directory named Movies and the TV series will be stored in a sub-directory named TV Series (unless the
+		option to store the images in the base path is set - see below)
+
+		If this field is not entered the default will be the Images sub-directory of the application data directory.
+
+	Browse
+
+		Use this button to find the base directory for the movie and TV images.	
+			
+	Store images in base path
+	
+		If this option is set both movie and TV images will be stored in the base path rather than in either the
+		movie or TV series sub-directories.
+		
+	Name images from programme title
+	
+		Normally movie and TV series images are assigned a GUID that is used as the filename for storing the image. If
+		this option is set the images are stored using the progamme title that appears in the EPG instead.
+		
+		Any characters in the programme title that are not valid filename characters (eg colon) are replaced by a space
+		character.
+		
+	Lookup data overwrites broadcast data
+	
+		Normally lookup data is considered to be additional to the data broadcast so, for example, a programme description
+		will not be overwritten by lookup data.
+		
+		Setting this option overrides that behaviour and forces the lookup data to take precedence. This affects movie descriptions,
+		TV programme subtitles and, if the Lookup matching method is 'Exact' or 'Contains', TV programme season and episode
+		numbers.
+
+14. The Update Tab
+==================
+
+The Update tab is used to enable and configure the automatic channel update feature for DVBLogic. The various fields and options
+are used as follows:
+
+	Enabled
+
+		Switches the channel update feature on or off.
+
+	Channel merge method for new channels
+
+		Determines how new channels are added to the DVBLogic configuration files.
+
+		None - new channels are simply added to the end of the configuration files. No channel merging takes palce.
+
+		By name - new channels will be merged with existing channels if the channel name matches.
+
+		By channel number - new channels will be merged with existing channels if the channel number matches.
+
+		By channel name and number - new channels will be merged with existing channels if the channel name and number matches.
+
+	EPG scanner for new channels
+
+		Determines how EPG data is collected for new channels
+
+		None - no EPG will be collected for the channel
+
+		Default - EPG will be collected from the source for the channel
+
+		EPG Collector - the EPG collector plugin will be set as the source of EPG data for new channels
+
+		EIT Scanner - the DVBLogic EIT scanner will be set as the source of EPG data for the channel.
+
+	Child lock on new channels
+
+		Enables the child lock to be set on any new channel.
+
+	EPG scan interval
+
+		The default scan interval used by TVSource for collecting EPG data is 12 hours. This field can be used to 
+		alter that value.
+
+	Update channel numbers
+
+		If this option is set the channel numbers received from the broadcaster will be used to set the channel numbers
+		in the DVBLogic configuration files.
+
+		Do not set this option if you have used custom channel numbers as they will be overwritten.
+
+	Log the providers transponders and channels
+
+		Additional information is output to the EPG Collector log file and collection window if this option is set.
+
+	Reload all DVBLink channel data
+
+		If this option is set all existing DVBLink channel information is overwritten with the data received in the
+		broadcast.
+
+	Automatically exclude new channels
+
+		If this option is set new channels are not added to the DVBLink configuration but are instead added to the 
+		current collection parameters as excluded channels.
+
+		EPG Centre can then be used to flag the channels as not excluded. When the next collection involving a channel 
+		update is run the channels will be added to the DVBLink configuration files in the normal way.
+
+		This option is useful if the broadcaster adds large numbers of new channels but only a small number of them are
+		to be added to the DVBLink configuration.
+		
+15. The Translate Tab
+=====================
+
+The Translate tab is used to translate text from broadcast data to a target language. The translation process is enabled by a 
+web service from Yandex.Translate. Imported data cannot currently be translated.
+
+Before this feature can be used an API key must be obtained from Yandex. The web address to obtain the key is on the Translate tab
+and the process is very simple and only takes a very short time. No personal information is required and the API key is free.
+
+Any number of languages can be present in the broadcast data. They will be automatically detected by the Yandex translation
+service.
+
+Yandex places restrictions on the number of characters translated per day and per month so only those channels that need to be
+translated should be selected. All the title, description and subtitle text from those channels will be passed to Yandex for 
+translation and will count towards the daily and monthly totals even if the text is already in the target language.
+
+The first collection run with translation enabled may take a considerable length of time depending on the amount of data.  EPG Collector
+stores translations locally so subsequent collections only access the Yandex service for new text and are therefore much quicker. 
+Translations are deleted from the local cache after 14 days if they are no longer referenced in the collection.
+
+If there are a large number of channels requiring translation they should be introduced gradually in different collection runs to avoid breaching
+the Yandex daily and monthly limits.
+
+A section in the log file produced when a collection is run lists some statistics relevant to the translation process.
+
+The fields and options on the Translate tab are as follows:
+
+	Enabled
+
+		Switches the translate feature on or off.
+		
+	API key
+
+		The API key obtained from Yandex.
+
+	Output language
+
+		A list of the available languages to translate to.
+
+		The first time this tab is enabled, enter the API key and press Refresh. A list of supported languages will be retrieved
+		from Yandex and the list will be populated.
+
+	Channels
+
+		Select the channels to be translated.
+
+	Start Scan
+
+		Fill the channels list by scanning for channels using the frequencies selected on the Tuning tab.
+
+16. The Advanced Tab
+====================
+
+The Advanced tab contains options and fields that are relatively rarely used. The various fields and options are used as follows:
+
+	16.1 Miscellaneous Options
+	==========================
+
+	Don't monitor the keyboard during a collection
+
+		Set this option if the standalone collection process is going to be run from a Windows service.
+
+		If this option is set it is not possible to abandon a standalone collection while it is running by pressing the 'Q' key on
+		the keyboard.
+
+	Retain channel information for use in later collections
+
+		Some broadcasters transmit channel information specific to each frequency even though the EPG data broadcast on
+		each frequency is for all the broadcasters channels.
+
+		For example frequency X defines channels 1 to 10 but carries the EPG data for channels 1 to 30. Frequency Y defines
+		channels 11 to 30 and also carries the EPG data for channels 1 to 30.
+
+		This can mean extended collection times as several frequencies need to be scanned to get the channel information
+		even though all the EPG data could be collected from a single frequency.
+
+		Using this option can reduce the collection to a single frequency.
+
+		It should be set and a collection run for each of the individual frequencies. The collection process will then have
+		created a single file with all the channels from the separate frequencies.
+
+		Then, for the regular collection on a single frequency, this option should not be selected and the option below 
+		set to use the stored channel information.
+
+		If the channels on a particular frequency change repeat the whole procedure.
+
+	Use retained channel information in place of broadcast data
+
+		If this option is set the channel information stored when the previous option was set (Retain channel information
+		for use in later collections) is used instead of obtaining it from the broadcast data.
+
+	16.2 Timeouts
+	=============
+
+	Signal lock
+
+		This is the length of time in seconds that a collection waits for the tuner hardware to acquire a lock on
+		a frequency.
+
+	Data collection
+ 
+		This is the length of time in seconds that a collection is allowed to take. If a collection consists of
+		multiple frequencies it is the maximum time allowed for each individual frequency.
+
+	Number of retries
+
+		With some types of collection data it is not possible to determine from the broadcast that all data has been
+		collected. In this case collection process uses the number of retries to determine if any new data has
+		been collected and if not the collection terminates normally.
+
+		Each retry takes 2 seconds. Increase the number of retries if it appears that not all the data expected
+		is being collected.
+
+	Buffer size
+
+		The data collection process uses a memory buffer to receive the broadcast data. The default size is 
+		50 megabytes.
+
+		Normally this is sufficient but Dish Network collections involve very large amounts of data so this
+		buffer size should be increased to 500 megabytes.
+
+	Buffer refills
+
+		This parameter informs the collection process how many times it should refill the buffer used for
+		broadcast data before it can be assumed that all possible data has arrived. The default of 1 is
+		normally sufficient especially if the buffer size is increased from the default of 50 megabytes.
+
+	Defaults
+
+		Resets all the timeouts to the default values of 10 seconds, 300 seconds and 5 retries respectively.
+
+	16.3 Manual Time Adjustment 
+	===========================
+
+	Enabled
+
+		Allows manual time adjustment data to be entered. This is only required when data is collected in one 
+		time zone but is used in another. 
+
+		For example, Australia has different time zones so if data is collected and an XMLTV file is created in 
+		one time zone but then passed to a machine for use in another time zone these parameters will need to be entered 
+		or program times will be incorrect in the destination time zone.
+
+		By default a collection uses the time zone data held by the machine making the collection so these parameters
+		do not need to be entered.		 
+
+	Current time offset
+
+		Allows the current time offset to be entered. 
+
+	Next time offset
+
+		Allows the next time offset to be entered. 
+
+	Date of change
+
+		Allows the date at which the change to the next time offset takes place.
+
+	Time of change
+
+		Allows the time at which the change to the next time offset takes place.
+
+17. The Diagnostics Tab
+=======================
+
+The Diagnostics tab should only be used under the direction of the developer. It enables many debugging options to be switched on
+or log files produced.
+
+The various fields and options are used as follows:
+
+	Diagnostics
+	===========
+
+	Debug ID's
+
+		Can be set with one or more identifiers that cause a single diagnostic event to be triggered (eg logging some
+		data). The identifiers are separated by commas.
+
+	Trace ID's
+
+		Can be set with one or more identifiers that cause multiple diagnostic events to be triggered (eg logging data
+		from a broadcast as it is received). The identifiers are separated by commas.
+
+18. Dialogs
+===========
+
+	18.1 The Advanced frequency parameters
+	======================================
+
+	The Advanced frequency parameters dialog is displayed when the Update button is used on any of the Tuning tabs. It
+	enables advanced parameters specific to the frequency, file or stream to be selected.
+
+	Only those fields that are applicable to the frequency and collection type will be available. All other fields will
+	be disabled. 
+
+		18.1.1 Miscellaneous Options
+		============================
+
+		Use program category subtype when decoding
+
+			For some protocols the program category consists of 2 values, the main category (eg Movies) and a subcategory
+			(eg Action).
+
+			If this option is not selected only the main category will be used for decoding the category for output which gives
+			a more generalised catgeory.
+
+			If the option is selected both the category and subcategory will be used for decoding resulting in a more precise
+			category on output.
+
+			Restrictions: EIT and Dish Network protocols only
+
+		Use FreeSat Huffman tables to translate compressed EIT text
+
+			A few FreeSat channels broadcast text in a compressed format. Use this option if that text is to be decoded. If the
+			channels are decoded and this option is not set the text for those channels will be corrupted.
+
+			Restrictions: Only relevant to a few BBC channels on FreeSat
+
+
+		Custom program categories override broadcast categories
+
+			If is possible to define custom program categories that are in addition to those broadcast. If this option is set
+			and a custom category is defined that clashes with a broadcast category, the custom category definition will be
+			used.
+
+			If this option is not set the broadcast category will be used irrespective of whether there is a clash with a custom
+			category.
+
+		Process all channels irrespective of type
+
+			If this option is set only channel type zero is ignored. All others are processed. If this option is not
+			set channel type 12 (data broadcast service) is excluded as well.
+
+		Extract channel logos from broadcast data
+
+			If this option is selected the channel logos, broadcast as part of the EPG data, will be extracted and stored
+			and referenced in the XMLTV file or loaded directly into Windows Media Center.
+			
+		Create channels from data if they don't exist
+
+			 This option is used for SPTS (single program transport streams) where there is no channel information present but
+			 where it is possible to create the channel data from the EPG data.
+			 
+		Match EPG data with channel using service ID only
+		
+			Normally EIT EPG data is matched with a channel using network ID, transport stream ID and service ID but occasionally
+			the network ID and transport stream ID are incorrect and would result in the EPG data being discarded.
+			
+			Setting this option causes the matching process to use just the service ID. Note that this means that if this option
+			is set service ID's must be unique within the EIT collection.			
+
+		Maximum number of days to collect
+
+			This parameter can be used to restrict the number of days data collected.
+			
+		Process text formatting characters
+
+			This option controls the processing of format codes that may be present in the text portion of EPG data.
+
+			'Remove' will cause any format code to be removed from the text. This is the default setting.
+		
+			'Replace with space' will cause any format code to be replaced by a single space.
+		
+			'Convert' will attempt to convert the format code to a meaningful value. The only format code currently 
+			converted is 0x8a which is converted to 2 bytes with the value 0x0d, 0x0a (carriage	return and line feed). All
+			other format codes are removed.
+
+			'Use byte conversion table' will use the conversion table selected in the field below to convert the format
+			byte to an alternative value.
+
+		Byte conversion table
+
+			This field enables custom control codes in EPG text data to be converted to meaningful values. The conversion
+			tables are located in the file 'Byte Conversion Tables.cfg' located in the Configuration directory.
+
+			As mentioned above, the tables can also be used to translate formatting codes.
+
+		Use the programme description as
+
+			This option controls how the programme description and extended description that is broadcast  with the EIT
+			protocol is processed.
+
+				Default    
+				
+					The description and extended description are processed in the standard manner and 
+					concatenated together.
+			
+				Category
+				
+					The description is used as the programme category and the extended description is used as the
+					programme description. At the present time this only applies to Multichoice broadcasts in
+					South Africa.
+
+				Subtitle
+				
+					The description is used as the programme subtitle and the extended description is used as the
+					programme description.
+
+				Ignore
+
+					The description is ignored.
+
+		Carousel profile
+
+			This option is only available for EIT collections. It can be used for CanalSat and Horizon Switzerland
+			data where it is broadcast in a non-standard zipped EIT format.
+
+				Not used
+
+					The default value.
+
+				CanalSat
+
+					Select for CanalSat data.
+
+				UPC Horizon
+
+					Select for Horizon Switzerland.
+
+		18.1.2 Location Information
+		===========================
+
+			Country
+
+				Contains a list of countries that can affect how EPG data is processed.				
+	
+			Area
+
+				The list will be filled with areas when a country is selected with data loaded from the configuration files. The
+				area and possibly region can be used to limit the channels processed.				
+
+			Region
+
+				The list will be filled with regions when an area is selected.
+
+			Character Set
+
+				Some broadcasters transmit data that is encoded in a specific character set but do not include the information 
+				that enables a collection to determine what the	character set is.
+
+				In those circumstances this field can be used to force a collection to decode the text received using a specific
+				character set.
+
+			Character Set Priority
+
+				This field influences the selection of the character set for decoding text.
+
+				If it is set to 'User selection' the character set selected by the user or the default character set (Western
+				European (ISO))	will be used to translate text and any character set from the broadcaster will be ignored.
+
+				If it set to 'Broadcast data' the character set specified by the broadcaster will be used if one is present. If 
+				the broadcaster	has not specified a character set the character set specified by the user will be used and finally,
+				if the user	has not specified a character set the default character set of Western European(ISO) will be used.
+
+			Input Language
+
+				Some broadcasts contain text in multiple languages. This field enables a specific language to be selected. If this
+				parameter is not set and multiple languages are received the last one received will be used.
+
+		18.1.3 Custom PID's
+		===================
+
+		Hexadecimal Values
+
+			Enables the custom PID's to be entered in hexadecimal. The default is decimal.
+
+		SDT
+		
+			Enables the PID that is used to transmit SDT (service description) data to be specified. This field is only needed 
+			if the SDT data is not transmitted on PID 0x11.
+
+		EIT
+		
+			Enables the PID that is used to transmit EIT (event information) data to be specified. This field is only needed if 
+			the EIT data is	not transmitted on PID 0x12.
+	
+		MediaHighway1
+
+			Enables the 2 PID's that are used to transmit MediaHighway1 data to be specified. They must be specified in
+			ascending order. This field is only needed if the data is not transmitted on PID's 0xd2 and 0xd3.
+
+		MediaHighway2
+
+			Enables the 3 PID's that are used to transmit MediaHighway2 data to be specified. They must be specified in
+			ascending order. This field is only needed if the data is not transmitted on PID's 0x231, 0x234 and 0x236.
+
+		Dish Network
+		
+			Enables the PID that is used to transmit Dish Network data to be specified. This field is only needed if the 
+			Dish Network data is not transmitted on PID 0x300.
+
+	18.2 Maintain the 'not a movie' list
+	====================================
+
+	This dialog maintains the list of programme titles that are not to be considered as movies.
+
+	Metadata lookup processes a programme initially as a movie and only if the programme is not found on the movie
+	database is it processed as a TV series.
+
+	This can create incorrect metadata where a programme that is a TV series fits the criteria for a movie (normally
+	that the progamme duration is between certain limits) and there is also a movie that happens to have the same title.
+
+	The list maintained by this dialog is used to exclude programmes from the movie lookup process thereby ensuring that
+	they will be processed correctly as TV series.
+
+		Title list
+
+			The current list of programme titles that are not movies. If an entry is selected it will appear in the box
+			below the list and can be changed and added or deleted.
+
+		Current Entry
+
+			The entry to be added or deleted.
+
+		Add
+
+			The entry will be added to the list in alphabetical order.
+
+		Delete
+
+			The entry will be deleted.
+
+		OK
+
+			The contents of the list will be saved in the current parameter set. Note that the changes will not be
+			permanent until 'Save' or 'Save As' is used on the parameter set in EPG Centre.
+
+		Cancel
+
+			Any updates will be discarded.
+
+============================================== End Of Field Descriptions ============================================================

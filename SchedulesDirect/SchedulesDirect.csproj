@@ -1,0 +1,159 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6CCD2058-C0CE-473B-90DB-87870BF23B29}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SchedulesDirect</RootNamespace>
+    <AssemblyName>SchedulesDirect</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisLogFile>bin\Debug\SchedulesDirect.exe.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;C:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisLogFile>bin\Release\SchedulesDirect.exe.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;C:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+    <DocumentationFile>bin\Release\SchedulesDirect.XML</DocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Release\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Responses\SchedulesDirectMd5Response.cs" />
+    <Compile Include="SchedulesDirectCastMember.cs" />
+    <Compile Include="Miscellaneous\SchedulesDirectConfig.cs" />
+    <Compile Include="SchedulesDirectDescription.cs" />
+    <Compile Include="SchedulesDirectDescriptions.cs" />
+    <Compile Include="SchedulesDirectEpisodeImage.cs" />
+    <Compile Include="SchedulesDirectEventDetails.cs" />
+    <Compile Include="SchedulesDirectImageEntry.cs" />
+    <Compile Include="SchedulesDirectImageError.cs" />
+    <Compile Include="Responses\SchedulesDirectImageResponse.cs" />
+    <Compile Include="SchedulesDirectMetadataEntry.cs" />
+    <Compile Include="Miscellaneous\SchedulesDirectMd5Entry.cs" />
+    <Compile Include="SchedulesDirectMovie.cs" />
+    <Compile Include="SchedulesDirectProgramImageList.cs" />
+    <Compile Include="SchedulesDirectProgramInformation.cs" />
+    <Compile Include="SchedulesDirectProgramMetadata.cs" />
+    <Compile Include="Responses\SchedulesDirectProgramInformationResponse.cs" />
+    <Compile Include="SchedulesDirectMultipart.cs" />
+    <Compile Include="SchedulesDirectProgramTitle.cs" />
+    <Compile Include="SchedulesDirectQualityRating.cs" />
+    <Compile Include="SchedulesDirectContentRating.cs" />
+    <Compile Include="SchedulesDirectScheduleMetadata.cs" />
+    <Compile Include="SchedulesDirectBroadcaster.cs" />
+    <Compile Include="SchedulesDirectHeadend.cs" />
+    <Compile Include="Responses\SchedulesDirectHeadendsResponse.cs" />
+    <Compile Include="Responses\SchedulesDirectLineupsResponse.cs" />
+    <Compile Include="SchedulesDirectLogo.cs" />
+    <Compile Include="SchedulesDirectMapEntry.cs" />
+    <Compile Include="Responses\SchedulesDirectMapResponse.cs" />
+    <Compile Include="SchedulesDirectStationMetadata.cs" />
+    <Compile Include="Responses\SchedulesDirectPreviewResponse.cs" />
+    <Compile Include="SchedulesDirectProgram.cs" />
+    <Compile Include="Responses\SchedulesDirectResponse.cs" />
+    <Compile Include="SchedulesDirectSchedule.cs" />
+    <Compile Include="Responses\SchedulesDirectSchedulesResponse.cs" />
+    <Compile Include="SchedulesDirectStation.cs" />
+    <Compile Include="Miscellaneous\SchedulesDirectTransmitter.cs" />
+    <Compile Include="SchedulesDirectContinent.cs" />
+    <Compile Include="SchedulesDirectCountry.cs" />
+    <Compile Include="Responses\SchedulesDirectCountriesResponse.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SchedulesDirectAccount.cs" />
+    <Compile Include="Responses\SchedulesDirectAvailableResponse.cs" />
+    <Compile Include="SchedulesDirectController.cs" />
+    <Compile Include="Miscellaneous\SchedulesDirectSatellite.cs" />
+    <Compile Include="SchedulesDirectService.cs" />
+    <Compile Include="Responses\SchedulesDirectStatusResponse.cs" />
+    <Compile Include="SchedulesDirectSystemStatus.cs" />
+    <Compile Include="Responses\SchedulesDirectTokenResponse.cs" />
+    <Compile Include="Responses\SchedulesDirectLineupsPreviewResponse.cs" />
+    <Compile Include="SchedulesDirectProgramCategory.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EPGCollector\DomainObjects\DomainObjects.csproj">
+      <Project>{691C6EB5-D035-43E6-B3A9-F5131BF09916}</Project>
+      <Name>DomainObjects</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

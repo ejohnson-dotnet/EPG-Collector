@@ -1,0 +1,181 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{1ACA1BAD-FE74-4CF1-B368-5052152BD106}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Lookups</RootNamespace>
+    <AssemblyName>Lookups</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+    <DocumentationFile>bin\Release\Lookups.XML</DocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisLogFile>bin\Debug\Lookups.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;C:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>bin\Release\Lookups.XML</DocumentationFile>
+    <Optimize>true</Optimize>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisLogFile>bin\Release\Lookups.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;C:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\EPGCollectorGUI\bin\Release\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="LookupController.cs" />
+    <Compile Include="MatchResult.cs" />
+    <Compile Include="LookupCategory.cs" />
+    <Compile Include="MovieLookup.cs" />
+    <Compile Include="PosterEntry.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tmdb\TmdbAlternativeTitle.cs" />
+    <Compile Include="Tmdb\TmdbAlternativeTitles.cs" />
+    <Compile Include="Tmdb\TmdbAPI.cs" />
+    <Compile Include="Tmdb\TmdbAsyncEventArgs.cs" />
+    <Compile Include="Tmdb\TmdbCast.cs" />
+    <Compile Include="Tmdb\TmdbCastMember.cs" />
+    <Compile Include="Tmdb\TmdbCollectionEntry.cs" />
+    <Compile Include="Tmdb\TmdbCollectionInfo.cs" />
+    <Compile Include="Tmdb\TmdbCompanyInfo.cs" />
+    <Compile Include="Tmdb\TmdbCompanyMovie.cs" />
+    <Compile Include="Tmdb\TmdbCompanyMovies.cs" />
+    <Compile Include="Tmdb\TmdbConfiguration.cs" />
+    <Compile Include="Tmdb\TmdbCrewMember.cs" />
+    <Compile Include="Tmdb\TmdbEnumerations.cs" />
+    <Compile Include="Tmdb\TmdbGenre.cs" />
+    <Compile Include="Tmdb\TmdbImage.cs" />
+    <Compile Include="Tmdb\TmdbImageConfiguration.cs" />
+    <Compile Include="Tmdb\TmdbMovie.cs" />
+    <Compile Include="Tmdb\TmdbMovieImages.cs" />
+    <Compile Include="Tmdb\TmdbMovieKeyword.cs" />
+    <Compile Include="Tmdb\TmdbMovieKeywords.cs" />
+    <Compile Include="Tmdb\TmdbMovieRelease.cs" />
+    <Compile Include="Tmdb\TmdbMovieReleaseInfo.cs" />
+    <Compile Include="Tmdb\TmdbMovieSearchResults.cs" />
+    <Compile Include="Tmdb\TmdbMovieTrailer.cs" />
+    <Compile Include="Tmdb\TmdbMovieTrailers.cs" />
+    <Compile Include="Tmdb\TmdbMovieTranslation.cs" />
+    <Compile Include="Tmdb\TmdbMovieTranslations.cs" />
+    <Compile Include="Tmdb\TmdbPerson.cs" />
+    <Compile Include="Tmdb\TmdbPersonCredit.cs" />
+    <Compile Include="Tmdb\TmdbPersonCredits.cs" />
+    <Compile Include="Tmdb\TmdbPersonImages.cs" />
+    <Compile Include="Tmdb\TmdbPersonSearchResults.cs" />
+    <Compile Include="Tmdb\TmdbProductionCompany.cs" />
+    <Compile Include="Tmdb\TmdbProductionCountry.cs" />
+    <Compile Include="Tmdb\TmdbSpokenLanguage.cs" />
+    <Compile Include="Tvdb\TvdbAirsDays.cs" />
+    <Compile Include="Tvdb\TvdbAlias.cs" />
+    <Compile Include="Tvdb\TvdbApi.cs" />
+    <Compile Include="Tvdb\TvdbArtwork.cs" />
+    <Compile Include="Tvdb\TvdbArtworkType.cs" />
+    <Compile Include="Tvdb\TvdbArtworkTypesResult.cs" />
+    <Compile Include="Tvdb\TvdbAward.cs" />
+    <Compile Include="Tvdb\TvdbCharacter.cs" />
+    <Compile Include="Tvdb\TvdbCompany.cs" />
+    <Compile Include="Tvdb\TvdbContentRating.cs" />
+    <Compile Include="Tvdb\TvdbEpisode.cs" />
+    <Compile Include="Tvdb\TvdbEpisodeInfoResult.cs" />
+    <Compile Include="Tvdb\TvdbGenre.cs" />
+    <Compile Include="Tvdb\TvdbList.cs" />
+    <Compile Include="Tvdb\TvdbLogin.cs" />
+    <Compile Include="Tvdb\TvdbLoginResult.cs" />
+    <Compile Include="Tvdb\TvdbNetwork.cs" />
+    <Compile Include="Tvdb\TvdbRemoteId.cs" />
+    <Compile Include="Tvdb\TvdbSeason.cs" />
+    <Compile Include="Tvdb\TvdbSeries.cs" />
+    <Compile Include="Tvdb\TvdbSeriesInfoResult.cs" />
+    <Compile Include="Tvdb\TvdbSeriesSearch.cs" />
+    <Compile Include="Tvdb\TvdbSeriesSearchResult.cs" />
+    <Compile Include="Tvdb\TvdbStatus.cs" />
+    <Compile Include="Tvdb\TvdbTagOption.cs" />
+    <Compile Include="Tvdb\TvdbTrailer.cs" />
+    <Compile Include="Tvdb\TvdbTranslation.cs" />
+    <Compile Include="Tvdb\TvdbTranslations.cs" />
+    <Compile Include="Tvdb\TvdbType.cs" />
+    <Compile Include="Tvdb\TvdbUtils.cs" />
+    <Compile Include="TVLookup.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EPGCollector\DomainObjects\DomainObjects.csproj">
+      <Project>{691C6EB5-D035-43E6-B3A9-F5131BF09916}</Project>
+      <Name>DomainObjects</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

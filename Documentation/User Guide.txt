@@ -1,0 +1,1993 @@
+User Guide for EPG Collector Version 4.3
+========================================
+
+Contents
+========
+
+	1. Introduction
+
+	    1.1 Overview	    
+		1.2 Components	    
+		1.3 Acknowledgements
+
+	2. Installation
+
+	    2.1 Installing the base software	    
+		2.2 Installing fixpacks
+			    
+		2.3 Installing the DVBLink plugin
+			2.3.1 Transferring the plugin
+			2.3.2 Installing from a network drive            		    
+
+	3. Using EPG Centre
+
+	    3.1 Creating and changing collection parameters
+	    
+		3.2 The user interface	
+			3.2.1 The Tuning tab
+			3.2.2 The Input tab
+			3.2.3 The Imports tab
+			3.2.4 The Schedules Direct tab
+			3.2.5 The Output tab
+			3.2.6 The Files tab
+			3.2.7 The Channels tab
+			3.2.8 The Filters tab
+			3.2.9 The Timeshift tab
+			3.2.10 The Repeats tab
+			3.2.11 The Edit tab
+			3.2.12 The Lookups tab			
+			3.2.13 The Update tab
+			3.2.14 The Advanced tab
+			3.2.15 The Translate tab
+			3.2.16 The Diagnostics tab
+	    
+		3.3 Other EPG Centre functions
+	        3.3.1 Running a collection			
+	        3.3.2 Searching for EPG data
+	        3.3.3 Dumping a transport stream
+	        3.3.4 Analyzing a transport stream	
+			3.3.5 Run a channel scan
+			3.3.6 Windows Media Center maintenance				  
+				  3.3.6.1 Remove channel logos
+				  3.3.6.2 Remove affiliates	
+				  3.3.6.3 Clear programme guide			
+			3.3.7 Clearing history and logs
+			3.3.8 Views available
+			3.3.9 Find
+			3.3.10 Filter
+			3.3.11 Create a debug package
+
+	    3.4 Maintaining programme categories
+			3.4.1 Standard categories
+			3.4.2 Custom categories
+			3.4.3 Location of files
+
+	    3.5 Maintaining tuning files
+			3.5.1 Overview
+			3.5.2 Location of files
+
+		3.6 Schedules Direct
+			3.6.1 Creating an account
+			3.6.2 Choosing lineups
+			3.6.3 Downloading data
+
+	4. The standalone collection process
+
+	    4.1 Running collections
+			4.1.1 Running from EPG Centre
+			4.1.2 Running from the command line
+			4.1.3 Running from a script
+
+	    4.2 Exit codes
+	    4.3 The collection log	    
+
+	5. Using the DVBLink plugin
+
+	    5.1 Creating plugin collection parameters	    
+		5.2 Configuring TVSource	    
+		5.3 Exit codes and logs
+	
+	6. Using the collection data
+
+	    6.1 Using the XMLTV file
+
+	    6.2 Importing to Windows Media Center	
+			6.2.1 Overview
+	      	6.2.2 Configuring Windows Media Center
+
+	    6.3 Importing to DVBViewer or the Recording Service
+
+	7. Metadata lookup
+
+	    7.1 Introduction
+	    7.2 Seaching for metadata
+	    7.3 Download data
+	    7.4 Local data
+	    7.5 Runtime considerations
+
+	8. The DVBLogic channel update
+
+	    8.1 Introduction
+	    8.2 Restrictions
+	    8.3 Operation
+	    8.4 Resolving problems
+
+	9. Creating additional files
+
+	    9.1 Introduction
+	    9.2 The area/region/channel cross reference file
+	    9.3 The BladeRunner file
+	    9.4 The SageTV frequency file  
+
+	Appendix 1 Issues with tuners
+	Appendix 2 User directories
+	Appendix 3 Installation directory structure
+	Appendix 4 Windows Media Center programme categories
+	Appendix 5 DVBLogic programme categories
+	Appendix 6 DVBViewer programme categories	
+
+1. Introduction
+===============
+
+	1.1 Overview		
+	============
+
+	EPG Collector is a software package for collecting and processing EPG data. It can retrieve data over the air 
+	from DVB, ATSC or Clear QAM sources using any commercial tuner, Sat>IP server or VBox server.
+
+	DiSEqc switching for DVB-S is supported including the input of custom switching commands.
+
+	The EPG data can be in any one of the following formats
+
+		EIT
+		MHEG5
+		OpenTV
+		FreeSat
+		MediaHighway1 and 2
+		ATSC PSIP
+		Bell TV (44 hour and 9 day extended formats)
+		Dish Network (44 hour and 9 day extended formats)
+		SiehFern Info
+
+	As well as receiving data over the air it can process data from MPEG2 transport stream (.ts) files and RTP, 
+	UDP or HTTP streams. Existing XMLTV or MXF files can also be merged in with any data received or can comprise
+	the entire collected data. Lastly EPG data from the Schedules Direct web service can be downloaded and imported
+	into Windows Media Center.
+
+	The EPG data can be enhanced by adding metadata such as cast, ratings and posters available from open 
+	source databases on the Internet. It can also be edited to remove unwanted text that the broadcaster may have
+	included in a programmes title or description (eg Series Finale).
+
+	The data can create an XMLTV file, be imported directly to Windows Media Center or DVBViewer (and its related 
+	Recording Service) or be passed to DVBLink TVSource. In the case of DVBLink there is a plugin which can be run by the 
+	DVBLink server to seamlessly collect EPG data.
+
+	EPG Collector is compatible with all versions of Windows from Windows XP SP3 onwards and is also compatible with the
+	cross platform tools Mono and Wine. In these environments data sources are limited to Sat>IP servers, network streams
+	or MPEG2 transport stream files.
+
+	The package requires version 4 or later of the .Net Framework to be installed.
+
+	1.2 Components
+	==============
+
+	The package consists of 2 main components.
+
+		EPG Centre
+
+			This is the user interface for the package. It's main function is to create the parameters needed to collect
+			and process EPG data.
+	
+			It has a number of other less important functions such as analyzing data streams, displaying the contents of 
+			various logs and maintaining reference files. It can also initiate a data collection, primarily to test 
+			collection parameters.
+
+		EPG Collector
+
+			This is the component that receives and processes EPG data. It uses the parameter files created by EPG Centre
+			to control it's operation.
+
+			It can be initiated from within EPG Centre for one-off collections or it can be initiated from a script that 
+			can be scheduled to run	on a regular basis to ensure that the EPG collected is up to date.
+
+	1.3 Acknowledgements
+	====================
+
+	This project was not possible without the help and encouragement of many people. It was initially inspired and supported by 
+	forum members at Geekzone where the enthusiasm shown got the project started.
+
+	There are some individuals who need special mention though having provided outstanding support.
+
+		musicman352000, New Zealand
+		ideasman69, Australia
+		Tony B, Australia
+		Ben Ryder, UK
+		Ozgur Altun, Turkey
+		Paul White, UK
+		Mark Frankland, UK
+		DRCars, United States
+
+2. Installation
+===============
+
+	The complete package consists of the base software plus fixpacks. Fixpacks are released as necessary to address faults
+	or add new features.
+
+	Fixpacks are cumulative so only the latest fixpack needs to be installed.
+
+	2.1 Installing the base software
+	================================
+
+	The base software is available as a Windows Installer file (msi) or as a zipped collection of files. Both formats have the 
+	same contents. The package does not install any drivers or DirectShow filters, nor does it store or alter any 
+	registry settings.
+
+	It is not necessary to uninstall any old version before installing a new version.
+
+	If you install from the Windows Installer file a shortcut is installed on the Desktop to run EPG Centre.
+
+	The file structure in the zip file must be maintained when it is unzipped.
+
+	The directory structure after installation is described in Appendix 6.
+
+	2.2 Installing fixpacks
+	=======================
+
+	A fixpack is not a complete release. It only contains files that have been modified or added so the base software must be 
+	installed prior to installing a fixpack.
+
+	Unzip the contents of the fixpack to the EPG Collector installation directory. It will automatically overwrite any earlier 
+	fixpack as fixpacks	are cumulative.
+
+	2.3 Installing the DVBLink plugin
+	=================================
+
+	For users who are planning to use the DVBLink plugin additional steps are needed after installing the base software
+	and any fixpack.
+
+		2.3.1 Transferring the plugin
+		=============================
+
+		EPG Centre must be used to transfer the plugin module from the installation directory to the correct location  required by 
+		DVBLink. It is necessary to have Administrator privileges to do this because the TVSource EPG directory is in the Windows 
+		programs directory structure. 
+
+		The easiest way to ensure this is to use 'Run as Administrator' when loading EPG Centre. This is available either by right 
+		clicking on the	desktop icon or by navigating to the file EPG Centre.exe and right clicking on it.
+
+		The additional steps are as follows:
+
+			1. Load EPG Centre with Administrator privileges. 
+
+			2. Select File - Update DVBLogic Plugin.
+
+			3. Select the path to the TVSource EPG directory.
+
+			4. If the DVBLink server process has used the plugin previously a message will be displayed indicating that the 
+			plugin is in use. The option is provided to stop and restart the DVBLink server process so that the plugin can be 
+			updated.
+
+			5. The plugin module will be transferred to the selected directory.
+
+			6. Repeat for any other TVSource EPG directories if there is more than one source defined in TVSource.
+
+		If additional sources are added to TVSource at a later time repeat this process for the newly created EPG directory.
+
+		2.3.2 Installing from a network drive
+		=====================================
+
+		If the base software or a fixpack was installed from a network drive using the Windows Extract option there is an additional 
+		step needed due to the Windows security system.
+
+		Navigate to the installation directory and right click on the file named DVBLogicPlugin.dll and select Properties. Then 
+		click on the Unblock button.
+
+		Note that this step is only needed if
+
+			- the base software or fixpack are extracted using the Windows Extract option (not extracted using WinZip)
+			- the base software or fixpack are extracted from a network drive
+
+3. Using EPG Centre
+===================
+
+EPG Centre is the user interface to the package. It's main purpose is to create and maintain the parameter files used by the 
+collection process.
+
+It is also used to maintain other reference files used by the collection process although this is only needed in advanced scenarios.
+
+It can also be used to manually run the collection process. This can be used to check that the collection parameters are correct and are
+producing the desired result. However, once the parameters are correct, a Windows command script would normally be generated to
+run the collection so that it could be scheduled as a regular Windows task. 
+
+EPG Centre can also analyze the data from a broadcaster to determine what types of EPG are present as well as dump the transport stream
+to a file.
+
+The logs created by the collection process and any XMLTV file created can also be viewed.
+
+	3.1 Creating and changing collection parameters
+	===============================================
+
+	EPG Centre is used to create and change collection parameters for both normal collections and the DVBLogic plugin. The File menu 
+	contains the relevant options.
+
+	When creating new parameters a set of predefined tasks are available. These can either be used as they are or modified to suit specific 
+	requirements.
+
+	When the File option to create or update parameters is chosen a group of tabs are displayed. The fields on these tabs are completed and
+	the parameters saved for use as input to a collection.
+
+	The tabs and their functions are as follows: 
+
+		Input data tabs
+
+			Tuning		Specifies the tuning parameters and the types of data to be collected. Replaced by the Input tab when creating
+						or updating DVBLink plugin parameters.			
+
+			Input		Only shown when creating or updating DVBLink plugin parameters. Replaces the Tuning tab in this case to reflect
+						the fact that the plugin does not access the tuner hardware directly.
+
+			Imports		Defines additional XMLTV or MXF files that are to be merged with the data received from the sources specified on
+						the Tuning or Input tab tab. It is possible to process only import files  in a collection ie no broadcast data.
+	
+		Output data tabs
+		
+			Output		Defines the destination and the basic processing to be applied to the data collected.			
+
+			Files		Defines additional files that may be created by the collection process from the data collected.
+	
+		
+		Customization and miscellaneous tabs
+		
+			Channels	Allows channels to be excluded from the collection or renamed and/or renumbered. This tab is intended for those
+						broadcasts with relatively small numbers of channels.	
+	
+			Filters		Allows for the bulk inclusion and exclusion of channels. This tab is intended for those broadcasts with large
+						numbers of channels. It can be used in conjunction with the Channels tab.
+	
+			Timeshift 	Permits data to be created for time shifted channels that have no broadcast data.
+	
+			Repeats		Allows for exceptions to the repeat programme checking to be defined.
+	
+			Edit		Allows text embelishments added by the broadcaster to programme titles and descriptions to be removed.
+	
+			Lookups		Adds metadata to programmes (eg posters, cast/crew, star ratings) by accessing Internet databases.
+
+			Update		Controls the updating of the DVBLink configuration files with channel changes.
+
+			Translate	Enables the translation of the collected data to a specified language.
+	
+			Advanced	Contains various advanced fields and options that should not be necessary in normal use.
+	
+			Diagnostics	This tab should only be used under the direction of the developer.
+
+	Most of the tabs are optional. It is mandatory to complete one or more of the input data tabs to define the input(s)
+	to the collection process. Completing the Output tab is always mandatory. 
+
+	For simple collections it may only need the input data tabs and Output tab to be completed. In addition,
+	if one of the preset tasks is used to create the parameters, most of the fields on those tabs will have been completed correctly.			
+
+	If parameters are being changed, the changes are not permanent until the new settings are saved.
+
+	When DVBLink plugin parameters are saved only the directory where the parameters are to be saved is specified. This is because 
+	each frequency has its own parameter file and the file name reflects the frequency. If the DVBLink installation has multiple sources 
+	the parameters must be saved in the EPG directory of each source.
+
+	3.2 The user interface
+	======================
+
+		3.2.1 The Tuning tab
+		====================
+
+		The Tuning tab specifies the parameters necessary for tuning a frequency. It also allows for a file or network stream to be defined 
+		as input to the collection process.
+
+		Any number of frequencies, files and streams can be include in a single parameter file. They will be processed by the collection
+		process in the order they are entered and a single combined data set wil be output to the destination specified on the Output tab.
+
+		The Tuning tab also contains tabs, one for each type of tuner found in the machine that is being used (eg DVB-S, DVB-T) plus a tab
+		for File input and a tab for Stream input.
+
+		Sat>IP and VBox servers will not appear in the Tuners list until the relevant feature  is enabled using the Configure menu 
+		option under 'File'. 
+
+		Each of these tabs contains an Update button. Once the tuning, file or stream parameters have ben selected or entered the Update
+		button is used. A dialog then appears, Advanced Parameters, that allows for parameters specific to the frequency, file or stream 
+		to be entered.
+
+		These include, for example, the country that the collection is for. Only those fields that are relevant to the frequency and
+		collection type will be available. All other fields will be disabled.
+
+		Often it is not necessary to change anything on this dialog.
+
+		When the OK button is used on the Advanced Parameters dialog the frequency, file or stream is added to the Selected Frequencies list
+		and will be output to the parameter file when the parameters are saved.
+
+		If it is required to change a frequency, file or stream after it has been updated to the Selected Frequencies list, click on it
+		in the list and use the Change button below the list. The details will appear in the original tuning tab fields where they can be
+		changed. The Update button can then be used to update the Selected Frequencies list.
+
+		Similarly an entry in the Selected Frequencies list can be deleted by clicking on it and using Delete.
+
+		The Advanced Parameters can be changed without accessing the rest of the tuning information by clicking on the relevant entry in the
+		Selected Frequencies list and using the Advanced button.
+
+		In the unlikely event that the details from the tuning files released with the package are incorrect they can be 
+		updated by clicking on the entry in the Selected Frequencies list and using the Details button. A dialog will appear showing all
+		the fields from the tuning files. These can then be changed and when the OK button is used the tuning files are permanently
+		updated.
+
+		3.2.2 The Input tab
+		===================
+
+		The Input tab specifies the parameters necessary to process a frequency using the DVBLink plugin. The fields available differ
+		from the Tuning tab to reflect the fact that the collection process does not access the tuner hardware directly and only a single 
+		frequency is processed for each collection run.
+
+		Once the tuning parameters have ben selected or entered the Update button is used. A dialog then appears, Advanced Parameters, 
+		that allows for parameters specific to the frequency to be entered.
+
+		These include, for example, the country that the collection is for. Only those fields that are relevant to the frequency and
+		collection type will be available. All other fields will be disabled.
+
+		Often it is not necessary to change anything on this dialog.
+
+		When the OK button is used on the Advanced Parameters dialog the frequency is entered in the Selected Frequencies list
+		and will be output to the parameter file when the parameters are saved.
+
+		If it is required to change a frequency, file or stream after it has been updated to the Selected Frequencies list, click on it
+		in the list and use the Change button below the list. The details will appear in the original tuning tab fields where they can be
+		changed. The Update button can then be used to update the Selected Frequencies list.
+
+		Similarly an entry in the Selected Frequencies list can be deleted by clicking on it and using Delete.
+
+		The Advanced Parameters can be changed without accessing the rest of the tuning information by clicking on the relevant entry in the
+		Selected Frequencies list and using the Advanced button.
+
+		3.2.3 The Imports tab
+		=====================
+
+		The Imports tab is used to merge either XMLTV or MXF files in with the data collected as a result of the Tuning or 
+		Input tabs. 
+
+		The XMLTV files may have been produced by other collections made by EPG Collector or they may be from another source.
+
+		Any MXF file that is imported must have been created by EPG Collector or BSEPG.
+
+		Any number of files may be merged and channels can be included, excluded, renamed or have the channel number changed
+		in much the same way as the channels present on the Channels tab.
+
+		The format of the channel 'id' tag in an XMLTV file to be merged can be specifed in several ways and has an impact 
+		on the output data.
+
+			Undefined
+  		
+				Indicates that the 'id' tag is not in a format the EPG Collector can process. It wil be 
+				discarded and won't appear in any output data. The Service ID for each channel loaded from 
+				the XMLTV file will be an incrementing number and will appear in the output data if it is 
+				relevant. The original network ID and transport stream ID for each channel will be set to -1.
+
+			Service ID
+
+		 		This format will be transferred to the output data if it is relevant. It will also be set 
+				for each channel loaded from the XMLTV file. The original network ID and transport stream ID 
+				for each channel will be set to -1.
+
+			User channel number 	
+
+				This format will be transferred to the output data if it is relevant. It will also be 
+				set for each channel loaded from the XMLTV file. The original network ID, transport stream ID 
+				and service ID for each channel will be set to -1.
+
+			Full channel identification
+
+				This format means that the 'id' tag is in the following format
+
+					original network ID : transport stream ID : service ID : channel name
+
+				This format can be selected on the Output tab when creating an XMLTV file from a collection. All 
+				the information will be used to set up the channel loaded from the XMLTV file and transferred 
+				to the output data if it is relevant.
+
+				Use this format when merging in an XMLTV file created by the collection process.
+
+			Channel name
+
+				This format will be transferred to the output data if it is relevant. It will also be set 
+				for each channel loaded from the XMLTV file.
+
+			Zap2it/Schedules Direct ATSC
+
+				This format is selected if the file originates from either of these two sources. The channel number and 
+				subnumber will be transferred to the output data if relevant.
+
+				If the channel ID tag is not in the format expected for this option the channel number will
+				be set to a default value.				
+
+		No lookups should be selected if the XMLTV file to be merged has already had metadata added to it. Existing
+		metadata will be transferred to the output data if it is relevant.
+
+		3.3.4 The Schedules Direct tab
+		==============================
+
+		The Schedules Direct tab enables configuring of the data to be downloaded from the Schedules Direct service. See 
+		section 3.6 for an overview of the Schedules Direct download process.
+
+		This tab enables the channels that are to have data downloaded to be selected. In addition it is possible to define a
+		new name, channel number and call sign for each channel.
+
+		There is also an option to download and store locally the images defined in the Schedules Direct data for channels and or
+		programmes. Note that the first time this is used it may take a considerable time to download the files. However subsequent
+		downloads will be much quicker as only those images that are not already stored locally will be downloaded.
+
+		Local images are deleted after 14 days if they are no longer referenced by the data downloaded.
+
+		There is also an option to use either normal length or the longer programme descriptions. The normal length is up to
+		100 characters and the long descriptions may be up to 1,000 characters.
+
+		3.3.5 The Output tab
+		====================
+
+		Use the Output tab to specify the destinations for the data collected.
+
+		For a normal collection the data can create an XMLTV file, be imported to Windows Media Center or be imported to DVBViewer (or it's
+		related Recording Service).
+
+		If separate collections are used to import the data to Windows Media Center (eg FreeSat in one collection, Sky TV in another) it is
+		important to give each one a different Import Name. If this is not done only the latest collection's data will be visible in
+		Windows Media Center.
+
+		For a collection using the DVBLink plugin the data can be transferred to TVSource, used to create an XMLTV file or be imported to
+		Windows Media Center directly. The recommended method is to transfer the data to TVSource.
+
+		3.2.6 The Files tab
+		===================
+
+		The Files tab can be used to specify that the collection process is to create additional files using the data collected. Each file can 
+		be enabled independently and it does not matter what destination is specified on the Output tab.
+
+		3.2.7 The Channels tab
+		======================
+
+		The Channels tab is used if it is necessary to exclude one or more channels from the data or to alter a channels number or name.
+
+		Use the Start Scan button to obtain a list of channels. All the sources present in the Selected Frequencies list on the Tuning or 
+		Input tabs will be scanned and a single combined list of channels displayed.
+
+		If a channel scan has already been carried out on the Timeshift tab the list will be preloaded.
+
+		Sometimes the list of sources to scan will be long and some may fail to tune. In this case set the 'Ignore tuning errors' option
+		and view the general log to see which sources could be scanned successfully.
+
+		Do not use this tab to exclude channels if there will be a large number of channels in the list (>1000). In this case use the 
+		Filters tab.
+
+		3.2.8 The Filters tab
+		===================== 
+
+		The Filters tab is used in place of the Channels tab if only a small subset of channels is to be included from what may be a very
+		large set. This is normally the case with Dish Network collections where thousands of stations are potentially involved.
+
+		The list of frequencies will be filled from the Selected Frequencies on the Tuning or Input tabs.
+
+		The four fields available to specify included channels are original network ID, transport stream ID, start service ID and end
+		service ID.
+
+		To specify a range of channels specify only a subset of the four fields.
+
+		For example, if 1000 is specifed as the transport stream ID and the other 3 fields left blank only channels WITH a transport stream
+		ID of 1000 will be included in the collection process irrespective of their original network ID or service ID.
+
+		Similarly, if the original network ID is specified as 4097 and the start service ID as 1122 only channels that have an original
+		network ID of 4097 and a channel number greater than 1121 will be included in the collection process.
+
+		Any number of filters can be specified.
+
+		3.2.9 The Timeshift tab
+		=======================
+
+		Use this tab to replicate the data for a channel while adjusting the programme times. This is most often needed where a broadcaster
+		transmits the EPG for a channel but omits to broadcast it for the equivalent +1 channel.
+
+		Use the Start Scan button to obtain a list of channels. All the sources present in the Selected Frequencies list on the Tuning or 
+		Input tabs will be scanned and a single combined list of channels displayed.
+
+		If a channel scan has already been carried out on the Channels tab the list will be preloaded.
+
+		Sometimes the list of sources to scan will be long and some may fail to tune. In this case set the 'Ignore tuning errors' option
+		and view the general log to see which sources could be scanned successfully.
+
+		Any number of channels can be timeshifted using this tab.
+
+		3.2.10 The Repeats tab
+		======================
+
+		The Repeats tab is used to enable and control the checking for programme repeats. This may affect the recording of programmes in
+		the target media player.
+
+		When the EPG data is used to create an XMLTV file repeated programmes will have the previous play date tag created. It depends on the 
+		software used to process the XMLTV file as to the effect of the presence of this tag.
+
+		When the EPG data is imported to Windows Media Center by EPG Collector the effect is to replace the built in Windows Media Center
+		repeat programme checking. Thus it is only necessary in rare circumstances to use this feature of EPG Collector as the Windows 
+		Media Center repeat programme checking is very comprehensive.
+
+		The feature is enabled using this tab. In addition there are options to not flag simulcast programmes as repeats (ie those shown at
+		the same time on a different channel) and to not check the current set of Windows Media Center recordings.
+
+		Specific programmes can be excluded from the repeat check. This may be necessary where a programme is broadcast on a regular
+		basis with the same title and description but the content of the programme is different. Regular news programmes are an example of this.
+		Without the ability to exclude them the target media player might only record the first occurrence of the programme, treating all
+		subsequent broadcasts as duplicates.
+
+		3.2.11 The Edit tab
+		===================
+
+		The Edit tab enables superfluous or erroneous text to be replaced or removed in the titles or descriptions of programmes.
+
+		Sometimes broadcasters add text to titles and descriptions such as 'New Series' or 'Family Movie'. This additional text
+		can make it difficult to record series or look up metadata. The Edit tab makes it possible to replace or remove this text.
+
+		Editing of titles and descriptions takes place before metadata lookup or repeat checking. 
+
+		The replacement text can be left blank to simply remove the specified text.
+
+		The replacement mode affects how the text is edited. Take the following title as an example.
+
+			Blockbuster: The Wolf of Wall Street starring Leonardo di Caprio
+
+		To reduce the title to The Wolf of Wall Street the following edits are possible
+
+		Method 1 - specific to this movie
+
+			Text to replace: Blockbuster: The Wolf of
+			Location: start
+			Replacement text: The Wolf of
+			Replacement mode: specified text only
+
+			Text to replace: starring Leonardo di Caprio
+			Location: end
+			Replacement text: left blank
+			Replacement mode: specified text only
+
+		Method 2 - specific to this movie
+
+			Text to replace: The Wolf of Wall Street
+			Location: anywhere
+			Replacement Text: The Wolf of Wall Street
+			Replacement mode: all text
+
+		Method 3 - a generic solution for this format
+
+			Text to replace: Blockbuster:
+			Location: start
+			Replacement text: left blank
+			Replacement mode: specified text only
+
+			Text to replace: starring
+			Location: anywhere
+			Replacement text: left blank
+			Replacement mode: specified text and following text
+
+		The text to replace is case sensitive. 'Abc' will not match 'abc'.
+
+		3.2.12 The Lookups tab
+		======================
+
+		The Lookups tab is used to add additional information such as cast, crew, ratings, thumbnails etc to the EPG data
+		collected.
+
+		The additional data is obtained from open source Internet databases, in the case of movies www.tmdb.com and in the
+		case of TV series www.tvdb.com.
+
+		The data downloaded from the Internet database is stored locally for a maximum of three days after the relevant
+		EPG entry is no longer in the guide data.
+
+		The first collection with the Lookup feature enabled will take much longer than subsequent collections because all 
+		EPG entries will need to be processed. Subsequent collections only need to access the Internet databases for new EPG
+		entries.
+
+		The lookup matching method has three different settings.
+
+			Exact means that the Internet database must contain the exact title of the programme for additional data to be added
+			to an EPG entry. This setting produces the most accurate results but may miss some entries on the Internet database
+			that had relevant data.
+
+			Contains means that the Internet database must contain the title of the programme somewhere in its title for additional 
+			data to be added to an EPG entry. This is less accurate then Exact but may mean that more EPG entries will have 
+			additional data added to them.
+
+			Nearest uses a 'fuzzy matching' method to try and find entries on the Internet database. This is the least accurate
+			method but results in the most EPG entries having additional data.
+
+		3.2.13 The Update tab
+		=====================
+
+		The Update tab is applicable to DVBLink users. It can be used to automatically maintain the DVBLink configuration
+		files by applying channel changes, adding new channels, deleting thouse that are no longer broadcasting
+		and changing existing channels where, for example, the broadcast frequency has changed.
+
+		Note that this feature is not available to collections run from the DVBLink plugin. This is due to the way in
+		which TVSource runs the plugin.
+
+		Updating the DVBLink configuration process occurs after the collection process has completed. It involves
+		tuning to every frequency/transponder relevant to the broadcaster so will take considerably longer than a normal
+		collection.
+
+		3.2.14 The Advanced tab
+		=======================
+
+		The Advanced tab contains fields that only need to be set in rare circumstances.
+
+		If it is required to run the collection process from a Windows service set the option to inhibit monitoring of the
+		keyboard. Setting this option means that collections cannot be abandoned.
+
+		The 'Retain channel information...' and 'Use retained channel information...' options may be used for Australian
+		MHEG5 collections. However, the Channels tab can achieve the same results.
+
+		The Buffer refills parameter needs to be used for collections where there is a very large amount of data (eg Dish
+		Network collections). A suitable value for those collections is 5.
+
+		Manual time adjustments are only needed when the data is collected in one timezone but is used in another. Normally
+		the collection process automatically adjusts for timezones and daylight saving using information available 
+		from Windows.
+
+		3.2.15 The Translate Tab
+		========================
+
+		The Translate tab is used to translate text from broadcast data to a target language. The translation process is enabled by a 
+		web service from Yandex.Translate. Imported data cannot currently be translated.
+
+		Before this feature can be used an API key must be obtained from Yandex. The web address to obtain the key is on the Translate tab
+		and the process is very simple and only takes a very short time. No personal information is required and the API key is free.
+
+		Any number of languages can be present in the broadcast. They will be automatically detected by the Yandex translation
+		service.
+
+		Yandex places restrictions on the number of characters translated per day and per month so only those channels that need to be
+		translated should be selected. All the title, description and subtitle text from those channels will be passed to Yandex for 
+		translation and will count towards the daily and monthly totals even if the text is already in the target language.
+
+		The first collection run with translation enabled may take a considerable length of time depending on the amount of data.  EPG Collector
+		stores translations locally so subsequent collections only access the Yandex service for new text and are therefore much quicker. 
+		Translations are deleted from the local cache after 14 days if they are no longer referenced in the collection.
+
+		If there are a large number of channels requiring translation they should be introduced gradually in different collection runs to 
+		avoid breaching	the Yandex daily and monthly limits.
+
+		A section in the log file produced when a collection is run lists some statistics relevant to the translation process.
+
+		3.2.16 The Diagnostics tab
+		==========================
+
+		The fields on this tab should only be used under the direction of the developer.
+
+	3.3 Other EPG Centre functions
+	==============================
+
+	There are several other functions available from the EPG Centre menus.
+
+		3.3.1 Running a collection
+		==========================
+
+		Select Run - Collect EPG Data to run the standalone collection process. If collection parameters are currently loaded in
+		EPG Centre they	can be used for the collection or a new set chosen.
+
+		The progress of the collection will be displayed in EPG Centre and it can be abandoned at any time by clicking the Stop 
+		button. When it completes a message will be displayed with the exit code which should be zero for a successful collection.
+
+		Note that EPG Centre cannot be used to run a DVBLogic plugin collection.
+
+		3.3.2 Searching for EPG data
+		============================
+
+		Select Run - Find EPG Data to search a frequency or channel for the different types of EPG that can be processed. The 
+		tuning parameters must be entered in a similar way to entering them when setting up collection parameters.
+
+		Normally the collection timeout of 60 seconds is sufficient. Click the Start Find button to begin the search.
+
+		The process will tune to the frequency or channel selected. Note that it needs exclusive access to the tuner selected. The
+		process	examines the data received for the different types of EPG and when it completes, displays the results indicating
+		which protocols are	present.
+
+		Note that the process only examines the standard PID's for the presence of data. Some protocols, notably EIT, are sometimes
+		broadcast on non-standard PID's and the search will not find them. However, collections can still be made for non-standard
+		PID's as there are collection parameters available on the EPG Centre Advanced dialog to specify the PID's to be used.
+
+		3.3.3 Dumping a transport stream
+		================================
+
+		Select Run - Dump Transport Stream to create a file of broadcast data. The tuning parameters must be entered in a similar
+		way to entering them when setting up collection parameters.
+
+		The collection timeout of 60 seconds is sufficient for most protocols. The volume of data in a transport stream is 
+		significant, often 200-300 Mbytes. The amount of data can be significantly reduced by selecting specific PID's to be 
+		dumped.
+
+		If more than 1 PID is entered they are separated by a comma. They can be entered in decimal or hexadecimal.
+
+		Click the Start Dump button to begin the transfer. Progress is displayed at the bottom of the window indicating the size
+		of the file.
+
+		3.3.4 Analyzing a transport stream
+		==================================
+
+		Select Run - Analyze Transport Stream to examine the PID's and tables being broadcast on a frequency or channel. The tuning
+		parameters	must be entered in a similar way to entering them when setting up collection parameters.
+
+		Normally the collection timeout of 60 seconds is sufficient. Click the Start Analysis button to begin the collection and
+		analysis. When it is finished the results are displayed showing the PID's received and the tables within those PID's.
+
+		Where possible the PID's and tables are identified and listed with the protocol names (eg Service Description).
+
+		The presence of EPG data can be detected with this function but it needs to be used with caution. Data is only valid if
+		both the PID and it's associated table(s) occur together. For instance a table may be identified as Event Information 
+		Now/Next but unless it is listed for the Event Information PID it is not EIT data.
+
+		3.3.5 Run a channel scan
+		========================
+
+		This feature runs a scan of all the frequencies defined in a selected tuning file. Note that it is not a 'blind' scan
+		so will not tune frequencies that are not defined in the tuning file.
+
+		It is most useful where EPG data is broadcast on the same frequency as the channel ie ATSC. It will attempt to tune
+		each frequency in the tuning file in turn and list the channels located on any frequency that tunes successfully.
+
+		Be aware that this function may take several minutes to run depending on the number of frequencies defined in the 
+		selected tuning file.
+
+		Once the results are displayed it is possible to transfer the details of the successful frequencies into the currently
+		loaded collection parameters by using the 'Load From Scan' button on the Tuning tab.
+
+		3.3.6 Windows Media Center maintenance
+		======================================
+
+			3.3.6.1 Removing channel logos
+			==============================
+
+			This option will remove all channel logos from the Windows Media Center programme guide.
+
+			3.3.6.2 Remove affiliates
+			=========================
+
+			This option will remove all affiliates from the Windows Media Center programme guide.
+
+			3.3.6.3 Clear programme guide
+			=============================
+
+			This option will remove all entries from the programme guide leaving all channels showing 'No data available'. Following
+			the successful completion of this function a collection will refill the empty guide.
+
+			Use this function if the guide is corrupted or to reorganize the Windows Media Center database. In some cases it can
+			result in a much smaller database.
+
+		3.3.7 Clearing history and logs
+		===============================
+
+		The EPG Collector history file contains a single line summarising the result of each collection. It has no maximum size
+		although should	never grow to an unacceptable size.
+
+		An EPG Centre function can be used to clear it although it is not normally necessary.
+
+		The general EPG Collector log contains information about the actions of EPG Centre and the progress of collections. It will
+		be a maximum size of 8 Mbytes.
+
+		An EPG Centre function can be used to clear it although it is not normally necessary.
+
+		The Sat>IP log contains information about the actions and messages involved in accessing Sat>IP tuners. It will be a 
+		maximum size of 8 Mbytes.
+
+		An EPG Centre function can be used to clear it although it is not normally necessary. The function is only available if
+		Sat>IP tuners are detected.
+
+		3.3.8 Views available
+		=====================
+
+		EPG Centre can be used to view the contents of the EPG history file. On loading EPG Centre shows this display. Before any
+		collections	have been run this file is empty.
+
+		EPG Centre can be used to view the entire contents of the EPG Collector log file. If a collection is run the view shows 
+		just the progress of the current collection.
+
+		EPG Centre can be used to view the entire contents of the Sat>IP log file. The function is only available if Sat>IP tuners
+		are detected.
+
+		From time to time other logs may be created, normally triggered by entries on the Diagnostics tab. EPG Centre allows those
+		logs to be viewed. A dialog will appear to enable the log file to be chosen.
+
+		EPG Centre enables the XMLTV file to be viewed. It is displayed in the basic XML format. A dialog will appear to enable the 
+		file to be chosen.
+
+		3.3.9 Find
+		==========
+
+		This function enables the log and file views to be searched for specified text. A dialog will appear that enables the text
+		to search for and other search parameters to be entered.
+
+		3.3.10 Filter
+		==============
+
+		This function enables the log and file views to be reduced in size. A dialog will apppear that enables the filtering
+		conditions to be entered.
+
+		3.3.11 Create a debug package
+		=============================
+
+		This function creates a single file (.pkg) that contains all the information necessary to aid in fault finding. A dialog
+		allows the types of data are to be selected for inclusion in the file. The data is automatically compressed to reduce file size and
+		transmission time.
+
+		The resulting file can be uploaded when reporting faults.
+
+	3.4 Maintaining programme categories
+	====================================
+
+	Some types of EPG data categorize programmes and some media players, especially Windows Media Centre, take advantage of this 
+	feature to provide enhanced grouping and searching facilities of the programme guide.
+
+	Not all types of data support programme categories. The types that do support categories are as follows
+
+		EIT
+		OpenTV
+		MediaHighway
+		ATSC PSIP
+		Dish Network
+		Bell TV
+
+	Custom categories are available to allow for data where there is no category data in the broadcast. They can also be used to 
+	supplement the broadcasters data or optionally override it.
+
+	EPG Centre is used to maintain the categories. Under the 'File' menu choose 'Change Program Categories'. 
+
+	If OpenTV categories are being changed the relevant file must then be selected as OpenTV categories are specific to a country.
+
+	If MediaHighway categories are being changed the relevant file must also be chosen as the categories are specific to a protocol
+	(MediaHighway 1 or 2) and the frequency. New files can also be created.
+
+	The other data types have a single file so do not need any futher selections before the data can be edited.   
+
+		3.4.1 Standard categories
+		=========================
+
+		Each of the protocols that support programme categories is maintained slightly differently due to the way in which the
+		category is identified but they all follow a similar pattern.
+
+		The fields that can be entered are as follows:
+
+		Category identification
+
+			This is the identifier for the category and may consist of a single field or a main and sub field. It is mandatory.
+
+		Description
+
+			This is the category description that will be output for any matching programmes. It is mandatory.
+
+		Media Centre Description
+
+			See Appendix 2 for details of this field. This description is optional.
+
+		DVBLogic Description
+
+			See Appendix 3 for details of this field. This description optional.
+
+		DVBViewer Description
+
+			See Appendix 4 for details of this field. This description is optional.
+
+		3.4.2 Custom categories
+		=======================
+
+		EPG Centre provides facilities for maintaing custom categories from the File - Change Custom Program Category options. These
+		can	be used where the type of data does not use categories (eg MHEG5) or the broadcaster chooses to not broadcast them.
+
+		Custom categories are matched to programmes by specifying a tag which is matched to the progamme titles and descriptions. 
+		If the	programme title or description matches the tag the programme is assigned the category. 
+
+		A dialog will appear that enables the relevant information to be entered. There is no limit on the number of categories that
+		can	be defined.
+
+		The fields that can be entered are as follows:
+
+		Category Tag
+
+			This field is used to identify the programme. It is matched against the title and description and if a match occurs 
+			the programme is assigned the relevant category. The category tag is mandatory.
+
+			Special characters are used to indicate inexact matching. 
+
+			If the tag is preceeded by the '<' character the tag is matched againt the beginning of the title and description. 
+			If the tag is terminated by the '>' character the tag is matched against the end of the title and description.
+			If the tag is enclosed by '< and '>' the tag can appear anywhere in the title or description.
+
+			If none of these special characters is used the tag must match exactly with the title or description. The comparison is
+			case insensitive.
+
+			So, for example, the following tags
+
+			one news at 6
+			<One News
+			at 6>
+			<News at>
+
+			will all match the program with a title or description of One News at 6.
+
+		Custom Description
+
+			This is the category description that will be output to the XMLTV file for any matching programmes. It is mandatory.
+
+		Media Centre Description
+
+			See Appendix 2 for details of this field. This description is optional.
+
+		DVBLogic Description
+
+			See Appendix 3 for details of this field. This description is optional.
+
+		DVBViewer Description
+
+			See Appendix 4 for details of this field. This description is optional.
+
+		Examples of custom categories
+
+			Tag: One News at 6
+			Custom description: TVNZ Main News
+			Media Centre description: National News,Main,isNews
+			DVBLogic description: News
+			DVBViewer description: 2,1
+
+			Tag: <TVNZ News at
+			Custom description: Other TVNZ News
+			Media Centre description: National News,Other,isNews
+			DVBLogic description:News
+			DVBViewer description: 2,1
+
+			Tag: <Johnny Depp>
+			Custom Description: Johnny Depp
+			Media Centre description: Favourite Movie Stars,Johnny Depp,isMovie
+			DVBLogic description: Movie
+			DVBViewer description: 1,0
+
+			Tag: <Angelina Jolie>
+			Custom Description: Angelina Jolie
+			Media Centre description: Favourite Movie Stars,Angelina Jolie,isMovie
+			DVBLogic description: Movie
+			DVBViewer description: 1,0
+
+		3.4.3 Location of files
+		=======================
+
+		The standard set of category files are installed in a sub-directory of the installation directory. However, if you change
+		any of these files with EPG Centre the updated file will be written to the application data directory.
+
+		The collection process searches for the relevant category files in the application data directory first before falling back
+		to the standard category files in the installation directory.
+
+		You can therefore revert to the standard category files by simply deleting the relevant file in the application data 
+		directory if it becomes necessary.
+
+		The custom category file is always created and updated in the application data directory.
+
+	3.5 Maintaining tuning parameters
+	=================================
+
+	The tuning files released with EPG Collector can be changed if broadcasters change frequencies etc.
+
+		3.5.1 Overview
+		==============
+
+		EPG Centre uses a large set of tuning files to make it easy to select the frequencies to scan when setting up the parameters
+		for running a collection. There is a separate group of files for each of the delvery systems (eg DVB satellite, ATSC etc).
+
+		Information from the tuning files is transferred to the collection parameter file when the collection parameters are saved. 
+		The	original tuning files are not referenced when a collection is run. All the tuning information comes from the collection
+		parameter file.
+
+		Occasionally the tuning files may need updating due to omissions or errors and EPG Centre has facilities for doing this.
+
+		After selecting the delivery system a dialog appears to select the frequency. New frequencies can be added as well as 
+		existing frequencies changed.
+
+		The tuning details for the selected frequency can then be entered or changed and the tuning files will be updated.
+
+		If collection parameters have been loaded into EPG Centre prior to changing the tuning files, any relevant tuning details
+		will be	changed when the tuning files are updated. When the collection parameters are saved the new values will be written
+		to the parameter file.
+
+		However, if the tuning files are updated prior to loading the collection parameters into EPG Centre, the relevant 
+		frequencies	will need to be deleted and re-selected for any changes to the tuning parameters to be applied to the 
+		collection parameters.
+
+		3.5.2 Location of files
+		=======================
+
+		The standard set of tuning parameters are installed in a sub-directory of the installation directory. However, if you
+		change any of these	files with EPG Centre the updated file will be written to the application data directory.
+
+		EPG Centre searches for the tuning parameters in the application data directory first before falling back to the
+		standard tuning files in the installation directory.
+
+		You can therefore revert to the standard tuning files by simply deleting the relevant file in the application data 
+		directory if it becomes necessary.
+
+	3.6 Schedules Direct
+	====================
+	
+		3.6.1 Creating an account
+		=========================
+
+		Before data can be downloaded from Schedules Direct an account must be created at the web site www.SchedulesDirect.org.
+		There is an annual fee which is currently US$25.
+		
+		3.6.2 Choosing lineups
+		======================
+
+		Channels are grouped into lineups which are identified by zip code, satellite or terrestrial transmitter. The lineups
+		are selected using EPG Centre but are held at the Schedules Direct web site. EPG Collector does not hold information
+		on lineups locally.
+
+		Up to 4 lineups can be selected and data can be downloaded for channels from any combination of them.
+
+		The Schedules Direct user name, password and lineup selection is done using the Schedules Direct Lineups dialog in 
+		EPG Centre. This is available from the File - Configure Schedules Direct menu option or from the Schedules Direct 
+		tab when creating or changing collection parameters via the Change Lineups button.
+
+		3.6.3 Downloading data
+		======================
+
+		Once lineups have been selected the channels from those lineups will be listed on the Schedules Direct tab. The list
+		can be used to select which channels will have data downloaded.
+
+		An option is also available to download channel and/or programme thumbnails. If the option to download proigramme thumbnails
+		is chosen and there is a large number of channels chosen, the downloading of the thumbnails may take a consoderable time
+		the first time a collection involving Schedules Direct data is run.
+
+		However, the images are stored locally so that subsequent runs will be much quicker as only images not stored locally will
+		be downloaded.
+
+		Images no longer in the guide will be deleted after 14 days.
+		
+4. The standalone EPG collection process
+========================================
+
+	4.1 Running collections
+	=======================
+
+	Once the collection parameters have been created using EPG Centre the collection process can be run. This can be initiated from 
+	EPG Centre, from the command line or from a command file. All 3 methods run the same program, EPG Collector.exe.
+
+	Whichever method is used to run collections it is advisable to check the collection log on a regular basis to ensure collections
+	are	working correctly. The log can be viewed using EPG Centre or manually using a text editor. The information is held in a 
+	text file named	EPG Collector.log in the application data directory.
+
+		4.1.1 Running from EPG Centre
+		=============================
+
+		To initiate a collection from EPG Centre select Run - Collect EPG Data. Any parameters currently loaded into EPG Centre
+		can be used	or an existing parameter file chosen.
+
+		As the collection process proceeds the messages that are written to the collection log file also appear in EPG Centre.
+
+		The Stop button can be used at any time to abandon the collection.
+
+		4.1.2 Running from the command line
+		===================================
+
+		To run the collection process from the command line open a command window and navigate to the installation directory. Then
+		enter the following command
+
+			EPGCollector.exe /ini=full path and name of parameter file
+
+		If the path or name of the parameter file contain spaces the parameter must be encosed in quotation marks. For example
+
+			EPGCollector.exe /ini="C:\Temp\FreeSat Parameters.ini"
+
+		As the collection process proceeds the messages that are written to the collection log file also appear in command window.
+		The	'Q' key can be used to abandon a collection at any time unless the option has been set in the parameter file that
+		indicates the collection is being run from a Windows service.
+
+		4.1.3 Running from a script
+		===========================
+
+		Setting up a collection as a scheduled task is a two step process.
+
+			1. Create a command file (.cmd) which runs the collection process. This can be done using any text editor (eg Notepad)
+			   and should contain the following commands.
+
+				cd \full path of installation directory
+				EPGCollector.exe /ini=path and name of parameter file
+
+			   If the path or name of the parameter file contain spaces the parameter must be encosed in quotation marks. For 
+			   example
+
+				EPGCollector.exe /ini="C:\Temp\FreeSat Parameters.ini"
+
+			2. Use Windows Task Scheduler to create the scheduled taks. This procedure is different on Windows XP or Vista/Win7 
+			   but the result is the same. A task is created that runs the command file at the specified time on a regular basis.
+
+	4.2 Exit codes
+	==============
+
+	The following exit codes are returned by the standalone collection process. They can be tested for in a command file.
+
+		0 = run successful, all data collected
+		1 = no DVB tuners detected
+		2 = failed to open the initialization file
+		3 = the initialization parameters are incorrect
+		4 = the command line is incorrect
+		5 = a program exception has occurred
+		6 = run completed but data incomplete
+		7 = cancelled by user
+		8 = the initialization parameters do not match the tuner configuration or there is a parameter conflict.
+		9 = cannot write log file
+		10 = some frequencies could not be processed
+		11 = the output file could not be created
+		12 = the simulated input data failed
+		13 = run completed normally but no data collected
+		14 = no BDA tuner filter located
+		15 = the hardware filter chain could not be built
+		16 = the DVBLogic plugin could not be started
+
+	4.3 The collection log
+	======================
+
+	The EPG Collector log file is updated by both EPG Centre and the collection process. It contains a large amount of information
+	regarding the operation of both components and is especially useful for tracking down problems with collections.
+
+	It will not exceed a maximum size of 8Mbytes and will be written to the application data directory.
+
+5. Using the DVBLink plugin
+===========================
+
+	5.1 Creating plugin collection parameters
+	=========================================
+
+	EPG Centre must be used to create a parameter file for each frequency that is to be scanned for EPG data. The parameter
+	file will contain parameters and options that control the plugin collection process in the same way as the standalone process.
+
+	When running EPG Centre to create or update the parameters it is necessary to have Administrator privileges because the 
+	parameter files are held in the same location as the plugin in the Windows programs directory structure. The easiest way to
+	ensure this is to use 'Run as Administrator' when loading EPG Centre. This is available either by right clicking on the 
+	desktop icon or by	navigating to the file EPG Centre.exe and right clicking on it.
+
+	When the plugin parameters are saved only the directory where the parameters are to be saved is entered. This is because 
+	each frequency has its own parameter file and the file name reflects the frequency. The parameters must be saved in the 
+	EPG directory of each source.
+
+	5.2 Configuring TVSource
+	========================
+
+	The following steps are carried out to collect EPG data using the plugin. The description applies to DVBLink version 4. The
+	DVBLink	plugin must have been transferred to the TVSource EPG directory as described above in section 2.3 before carrying out
+	this procedure.
+
+	Although there are a large number of steps the result is the automatic collection and population of the Windows Media Center 
+	programme guide every 12 hours by TVSource without any user interaction.
+
+		1. Load the DVBLink Configuration program.
+
+		2. Select the Sources tab.
+
+		3. Click on the 'spanner' symbol for a source. The TVSource Configuration window will appear.
+
+		4. Select the EPG Scan tab.
+
+		5. The EPG Collector for DVBLogic should appear in the list at the top of the tab. If it doesn't, it means that the plugin
+		   module has not been transferred to this source's EPG directory and the process described in 2.3.1 above should be 
+		   carried out.
+
+		6. Double click the EPG Collector line in the list.
+
+		7. Ensure the Status column is ticked to make the plugin active.
+
+		8. Under Default scanning presets click 'None'.
+
+		9. In the Additional transponders to scan list tick all the transponders for which parameter files have been set up for.
+
+		10. Click the 'Yes' button.
+
+		11. Click the Scan button to test the plugin for all the transponders that have been selected. The collection process will 
+		    be run by TVSource and when it finishes, which may be several minutes, the list of stations with data will appear. The
+			EPG stats button will also show	how much data has been collected.
+
+			Note: If the plugin parameters have not been set up to pass the data directly to TVSource then, at the end of the
+			collection process, TVSource will report that no data has been collected. The EPG Collector log must be checked to
+			determine if the collection succeeded.
+
+		12. Click the Save button to save the settings.
+
+		13. Select the Channels tab.
+
+		14. Select the EPG Sources tab. The data on this tab shows where the EPG data for each channel is to come from. Automatic
+		    EPG source assignment can be used to do this for all channels in the list at once or they can be assigned individually.
+
+		15. To assign individual channels select the channel in the left hand list and then double click on the relevant entry in
+		    the right hand list. The left hand list is then updated to contain the selected source, EPG name and EPG ID. The EPG ID
+			for the plugin begins with the name 'dvblogiccpplugin'.
+
+		16. When all necessary channels have been set correctly click the Save button.
+
+		17. TVSource will now automatically scan the transponders selected in step (9) every 12 hours and use the data collected to
+		    populate the EPG for all the channels marked in steps (14) and (15) and using the plugin.
+
+	Step 19 describes the settings if the data collected is passed directly to TVSource. If the plugin parameters specify that the
+	data collected is to be imported directly to Windows Media Center the EPG Source field should be set to 'None'. If the plugin
+	parameters specify that an XMLTV file is to be created then it depends on the use made of the XMLTV file. If it is merely 
+	placed in the TVSource XMLTV directory the EPG Source should be set the XMLTV source and if it is processed by some other
+	software (eg BSEPG) the EPG Source should be set as described for that software.
+
+	Note that the plugin can only be run manually from within TVSource. It cannot be run from EPG Centre.
+
+	5.3 Exit codes and logs
+	=======================
+
+	The plugin generates the same exit codes, history file and collection logs as standalone collections. It also outputs 
+	information to the DVBLogic log.
+
+6. Using the collection data
+============================
+
+	6.1 Using the XMLTV file
+	========================
+
+	If an XMLTV file is created it can be imported to the destination system in a number of ways. One method which adds value
+	to the data is to use Big Screen EPG (BSEPG).
+
+	If the XMLTV file is to be passed through BSEPG it is worthwhile setting the option on the EPG Centre Output tab to indicate
+	BSEPG compatability as this can result in the correct series links being generated with some data sources.
+
+	If you are using DVBLink it can process the XMLTV file directly by setting the source up to use an XMLTV file and setting
+	the output directory on the EPG Centre Output tab to point to the correct TV Source directory.
+
+	6.2 Importing to Windows Media Center
+	=====================================
+
+		6.2.1 Overview
+		==============
+
+		There is an option on the Output tab of EPG Centre to transfer the data collected directly into Windows Media Center (WMC).
+		This option is available for standalone collections, for the DVBLink plugin and for files defined on the Import tab.
+
+		If this option is selected, once the data collection is successfully completed, an MXF file is created and the WMC
+		utility LoadMXF is run to import the data. Progress on the loading process is reported in the EPG Collector log
+		file.
+
+		It is a requirement that the LoadMXF utility is installed in the WMC ehome directory. If it is not the import
+		will fail. Messages are output to the EPG Collector log file showing which location is used to load the utility.
+
+		There are several additional options to control importing data to WMC on the Output tab. Please refer to the Field
+		Descriptions document section 5.4 for details.
+
+		6.2.2 Configuring Windows Media Center
+		======================================
+
+		Configuration is needed in WMC if
+
+			- the EPG data is not automatically linked to the relevant channels or
+			- WMC is able to collect EPG data directly from the broadcasts it receives
+
+		If either of these conditions exist then each channel concerned must be edited as follows.
+
+			1. Navigate to the programme guide.
+			2. Click on the channel name.
+			3. Click 'Edit Channel'.
+			4. Click 'Edit Listings'.
+			5. Click 'Disable Inband' if necessary.
+			6. Scan the list of EPG sources and click on the relevant entry.
+			7. Click 'Save'
+
+		Repeat this process for all the required channels.
+
+	6.3 Importing to DVBViewer or the Recording Service
+	===================================================
+
+	There is an option on the Output tab of EPG Centre to trigger the transfer of data directly from the collection process into
+	either DVBViewer or the related Recording Service.
+
+	In the case of the Recording Service the current EPG data can also be deleted before the transfer of the new data takes
+	place. The port that the Recording Service uses for the import of data is also specified on the Output tab of EPG Centre.
+
+	If you choose to import to DVBViewer note that it must be loaded and running when the collection process attempts to 
+	import the data.
+
+	Irrespective of whether the data is imported to DVBViewer or the Recording Service, the collection process accesses the 
+	tuners directly so they must not be in use by DVBViewer or the Recording Service when the collection process starts. The 
+	collection process does not use the NetStream plugin.
+
+7. Metadata lookup
+==================
+
+	7.1 Introduction
+	================
+
+	As an option, additional data can be added to each EPG entry by looking up the programmes on internet databases. This 
+	feature is enabled using the Lookups tab in EPG Centre and can be individually enabled for movies and TV series.
+
+	The TMDB database (www.themoviedb.org) is accessed for movies and the TVDB database (www.thetvdb.com) for TV series. Both 
+	are free to use and open to the public and downloading data to a local PC is within the terms and conditions of use. The 
+	databases are maintained by the internet community.
+
+	7.2 Searching for metadata
+	==========================
+
+	Each EPG entry is firstly examined to determine if it is a movie and if it is then the internet movie database is accessed. If
+	no information is found on the movie database or if the entry is not considered to be a movie then it is checked to see if it 
+	part of a TV series and if it could be then the internet TV database is accessed. 
+
+	A programme will be considered as a movie if the broadcast data contains category information for movies or if the programme
+	duration falls within the time limits entered on the Lookup tab in EPG Centre. This defaults to 150 minutes.
+
+	A programme will be considered part of a TV series if the broadcast data contains any of the various forms of series link or 
+	the	description contains series and episode information.
+
+	An option is also provided override the check for a TV series and to process every EPG entry that is not a movie as a TV series.
+
+	The programme title from the EPG entry is used to search the internet databases. This often returns multiple hits so the 
+	lookup process matches the programme title with the entries returned from the search looking for a match. 
+
+	The type of matching can be selected using an option on the Lookup tab. The options range from an exact match being required 
+	which results in accurate data but less matches to 'fuzzy' matching which results in more matches but less accurate data.
+
+	7.3 Download data
+	=================
+
+	The data downloaded from the internet databases is slightly different for movies and TV series. 
+
+	For movies it can be
+
+		Poster images
+		Cast and crew including producers, directors and writers
+		Star rating
+
+	For TV series it can be
+
+		Poster images
+		Cast and crew including directors, writers and guest stars
+		Star rating
+
+		The crew information will only be downloaded if a specific episode can be identified.
+
+	Movies or TV series may not have complete information. It depends on how much has been entered into the internet database so 
+	for example	the cast may be available but no producers or directors. The star rating is present in most cases.
+
+	Note that the information in the internet databases is entered and kept up to date by members of the internet community and 
+	as such	can have errors and omissions. In addition, the star rating is generated by the opinions of internet community, not
+	by any commercial body.
+
+	7.4 Local data
+	==============
+
+	To reduce processing time, data obtained from the internet databases is stored locally in the data directory. The movie 
+	information	is held in a file called Movie Database.xml and the TV series information is held in a file called TV Series.xml.
+
+	Poster or thumbnail images that are downloaded are also stored in the data directory but in a Movie or TV Series sub-directory
+	of the Images directory.
+
+	The local databases and image directories only hold data relevant to the latest completed collection. Data that has been
+	downloaded but is not required for the latest collection is automatically deleted.
+
+	This is to firstly ensure that the local databases don't get too large and secondly to comply with the terms and conditions
+	of the internet databases from where the data originates.
+
+	7.5 Runtime considerations
+	==========================
+
+	Downloading data from the internet databases is a time consuming process, especially for large collections of EPG data. As 
+	described above to mitigate this problem the lookup process creates 2 local databases in the data directory, one for movies
+	and another for	TV Series. These are populated as programmes are located in the internet databases.
+
+	The local databases will be accessed first and only if no entry is found will the internet databases be interrogated.
+
+	The Lookup tab in EPG Centre has a time limit for the lookup process. Until the EPG Collector log shows that the lookup process
+	completed rather than timed out it should be set to as high a value as is practical. For example, 600 minutes might be 
+	reasonable.
+
+	When the log shows that the lookup process has completed this indicates that the local databases are complete for the current
+	set of EPG	data and the only internet lookups required from now on are for new programmes so the time limit can be set to a
+	lower value. 60 minutes	could be a starting point. Setting the timeout value too high does not cause problems as the collection
+	process will end when all lookups have been completed.   
+
+	One other option on the Lookup tab controls what happens if a programme is not found on either of the internet databases. If
+	the option is not set then an entry is made in the appropriate local database indicating the programme has no additional
+	metadata available and no futher internet lookups will be made for the programme until it disappears from the collection data.
+
+	However, if the option is set then subsequent collections will attempt an internet lookup again. This may find data if the
+	internet databases have been updated.
+
+	Note that any tuner hardware used in the collection process is released before the meta data lookup process begins.
+
+8. The DVBLogic channel update process
+======================================
+
+	8.1 Introduction
+	================
+
+	The channel update process uses data from the broadcast to automatically update some of the configuration files used by 
+	DVBLogic, namely those it uses to define physical and logical channels.
+
+	This feature is independent of EPG data collection in that it runs after any EPG data has been collected and processed, whether
+	it is used to create an XMLTV file, imported to Windows Media Center or imported to DVBViewer.
+
+	It can be used to set up the relevant DVBLogic configuration files from scratch, either because no channel scans have been done
+	or the option is set in EPG Centre to overwrite all the existing data.
+
+	Do not enable this feature unless you are a competent DVBLogic user. If any problems occur it may be necessary to rebuild
+	your DVBLogic installation or to restore the configuration files.
+
+	8.2 Restrictions
+	================
+
+	This feature currently has the following restrictions
+
+		- it is only available in standalone collections. It cannot be run from the plugin.
+		- it is only available for satellite broadcasters
+		- it cannot be used in North America
+
+	8.3 Operation
+	=============
+
+	Once EPG data collection is complete the channel update process begins.
+
+	The following DVBLogic files are the target of the update:
+
+		dvblink_configuration.xml
+		dvblink_channel_storage.xml
+		TVSource_Settings.xml (one for each source)
+
+	The logical channel information is held in the dvblink_channel_storage file while the physical channel information 
+	ie the actual hardware tuning information is held in each of the TVSource_Settings file. 
+
+	The dvblink_configuration file holds a field that controls the allocation of new logical channels.
+
+	To show that a file has been updated by EPG Collector a 'generator-info-name' attribute is written to the start of the
+	file. 
+
+	Each of the transponders used by the broadcaster is tuned in turn and the channel information that is broadcast for the
+	transponder is used to update the DVBLink files if necessary with new channels, channel changes (eg tuning parameters, name
+	changes) or the deletion of channels that are no longer present.
+
+	A channel that moves from one transponder to another is considered an addition to the new transponder and a deletion from the
+	old one. It is not considered a change.
+
+	The broadcast information updates the physical channel information in the TVSource_Settings file(s) but this will trigger 
+	updates	to the logical channel information in the dvblink_channel_storage file if new channels are added or channels deleted. 
+	Name changes may also cause updates to the logical channels.
+
+	Updates purely to tuning parameters (eg modulation, FEC) do not update the logical channels.
+
+	During the update process the DVBLINK server process/service may be stopped. This can occur early in the update process if
+	certain updates are necessary or at the end of the update process to cause DVBLink to load any changes that the update process
+	has made to the configuration files.
+
+	The DVBLink server process will be automatically restarted before the update process terminates if it has been stopped.
+
+	The EPG Collector log file is used to report extensively on the update process. The broadcasters transponder map can optionally
+	be	logged and in addition the logical channels and related physical channels present after the update process are logged.
+ 
+	8.4 Resolving problems
+	======================
+
+	Before the update process changes any files it creates backup copies of the existing files in the same directories but with a
+	suffix of .bak. In the event of problems these files can be copied back over the updated files to restore the previous
+	configuration.
+
+	When reporting any possible update problems it is essential that as much information as possible is provided. This should 
+	include the following
+
+		- EPG Collector log file
+		- The DVBLink configuration files after the update
+		- The bak files created by EPG Collector before the update took place
+
+	When reporting any channel tuning problems to DVBLogic it is essential that the configuration files used to tune have not
+	been changed by EPG Collector. It is unreasonable to expect DVBLogic personnel to waste time on issues that may have been 
+	created	by EPG Collector. 
+
+	To this end, if tuning problems occur a channel scan should be used to reset the configuration files and tuning attempted again
+	before reporting the problem.
+
+9. Creating additional files
+============================
+
+	9.1 Introduction
+	================
+
+	As part of the collection process additional files can be created that don't directly relate to EPG data. This is because of
+	the	availability of control information transmitted by the broadcaster.
+
+	All extra files are optional and are created after the normal collection process has finished. The destination for each file
+	can be specified using EPG Centre.
+
+	9.2 The area/region/channel cross-reference file
+	================================================
+
+	This file is in XML format and contains a list of the channels within each area and region.
+
+	9.3 The BladeRunner file
+	========================
+
+	This file is created in a suitable format for input to BladeRunner and contains channel information.
+
+	9.4 The SageTV frequency file
+	=============================
+
+	This file is created with a single line for each channel containg all the relevant tuning information for SageTV.
+
+Appendix 1 Notes On Tuners
+==========================
+
+Some of the issues that users have experienced when working with EPG Collector involve tuners. This section 
+lists issues that have been encountered with specific tuners.
+
+Appendix 1.1 DVBLogic Virtual Tuners
+====================================
+
+EPG Collector cannot use DVBLink virtual tuners. These have been specifically designed to work with other elements of DVBLogic 
+software and will not work with software such as EPG Collector as the necessary data is not made available.
+
+Appendix 1.2 TechniSat (all tuners)
+===================================
+
+TechniSat tuners can be supplied with 2 separate tuner drivers. If the default installation of the TechniSat driver software is
+carried out a non-BDA compliant driver will be installed and the Collector will not work with it. It will appear to acquire a
+signal but no data will be received.
+
+The TechniSat BDA compliant tuner driver is in the BDA subdirectory of the driver software. It must be installed by responding
+to the Windows 'New Hardware Found' message and pointing the Windows installation process at the BDA directory.
+
+Appendix 1.3 TechniSat Mantis
+=============================
+
+If you are using a DiSEqC switch with this tuner do not select the option on the Tuning tab to repeat the DiSEqC command in the
+event of an error. The Mantis tuner returns an error even though the DiSEqC command succeeds and repeating the command causes it
+to not pass any data to the Collector.
+
+Appendix 1.4 HD HomeRun
+=======================
+
+1. The HD HomeRun is a network tuner. The Collector can use the virtual tuners set up by this device but it must be given security
+clearance to access the network first or it may silently fail. 
+
+This is due to a possible fault in the Windows OS in that the security failure message is not displayed when the Collector tries
+to use the virtual tuner.
+
+Note that both EPG Collector.exe and EPG Centre.exe must be given network access.
+
+2. Because the HDHomerun is a network tuner it reduces the network bandwidth needed for broadcast data by filtering the PID's carrying
+the data and only passes a subset of the whole stream as requested by application.
+
+This is adequate when EPG Collector is collecting EPG data but not for the EPG Centre functions for finding EPG data, analyzing a 
+transport stream or dumping a transport stream when EPG Centre needs to see the whole stream.
+
+It is therefore necessary to change the mode in which the HDHomerun is operating before using any of these functions and this can
+be achieved either by using the HDHomerun configuration programme or by using the following registry changes.
+
+Note xxxxxxxx is the HDHomerun ID number.
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Silicondust\HDHomeRun\Tuners\xxxxxxxx-0]
+"BDAPIDFilter"="Disabled"
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Silicondust\HDHomeRun\Tuners\xxxxxxxx-1]
+"BDAPIDFilter"="Disabled"
+
+To set the HDHomerun tuner back to the normal Windows Media Center mode
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Silicondust\HDHomeRun\Tuners\xxxxxxxx-0]
+"BDAPIDFilter"="Enabled"
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Silicondust\HDHomeRun\Tuners\xxxxxxxx-1]
+"BDAPIDFilter"="Enabled"
+
+You can save those as separate .reg files, and import them before and after running EPG Centre.
+
+reg import "C:\epg\hdhr-jriver.reg"
+Use EPG Centre
+reg import "C:\epg\hdhr-wmc.reg"
+
+The registry changes are courtesy of Tony Wagoner.
+
+3. The various HDHomerun modes and the effects on EPG Collector data collections is as follows:
+
+	MediaPortal				data collections fail
+	JRiver					data collections fail
+	NextPVR					data collections complete successfully
+	Easy HDTV DVR			data collections complete successfully
+	For The Record			data collections complete successfully
+	Windows Media Center	data collections complete successfully
+
+Appendix 1.5 Pinnacle
+=====================
+
+There is a option on the EPG Centre Tuning tab labelled 'Repeat DiSEqC command if first attempt failed'. Users of Pinnacle 
+tuners must set this option or DiSEqC switching will not work.
+
+Appendix 1.6 Genpix tuners
+==========================
+
+EPG Collector only supports the official Genpix BDA driver. Support for the open source driver that was available on Sourceforge
+has been removed. 
+
+The DiSEqc driver can be set to Default, Legacy or Generic. Default and Generic have the same effect.
+
+If the DiSEqC switch is committed use a port in the range AA-BB, if it is uncommitted use a port in the range Port1-Port16. 
+
+Default and Generic can be used for committed or uncommitted switches. Legacy can only be used for committed switches.
+
+Appendix 1.7 Blackgold tuners
+=============================
+
+When using these tuners with a DiSEqC switch set the DiSEqC handler to Legacy and tick both 'Change DiSEqC switch
+only when graph running' and 'Change DiSEqC switch only after tune request.
+
+Only 4 port switches can be used with this tuner due to the switching method that must be used.
+
+Appendix 1.8 Sat>IP tuners
+==========================
+
+As Sat>IP tuners are network devices, EPG Collector must be given security clearance to access the network first or it may silently
+fail. 
+
+This is due to a possible fault in the Windows OS in that the security failure message is not displayed when the Collector tries
+to use the tuner.
+
+Note that both EPG Collector.exe and EPG Centre.exe must be given network access. 
+
+Appendex 2 User directories
+===========================
+
+Throughout this document reference is made to the application data directory. This varies depending on the version of Windows 
+and whether or not the user running the software has Administrator privileges. The various locations are as follows:
+
+	Administrator
+	
+	Windows XP	C:\Documents and Setting\All Users\Application Data\Geekzone\EPG Collector
+	Vista/W7	C:\ProgramData\Geekzone\EPG Collector
+
+	User
+	
+	Windows XP	C:\Documents and Setting\%user%\Local Settings\Application Data\Geekzone\EPG Collector
+	Vista/W7	C:\Users\%user%\AppData\Local\Geekzone\EPG Collector
+
+Note that parts of these paths are normally hidden. EPG Centre will list the location of the directories it uses in the 
+log on loading. These are visible using the General log view.
+
+Appendix 3 Installation Directory Structure
+===========================================
+
+The installation process and the zip format release create the following directory structure.
+
+	Software directory
+
+		Configuration directory
+		
+			Program Categories directory
+
+				Contains the standard tranlation files for the programme categories (genres) used
+				by broadcasters.			
+
+			TuningParameters directory
+
+				ATSC directory
+
+					Contains the tuning parameter files for ATSC tuners.
+
+				Clear Qam directory
+
+					Contains the tuning parameter files for Clear QAM tuners.
+
+				DVBC directory
+
+					Contains the tuning parameter files for DVB cable tuners.
+
+				DVBS directory
+
+					Contains the tuning parameter files for DVB satellite tuners.
+
+				DVBT directory
+
+					Contains the tuning parameter files for DVB terrestrial tuners.
+
+				ISDBS directory
+
+					Contains the tuning parameter files for ISDB satellite tuners.
+
+				ISDBT directory
+
+					Contains the tuning parameter files for ISDB terrestrial tuners.
+
+			Byte Conversion Tables
+			
+				Contains parameters for converting control characters in EIT data. 
+
+			Countries file
+
+				Contains the country, area and region definitions.
+
+			Huffman Dictionary files
+
+				Contains the decodes for the various Huffman compression schemes used by different protocols.
+
+			Language Codes file
+
+				Contains the list of languages and decodes.
+
+			MHEG5 Parser Format files
+
+				Contains parameters that control the decoding of the MHEG5 EPG records.
+
+			Parental Ratings file
+
+				Contains parameters that control the decoding of the various parental rating schemes.
+				
+			Text Editing file
+			
+				Contains details for editing the text of programme titles or descriptons.			
+
+		Documentation
+
+				Various text files providing details on the use and operation of the software.
+		
+		Samples directory
+
+			Collector directory
+
+				Contains the parameter files that appear in the list of preset tasks when new standalone 
+				collection parameters are created.
+
+			DVBLogic Plugin directory
+
+				Contains the parameter files that appear in the list of preset tasks when new DVBLogic plugin
+				collection parameters are created.
+
+Appendix 4 Windows Media Center Programme Categories
+====================================================
+
+This is the description that will be used when creating the MXF file that is loaded into Windows Media Centre if the direct import
+to Windows Media Centre is selected on the EPG Centre Output tab.
+
+Windows Media Centre provides a two level category search. For this reason this description must consist of a minimum
+of 2 parts separated by a comma. 
+
+The first part is the category group (eg Rugby) and the second and subsequent parts are the sub-category within it (eg Super 15 or
+World Cup).
+
+In addition there are some special values that you can use to put a program into one of the the Windows Media Centre predefined
+categories. These are shown in the list that appears when you open 'View Categories' in the Media Centre guide. The values you
+can use are
+
+	isMovie
+	isSpecial
+	isSports
+	isNews
+	isKids
+	isReality
+
+So, for example, a Media Centre description could be
+
+	Rugby,Super 15,isSports
+	Soccer,Arsenal,Premier League,isSports
+
+The predefined categories can occur without the category group and sub-category so a Media Centre description of just isMovie is
+valid.
+
+Appendix 5 DVBLogic Programme Categories
+========================================
+
+The values that can be entered for a DVBLogic category are as follows. If more than one is entered they are separated by a
+comma and they are case insensitive.
+
+Action
+Comedy
+Documentary
+Drama
+Educational
+Horror
+Kids
+Movie
+Music
+News
+Reality
+Romance
+Scifi
+Serial
+Soap
+Special
+Sports
+Thriller
+Adult
+
+Appendix 6 DVBViewer Programme Categories
+=========================================
+
+The values that can be entered for a DVBViewer category are as follows. They are the same as those defined by the DVB EIT 
+standard. Only one can be entered so for the Movie category you would enter 1,0.
+
+1,0	Movie
+1,1 Movie - Detective/Thriller
+1,2 Movie - Adventure/Western/War
+1,3 Movie - Science Fiction/Fantasy/Horror
+1,4 Movie - Comedy
+1,5 Movie - Soap/Melodrama/Folkloric
+1,6 Movie - Romance
+1,7 Movie - Serious/Classical/Religious/Historical/Drama
+1,8 Movie - Adult
+
+2,0	News and Current Affairs
+2,1	News and Weather
+2,2	News Magazine
+2,3	Documentary
+2,4	Discussion/Interview/Debate
+
+3,0	Show
+3,1	Game Show/Quiz/Contest
+3,2	Variety Show
+3,3	Talk Show
+
+4,0	Sport
+4,1	Special Sporting Event
+4,2	Sports Magazine
+4,3	Football/Soccer
+4,4	Tennis/Squash
+4,5	Team Sports
+4,6	Althletics
+4,7	Motor Sport
+4,8	Water Sports
+4,9	Winter Sports
+4,10 Equestrian
+4,11 Martial Sports
+
+5,0	Childerens Programmes
+5,1	Pre-School Programmes
+5,2	Programmes for 6-14 yearss
+5,3	Programmes for 10-16 years
+5,4	Informational/Educational/School Programmes
+5,5	Cartoons/Puppets
+
+6,0	Music and Dance
+6,1	Rock/Pop
+6,2	Serious Music/Classical Music
+6,3	Folk/Traditional Music
+6,4	Jazz
+6,5	Musical/Opera
+6,6	Ballet
+
+7,0	Arts and Culture
+7,1	Performing Arts
+7,2	Fine Arts
+7,3	Religion
+7,4	Popular Culture/Traditional Arts
+7,5	Literature
+7,6	Film/Cinema
+7,7	Experimental Film/Video
+7,8	Broadcasting/Press
+7,9	New Media
+7,10 Arts/Culture Magazines
+7,11 Fashion
+
+8,0	Social and Political
+8,1	Magazines/Reports/Documentary
+8,2	Economics/Social Advisory
+8,3	Remarkable People
+
+9,0	Education and Science
+9,1	Nature/Animals/Environment
+9,2	Technology/Natural Sciences
+9,3	Medicine/Physiology/Phsychology
+9,4	Foreign Countries/Expeditions
+9,5	Social/Spiritual Sciences
+9,6	Further Education
+9,7	Languages
+
+10,0 Leisure and Hobbies
+10,1 Tourism/Travel
+10,2 Handicraft
+10,3 Motoring
+10,4 Fitness and Health
+10,5 Cooking
+10,6 Advertisement/Shopping
+10,7 Gardening
+
+11,0 Original Language
+11,1 Black and White
+11,2 Unpublished
+11,3 Live Broadcast
+
+============================================================ End Of User Guide =====================================================				
+		

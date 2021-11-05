@@ -1,0 +1,221 @@
+EPG Collector 4.3 Release Notes
+===============================
+
+Contents
+========
+
+	1. Pre-requisites
+
+	2. Changes
+	
+		2.1 Per frequency parameters
+		2.2 Tuning files
+		2.3 Importing files
+		2.4 Mono/Wine compatability
+		2.5 Metadata lookups
+		2.6 XMLTV output
+		2.7 Windows Media Center import
+		2.8 Channel scans		
+
+	3. Faults fixed
+
+		3.1 Australian MHEG5 collections
+		3.2 Running on Windows 10
+
+	4. Breaking changes
+
+		4.1 UK/Australian terrestrial collections
+		4.2 Windows Media Center import
+
+	5. DVBLogic plugin
+	
+1. Pre-requisites
+=================
+
+EPG Collector requires version 4 or later of the .Net Framework to be installed. Any tuner card that is to be used must have a BDA
+compatible driver installed.
+
+If collections are to use a tuner card the Visual C++ x86 runtime package also needs to be installed. This is normally already present 
+but if not can be obtained from:
+
+http://www.microsoft.com/en-us/download/details.aspx?id=5555		
+
+2. Changes
+==========
+
+	2.1 Per frequency parameters
+	============================
+	
+	Parameters can now be set on a per frequency basis so, for example, different areas and regons can be specifed
+	for FreeSat and OpenTV in the same collection.
+	
+	Many parameters that were on the Advanced tab now appear on the Frequency Parameters dialog which is displayed when a 
+	frequency, file or stream is added to the Selected Frequency list.
+
+	2.2. Tuning files
+	=================
+
+	The tuning files for UK Terrestrial and Australian Terrestrial broadcasters have been updated. The UK files have been created
+	from the website www.ukfree.tv and the Australian files from www.ozdigitaltv.com.
+
+	It may be that some of the tuning file names have changed such that when the UK or Australian parameters are loaded into EPG Centre
+	it reports an error indicating that some parameters could not be processed. In this case the parameters will need to be recreated
+	using the new tuning files.
+
+	Tuning files containg Dish Network transponders have been updated to use the new modulation of turbo-8psk.
+
+	2.3. Importing files
+	====================
+
+	The XMLTV tab in EPG Centre has been renamed Imports and it is now possible to import MXF files created by either EPG Collector
+	or BSEPG.
+
+	It is also possible to run a collection with only imported files so, for example, an XMLTV or MXF file can be created on a server
+	and EPG Collector run on client machines to import it directly into Windows Media Center without needing to run a collection on 
+	the client machine.
+
+	For XMLTV import files it is now possible to specify the format of the channel ID tag.
+
+	2.4. Mono/Wine compatability
+	============================
+
+	EPG Centre and EPG Collector are now both compatable with the Mono and Wine environments. EPG Data can be processed from 
+	MPEG TS files or from data streamed over a network. 
+	
+	Sat>IP servers are also supported so these environments can now collect data in real time.
+
+	2.5. Metadata lookups
+	=====================
+
+	Poster, banner and fanart are now the image types available for TV series lookups with poster and fanart also being available
+	in a thumbnail format which reduces the download time and disc space used.
+	
+	Poster is a portrait orientation while banner and fanart are both landscape orientations.
+	
+	TV series images have been rationalised so that only a single image is kept locally, irrespective of how many episodes of the
+	series are in the EPG data. Previously each episode would have had a copy of the image held locally so this	change can reduce
+	the disc space used for images substantially. 
+	
+	The change will only affect images that are downloaded with this version of the software onwards. Existing local images
+	will be gradually deleted as the matching EPG entries become obsolete.
+
+	TV lookups are now substantially more successful where a broadcaster includes a subtitle or episode title.
+	
+	2.6. XMLTV output
+	=================
+	
+	There have been some changes made that affect the 'episode-num' tag that is output to an XMLTV file.
+	
+	The Output tab now has the following options for creating this tag:
+	
+		Valid season and episode numbers only
+		BSEPG compatible
+		Full content reference ID
+		Numeric part of content reference ID
+		Not output
+
+	Valid season and episode numbers are not always available and depend on the data from the broadcaster.
+
+	The options using the content reference ID are also dependent of the data broadcast. These options should
+	be used if the software that processes the XMLTV file can use the episode tags in a non-standard format. The system
+	attribute is set to 'crid' for the full content reference ID and 'numeric_crid' for the numeric format.
+	
+	These changes have been made to ensure the file format complies with the XMLTV specification.
+	
+	2.7. Windows Media Center import
+	================================
+	
+	There is an additional option for specifying how series are creaed and repeats checked when importing directly to Windows
+	Media Center.
+	
+	In previous versions there was an option on the Output tab labeled 'Use Windows Media Center built in repeat checking'. This
+	has been replaced with three options available in a list.
+	
+		Not used
+
+			The programme title is used to control the creation of series. All programmes with the same title will be 
+			grouped into the same series.
+
+			Programme repeats within a series will not be detected unless the Repeats tab is used.
+			
+		Use programme title to generate links
+			
+			The programme title is used to control the creation of series. All programmes with the same title will be 
+			grouped into the same series.
+
+			Programme repeats are detected using the programme title and season and episode numbers. If season and episode
+			numbers are not available the programme description is used.
+				
+		Use broadcaster references to generate links
+			
+			The links from the broadcaster such as content reference ID's or series links will be used to group programmes
+			into series.
+
+			If broadcaster links are not available the programme title will be used.
+
+			Programme repeats are detected using the same information. If content reference ID's or series links are not
+			available season and episode numbers will be used. If they are not available the programme title, description and
+			start time will be used.
+				
+			This is the most accurate way to group programmes into seasons and detect repeats.
+
+	Setting the option available in previous versions was the equivalent of selecting 'Use programme title to generate links'.
+				
+	If the selection in this list is changed it may be necessary to re-create the Windows Media Center database. This option
+	cannot be used at the same time as enabling the Repeats tab.
+	
+	2.8. Channel scans
+	==================
+	
+	It is now possible to ignore tuning errors when carry out channel scans using the Channels or Timeshift tabs.
+	
+	In some cases the channel scan is used to scan a large number of frequencies some of which may result in tuning errors. An
+	option is now available on both the Channels and Timeshift tabs to ignore these errors and continue the scan.
+	
+	The EPG Collector log can be viewed to determine which frequencies failed.
+	
+3. Faults fixed
+===============
+	
+	2.1 Australian MHEG5 collections could fail if the broadcaster sent data that was not current.
+	
+	2.2 The Windows Media Center import could fail when run under Windows 10.
+
+4. Breaking changes
+===================
+
+	Every effort has been made to make this release compatible with earlier releases. There is no reason why 
+	this version cannot simply be installed and successfully used without changing parameter files or scheduled tasks.
+
+	4.1 UK/Australian terrestrial collections
+	 
+		As noted in section 2 above, due to updates to the tuning files, it may be necessary to recreate the parameter files for 
+		UK or Australian terrestrial collections. This should only be necessary if the parameters need to be loaded into EPG 
+		Centre. Existing collections should still work correctly.
+
+	4.2 Windows Media Center import
+
+		If the new Windows Media Center import option 'Use broadcaster references to generate links' the Windows Media Center 
+		database will need to be re-created prior to running the first collection with this version.
+
+5. DVBLogic plugin
+==================
+
+IMPORTANT - For users of the DVBLogic plugin
+
+DVBLogic users must update the plugin after installation by loading EPG Centre and selecting the 'File' and 'Update DVBLogic 
+Plugin Module' menu options. 
+
+In addition, if the plugin has been running prior to carrying out an EPG Collector install, you will need to stop the DVBLinkServer
+process using Task Manager or the EPG Collector install will fail because some of the files will be in use. The DVBLinkServer 
+process is visible in Task Manger on the Processes tab. On Windows 7 you will need to click 'Show processes from all users' to
+see it.
+
+The DVBLinkServer process will restart automatically.
+
+When running EPG Centre to update the DVBLogic plugin it is necessary to have Administrator privileges to be able to update it
+because the plugin must be installed in the Windows programs directory structure. The easiest way to ensure this is to use 
+'Run as Administrator' when loading EPG Centre. This is available either by right clicking on the desktop icon or by navigating 
+to the file EPG Centre.exe and right clicking on it.
+
+======================================================== End Of Release Notes =======================================================
