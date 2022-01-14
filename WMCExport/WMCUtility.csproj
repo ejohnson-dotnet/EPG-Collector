@@ -89,7 +89,6 @@
     <Compile Include="BackupFiles\Lineup\BackupPrimaryProvider.cs" />
     <Compile Include="BackupFiles\Lineup\BackupWmisLineup.cs" />
     <Compile Include="BackupFiles\Lineup\BackupWmisLineups.cs" />
-    <Compile Include="Copy of UtilityControl1.cs" />
     <Compile Include="UtilityControl1.cs" />
     <Compile Include="ReflectionServices.cs" />
     <Compile Include="Logger.cs" />

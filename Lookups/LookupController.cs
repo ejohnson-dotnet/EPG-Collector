@@ -84,7 +84,7 @@ namespace Lookups
         }
 
         private static MovieLookup movieLookup;
-        private static TVLookup tvLookup;
+        private static TVLookupBase tvLookup;
 
         private LookupController() { }
 
@@ -134,8 +134,11 @@ namespace Lookups
             Logger streamLogger = new Logger(Logger.StreamFilePath);
             
             movieLookup = new MovieLookup(streamLogger, "Metadata Lookup");
-            tvLookup = new TVLookup(streamLogger, "Metadata Lookup");            
-
+            if (RunParameters.Instance.LookupTVProvider == TVLookupProvider.Tvdb)
+                tvLookup = new TvdbTVLookup(streamLogger, "Metadata Lookup");
+            else
+                tvLookup = new TmdbTVLookup(streamLogger, "Metadata Lookup", movieLookup.ApiInstance);
+            
             int totalEntries = 0;
             
             foreach (TVStation station in stations)
@@ -145,7 +148,7 @@ namespace Lookups
                     Logger.Instance.Write("Processing " + station.Name);
 
                     int startLookups = movieLookup.InStoreLookups + movieLookup.WebLookups + 
-                        tvLookup.InStoreLookups + tvLookup.WebLookups + tvLookup.CacheLookups;
+                        tvLookup.LookupTotals;
 
                     foreach (EPGEntry epgEntry in station.EPGCollection)
                     {
@@ -205,8 +208,7 @@ namespace Lookups
 
                     if (station.EPGCollection.Count != 0)
                     {
-                        int endLookups = movieLookup.InStoreLookups + movieLookup.WebLookups + 
-                            tvLookup.InStoreLookups + tvLookup.WebLookups + tvLookup.CacheLookups;
+                        int endLookups = movieLookup.InStoreLookups + movieLookup.WebLookups + tvLookup.LookupTotals;
 
                         int lookupsCount = endLookups - startLookups;
 
@@ -252,8 +254,7 @@ namespace Lookups
                     tvLookup.LogStats();
             }
 
-            int totalMatched = movieLookup.InStoreLookups + movieLookup.WebLookups + 
-                tvLookup.InStoreLookups + tvLookup.WebLookups + tvLookup.CacheLookups;
+            int totalMatched = movieLookup.InStoreLookups + movieLookup.WebLookups + tvLookup.LookupTotals;
 
             int percent = totalEntries != 0 ? (totalMatched * 100) / totalEntries : 0;
             Logger.Instance.Write("Total EPG entries = " + totalEntries +
@@ -288,7 +289,7 @@ namespace Lookups
             return (lookup.Process(epgEntry));
         }
 
-        private static LookupReply processEPGEntry(EPGEntry epgEntry, TVLookup lookup)
+        private static LookupReply processEPGEntry(EPGEntry epgEntry, TVLookupBase lookup)
         {
             if (!RunParameters.Instance.TVLookupEnabled || !tvLookup.Initialized)
                 return (LookupReply.NotEnabled);

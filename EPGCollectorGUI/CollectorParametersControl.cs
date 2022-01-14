@@ -1434,7 +1434,22 @@ namespace EPGCentre
                     cboxTVLookupImageType.SelectedIndex = 5;
                     break;
             }
-            tbTVDBPin.Text = runParameters.LookupTVDBPin;
+
+            cboTVProvider.Text = runParameters.LookupTVProvider.ToString().ToUpperInvariant();
+            if (runParameters.TVLookupEnabled && runParameters.LookupTVProvider == TVLookupProvider.Tvdb)
+            {
+                tbTVDBPin.Enabled = true;
+                if (runParameters.TVLookupEnabled)
+                    tbTVDBPin.Text = runParameters.LookupTVDBPin;
+                else
+                    tbTVDBPin.Text = null;
+            }
+            else
+            {
+                tbTVDBPin.Enabled = false;
+                tbTVDBPin.Text = null;
+            }
+            
             gpTVLookup.Enabled = runParameters.TVLookupEnabled;
 
             gpLookupMisc.Enabled = gpMovieLookup.Enabled || gpTVLookup.Enabled;
@@ -5290,9 +5305,9 @@ namespace EPGCentre
                 }
             }
 
-            if (cbTVLookupEnabled.Checked && string.IsNullOrWhiteSpace(tbTVDBPin.Text))
+            if (cbTVLookupEnabled.Checked && cboTVProvider.Text.ToUpperInvariant() == TVLookupProvider.Tvdb.ToString().ToUpperInvariant() &&  string.IsNullOrWhiteSpace(tbTVDBPin.Text))
             {
-                showErrorMessage("TV metadata lookups enabled but no TVDB pin entered.");
+                showErrorMessage("TV metadata lookups enabled using TVDB but no TVDB pin entered.");
                 return (false);
             }
 
@@ -5850,6 +5865,12 @@ namespace EPGCentre
 
             runParameters.TVLookupEnabled = cbTVLookupEnabled.Checked;
 
+            runParameters.LookupTVProvider = (TVLookupProvider)Enum.Parse(typeof(TVLookupProvider), cboTVProvider.Text, true);
+            if (runParameters.TVLookupEnabled && runParameters.LookupTVProvider == TVLookupProvider.Tvdb)
+                runParameters.LookupTVDBPin = tbTVDBPin.Text;
+            else
+                runParameters.LookupTVDBPin = null;
+
             switch (cboxTVLookupImageType.SelectedIndex)
             {
                 case 0:
@@ -5877,7 +5898,6 @@ namespace EPGCentre
 
             runParameters.LookupMatching = (MatchMethod)Enum.Parse(typeof(MatchMethod), cbxLookupMatching.Text);
             runParameters.LookupMatchThreshold = (int)nudLookupMatchThreshold.Value;
-            runParameters.LookupTVDBPin = tbTVDBPin.Text;
 
             runParameters.LookupNotFound = cbLookupNotFound.Checked;
             runParameters.LookupReload = cbLookupReload.Checked;
@@ -7273,6 +7293,11 @@ namespace EPGCentre
         private void cbChannelDefinitionFile_CheckedChanged(object sender, EventArgs e)
         {
             gpChannelDefinitionFile.Enabled = cbChannelDefinitionFile.Checked;
+        }
+
+        private void cboTVProvider_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            tbTVDBPin.Enabled = cboTVProvider.Text.ToUpperInvariant() == TVLookupProvider.Tvdb.ToString().ToUpperInvariant();            
         }
     }
 }

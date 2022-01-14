@@ -19,25 +19,45 @@
 //                                                                              //  
 //////////////////////////////////////////////////////////////////////////////////
 
+using System;
+using System.Text;
 using System.Runtime.Serialization;
+using System.Collections.ObjectModel;
 
 namespace Lookups.Tmdb
 {
     /// <summary>
-    /// The class that describes a movies images.
+    /// The class that describes a TV series detail.
     /// </summary>
     [DataContract]
-    public class TmdbMovieImages
-    {
+    public class TmdbSeriesDetail
+    {  
         /// <summary>
-        /// Get or set a movies images.
+        /// Get or set the genres.
         /// </summary>
-        [DataMember(Name = "backdrops")]
-        public TmdbImage[] Backdrops { get; set; }
+        [DataMember(Name = "genres")]
+        public Collection<TmdbGenre> Genres { get; set; }
 
         /// <summary>
-        /// Initialize a new instance of the TmdbMovieImages class.
+        /// Get or set the number of seasons.
         /// </summary>
-        public TmdbMovieImages() { }
+        [DataMember(Name = "number_of_seasons")]
+        public int NumberOfSeasons { get; set; }
+
+        /// <summary>
+        /// Initialize a new instance of the TmdbSeriesDetail class.
+        /// </summary>
+        public TmdbSeriesDetail() { }
+
+        /// <summary>
+        /// Get series details.
+        /// </summary>
+        /// <param name="instance">The API instance.</param>
+        /// <param name="identity">The identity of the series.</param>
+        /// <returns>The results object.</returns>
+        public static TmdbSeriesDetail GetDetails(TmdbAPI instance, int identity)
+        {
+            return instance.GetSeriesDetail(identity);
+        }
     }
 }

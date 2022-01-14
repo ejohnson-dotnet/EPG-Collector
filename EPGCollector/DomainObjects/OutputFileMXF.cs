@@ -971,7 +971,12 @@ namespace DomainObjects
             if (!epgEntry.IsNew)
                 xmlWriter.WriteAttributeString("originalAirdate", convertDateTimeToString(epgEntry.PreviousPlayDate, false));
             else
-                xmlWriter.WriteAttributeString("originalAirdate", convertDateTimeToString(epgEntry.StartTime, false));    
+            {
+                if (epgEntry.IdPrefix != "SH")
+                    xmlWriter.WriteAttributeString("originalAirdate", convertDateTimeToString(epgEntry.StartTime, false));
+                else
+                    xmlWriter.WriteAttributeString("originalAirdate", convertDateTimeToString(epgEntry.PreviousPlayDate, false));
+            }
 
             processSeries(xmlWriter, epgEntry);
 

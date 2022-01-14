@@ -42,6 +42,7 @@ namespace Lookups
         internal Collection<string> UnusedPosters { get; private set; }
 
         internal bool Initialized { get; private set; }
+        internal TmdbAPI ApiInstance { get { return apiInstance; } }
 
         private int noData;
         private int outstanding;
@@ -77,8 +78,8 @@ namespace Lookups
             {
                 Logger.Instance.Write("<e> An exception of type " + e.GetType().Name + " has occured while connecting to TMDB");
                 Logger.Instance.Write("<e> " + e.Message);
-                Logger.Instance.Write("<e> No movie metadata available");                
-                return;
+                Logger.Instance.Write("<e> No movie metadata available");
+                return;                
             }
 
             loadMovieDatabase();
@@ -534,7 +535,7 @@ namespace Lookups
             catch (OverflowException) { return (false); }
         }
 
-        private TmdbMovie findMovieEntry(TmdbMovie[] movies, string title, string date)
+        private TmdbMovie findMovieEntry(Collection<TmdbMovie> movies, string title, string date)
         {
             string noCaseTitle = title.ToLowerInvariant();
             Collection<TmdbMovie> selectedList = new Collection<TmdbMovie>();

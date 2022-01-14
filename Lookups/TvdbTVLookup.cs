@@ -33,15 +33,9 @@ using Lookups.Tvdb;
 
 namespace Lookups
 {
-    internal class TVLookup
+    internal class TvdbTVLookup : TVLookupBase
     {
-        internal int WebLookups { get; private set; }
-        internal int InStoreLookups { get; private set; }
-        internal int CacheLookups { get; private set; }
-
-        internal Collection<string> UnusedPosters { get; private set; }
-
-        internal bool Initialized { get; private set; }
+        internal override int LookupTotals { get { return webLookups + inStoreLookups + cacheLookups; } } 
 
         private Collection<TVSeriesEntry> tvSeries;
         private Collection<CacheEntry> cacheEntries;
@@ -53,6 +47,10 @@ namespace Lookups
         private DateTime startTime;
 
         private TvdbAPI apiInstance;
+
+        private int webLookups;
+        private int inStoreLookups;
+        private int cacheLookups;
 
         private int noData;
         private int outstanding;
@@ -76,7 +74,7 @@ namespace Lookups
         private string regionCode;
         private string regionName;
 
-        internal TVLookup(Logger streamLogger, string logHeader)
+        internal TvdbTVLookup(Logger streamLogger, string logHeader) : base(streamLogger, logHeader)
         {
             if (!RunParameters.Instance.TVLookupEnabled)
                 return;
@@ -294,7 +292,12 @@ namespace Lookups
             }
         }
 
-        internal LookupController.LookupReply Process(EPGEntry epgEntry)
+        /// <summary>
+        /// Process an EPG entry.
+        /// </summary>
+        /// <param name="epgEntry">The EPG entry.</param>
+        /// <returns>The result of the process.</returns>
+        internal override LookupController.LookupReply Process(EPGEntry epgEntry)
         {
             if (!RunParameters.Instance.TVLookupEnabled)
                 return LookupController.LookupReply.NotEnabled; 
@@ -345,7 +348,7 @@ namespace Lookups
                         Logger.Instance.Write("Season set to " + epgEntry.SeasonNumber + " Episode set to " + epgEntry.EpisodeNumber +
                             " Episode name set to " + (string.IsNullOrWhiteSpace(epgEntry.EventSubTitle) ? "n/a" : "'" + epgEntry.EventSubTitle + "'"));
 
-                    InStoreLookups++;
+                    inStoreLookups++;
                     return (LookupController.LookupReply.InStore);
                 }
                 else
@@ -454,9 +457,9 @@ namespace Lookups
                                 " Episode name set to " + (string.IsNullOrWhiteSpace(epgEntry.EventSubTitle) ? "n/a" : "'" + epgEntry.EventSubTitle + "'"));
 
                         if (fromCache)
-                            CacheLookups++;
+                            cacheLookups++;
                         else
-                            WebLookups++;
+                            webLookups++;
 
                         return (LookupController.LookupReply.WebLookup);
                     }
@@ -1426,7 +1429,7 @@ namespace Lookups
             epgEntry.EventCategory = new EventCategorySpec(programCategory);            
         }
 
-        internal void CreateTVDatabase()
+        internal override void CreateTVDatabase()
         {
             string databasePath = Path.Combine(RunParameters.DataDirectory, "TV Series Database.xml");
             Logger.Instance.Write("Creating TV series database " + databasePath);
@@ -1619,14 +1622,17 @@ namespace Lookups
             return (unusedPosters);
         }
 
-        internal void LogStats()
+        /// <summary>
+        /// Log statistics.
+        /// </summary>
+        internal override void LogStats()
         {
             if (!RunParameters.Instance.TVLookupEnabled)
                 return; 
 
-            Logger.Instance.Write("TV statistics: Web Lookups = " + WebLookups +
-                    " Cache lookups = " + CacheLookups +
-                    " In-store lookups = " + InStoreLookups +
+            Logger.Instance.Write("TV statistics: Web Lookups = " + webLookups +
+                    " Cache lookups = " + cacheLookups +
+                    " In-store lookups = " + inStoreLookups +
                     " No data = " + noData +
                     " Outstanding = " + outstanding +
                     " Threshold exclusions = " + thresholdExclusions);

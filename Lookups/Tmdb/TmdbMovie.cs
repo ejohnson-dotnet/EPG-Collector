@@ -185,7 +185,7 @@ namespace Lookups.Tmdb
         /// <summary>
         /// Get or set the list of images.
         /// </summary>
-        public TmdbMovieImages Images { get; set; }
+        public TmdbImages Images { get; set; }
         
         /// <summary>
         /// Get or set the list of keywords.
@@ -410,7 +410,7 @@ namespace Lookups.Tmdb
         /// <returns>True if the image is downloaded; false otherwise.</returns>
         public bool GetBackdropImage(TmdbAPI instance, int index, string fileName)
         {
-            if (Images == null || index < 0 || index >= Images.Backdrops.Length)
+            if (Images == null || index < 0 || index >= Images.Backdrops.Count)
                 throw new IndexOutOfRangeException("The image index is incorrect");
 
             return instance.GetImage(ImageType.Backdrop, Images.Backdrops[index].FilePath, -1, fileName);

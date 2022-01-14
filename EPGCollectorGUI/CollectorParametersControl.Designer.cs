@@ -488,6 +488,10 @@
             this.label85 = new System.Windows.Forms.Label();
             this.nudLookupTime = new System.Windows.Forms.NumericUpDown();
             this.gpTVLookup = new System.Windows.Forms.GroupBox();
+            this.cboTVProvider = new System.Windows.Forms.ComboBox();
+            this.label134 = new System.Windows.Forms.Label();
+            this.tbTVDBPin = new System.Windows.Forms.TextBox();
+            this.label125 = new System.Windows.Forms.Label();
             this.cboLookupsEpisodeSearchPriority = new System.Windows.Forms.ComboBox();
             this.label74 = new System.Windows.Forms.Label();
             this.label107 = new System.Windows.Forms.Label();
@@ -620,8 +624,6 @@
             this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.cmdSaveGeneral = new System.Windows.Forms.Button();
-            this.tbTVDBPin = new System.Windows.Forms.TextBox();
-            this.label125 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.nudScanRetries)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudSignalLockTimeout)).BeginInit();
             this.tbcParameters.SuspendLayout();
@@ -5632,6 +5634,8 @@
             // 
             // gpTVLookup
             // 
+            this.gpTVLookup.Controls.Add(this.cboTVProvider);
+            this.gpTVLookup.Controls.Add(this.label134);
             this.gpTVLookup.Controls.Add(this.tbTVDBPin);
             this.gpTVLookup.Controls.Add(this.label125);
             this.gpTVLookup.Controls.Add(this.cboLookupsEpisodeSearchPriority);
@@ -5646,6 +5650,43 @@
             this.gpTVLookup.TabIndex = 20;
             this.gpTVLookup.TabStop = false;
             this.gpTVLookup.Text = "TV Series Lookup";
+            // 
+            // cboTVProvider
+            // 
+            this.cboTVProvider.FormattingEnabled = true;
+            this.cboTVProvider.Items.AddRange(new object[] {
+            "TVDB",
+            "TMDB"});
+            this.cboTVProvider.Location = new System.Drawing.Point(703, 21);
+            this.cboTVProvider.Name = "cboTVProvider";
+            this.cboTVProvider.Size = new System.Drawing.Size(68, 21);
+            this.cboTVProvider.TabIndex = 31;
+            this.cboTVProvider.SelectedIndexChanged += new System.EventHandler(this.cboTVProvider_SelectedIndexChanged);
+            // 
+            // label134
+            // 
+            this.label134.AutoSize = true;
+            this.label134.Location = new System.Drawing.Point(624, 28);
+            this.label134.Name = "label134";
+            this.label134.Size = new System.Drawing.Size(46, 13);
+            this.label134.TabIndex = 30;
+            this.label134.Text = "Provider";
+            // 
+            // tbTVDBPin
+            // 
+            this.tbTVDBPin.Location = new System.Drawing.Point(703, 72);
+            this.tbTVDBPin.Name = "tbTVDBPin";
+            this.tbTVDBPin.Size = new System.Drawing.Size(68, 20);
+            this.tbTVDBPin.TabIndex = 33;
+            // 
+            // label125
+            // 
+            this.label125.AutoSize = true;
+            this.label125.Location = new System.Drawing.Point(624, 75);
+            this.label125.Name = "label125";
+            this.label125.Size = new System.Drawing.Size(53, 13);
+            this.label125.TabIndex = 32;
+            this.label125.Text = "TVDB pin";
             // 
             // cboLookupsEpisodeSearchPriority
             // 
@@ -7063,22 +7104,6 @@
             this.cmdSaveGeneral.UseVisualStyleBackColor = true;
             this.cmdSaveGeneral.Visible = false;
             // 
-            // tbTVDBPin
-            // 
-            this.tbTVDBPin.Location = new System.Drawing.Point(703, 24);
-            this.tbTVDBPin.Name = "tbTVDBPin";
-            this.tbTVDBPin.Size = new System.Drawing.Size(68, 20);
-            this.tbTVDBPin.TabIndex = 29;
-            // 
-            // label125
-            // 
-            this.label125.AutoSize = true;
-            this.label125.Location = new System.Drawing.Point(624, 28);
-            this.label125.Name = "label125";
-            this.label125.Size = new System.Drawing.Size(53, 13);
-            this.label125.TabIndex = 28;
-            this.label125.Text = "TVDB pin";
-            // 
             // CollectorParametersControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -7844,5 +7869,7 @@
         private System.Windows.Forms.CheckBox cbNoInvalidEntries;
         private System.Windows.Forms.TextBox tbTVDBPin;
         private System.Windows.Forms.Label label125;
+        private System.Windows.Forms.ComboBox cboTVProvider;
+        private System.Windows.Forms.Label label134;
     }
 }

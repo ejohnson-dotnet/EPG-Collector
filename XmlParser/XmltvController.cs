@@ -710,11 +710,22 @@ namespace XmltvParser
                 return null;
 
             Collection<string> genres = new Collection<string>();
+            
             foreach (XmltvText programCategory in categories)
             {
                 string languageText = checkCategoryLanguage(programCategory, fileSpec.Language);
                 if (languageText != null)
-                    genres.Add(languageText);
+                    genres.Add(languageText);                              
+            }
+
+            if (genres.Count == 0)
+            {
+                foreach (XmltvText programCategory in categories)
+                {
+                    string languageText = checkCategoryLanguage(programCategory, "en");
+                    if (languageText != null)
+                        genres.Add(languageText);
+                }
             }
 
             if (genres.Count == 0)
@@ -986,8 +997,17 @@ namespace XmltvParser
 
             foreach (XmltvText textString in languageStrings)
             {
-                if (textString.Language != null || textString.Language == languageCode.TranslationCode)
+                if (textString.Language != null && textString.Language == languageCode.TranslationCode)
                     return (textString.Text);
+            }
+
+            if (languageCode.TranslationCode != "en")
+            {
+                foreach (XmltvText textString in languageStrings)
+                {
+                    if (textString.Language == "en")
+                        return (textString.Text);
+                }
             }
 
             foreach (XmltvText textString in languageStrings)
@@ -1005,6 +1025,17 @@ namespace XmltvParser
                 return (category.Text);
 
             if (category.Language == languageCode.TranslationCode)
+                return (category.Text);
+
+            return (null);
+        }
+
+        private string checkCategoryLanguage(XmltvText category, string languageCode)
+        {
+            if (category.Language == null || languageCode == null)
+                return (category.Text);
+
+            if (category.Language == languageCode)
                 return (category.Text);
 
             return (null);
@@ -1029,11 +1060,23 @@ namespace XmltvParser
                     return (subtitling.Type);
             }
 
+            if (languageCode.TranslationCode != "en")
+            {
+                foreach (XmltvSubtitling subtitling in subtitlings)
+                {
+                    if (subtitling.Language == "en")
+                        return (subtitling.Type);
+                }
+            }
+
             foreach (XmltvSubtitling subtitling in subtitlings)
             {
                 if (subtitling.Language == null)
                     return (subtitling.Type);
             }
+
+            if (subtitlings.Count > 0)
+                return subtitlings[0].Type;
 
             return (null);
         }

@@ -30,6 +30,8 @@ using System.Runtime.Serialization.Json;
 using System.Runtime.Serialization;
 using System.Reflection;
 
+using Newtonsoft.Json;
+
 using DomainObjects;
 
 namespace Lookups.Tmdb
@@ -99,42 +101,51 @@ namespace Lookups.Tmdb
         }
 
         /// <summary>
+        /// Get the current default language code.
+        /// </summary>
+        /// 
+        public string DefaultLanguageCode { get { return defaultLanguageCode; } }
+
+        /// <summary>
         /// Get or set the flag that determines if responses are logged or not.
         /// </summary>
         public bool LogResponse { get; set; }
 
         private const string configurationUrl = "http://api.themoviedb.org/3/configuration?api_key={0}";
 
-        private const string movieSearchUrl = "http://api.themoviedb.org/3/search/movie?api_key={0}&query={1}&page={2}&include_adult=true";
-        private const string movieGetInfoUrl = "http://api.themoviedb.org/3/movie/{1}?api_key={0}";
-        private const string movieGetCastUrl = "http://api.themoviedb.org/3/movie/{1}/casts?api_key={0}";
-        private const string movieGetAlternativeTitlesUrl = "http://api.themoviedb.org/3/movie/{1}/alternative_titles?api_key={0}";
-        private const string movieGetImagesUrl = "http://api.themoviedb.org/3/movie/{1}/images?api_key={0}";
-        private const string movieGetKeywordsUrl = "http://api.themoviedb.org/3/movie/{1}/keywords?api_key={0}";
-        private const string movieGetReleaseInfoUrl = "http://api.themoviedb.org/3/movie/{1}/releases?api_key={0}";
-        private const string movieGetTrailersUrl = "http://api.themoviedb.org/3/movie/{1}/trailers?api_key={0}";
-        private const string movieGetTranslationsUrl = "http://api.themoviedb.org/3/movie/{1}/translations?api_key={0}";
+        private const string movieSearchUrl = "https://api.themoviedb.org/3/search/movie?api_key={0}&query={1}&page={2}&include_adult=true";
+        private const string movieGetInfoUrl = "https://api.themoviedb.org/3/movie/{1}?api_key={0}";
+        private const string movieGetCastUrl = "https://api.themoviedb.org/3/movie/{1}/casts?api_key={0}";
+        private const string movieGetAlternativeTitlesUrl = "https://api.themoviedb.org/3/movie/{1}/alternative_titles?api_key={0}";
+        private const string movieGetImagesUrl = "https://api.themoviedb.org/3/movie/{1}/images?api_key={0}";
+        private const string movieGetKeywordsUrl = "https://api.themoviedb.org/3/movie/{1}/keywords?api_key={0}";
+        private const string movieGetReleaseInfoUrl = "https://api.themoviedb.org/3/movie/{1}/releases?api_key={0}";
+        private const string movieGetTrailersUrl = "https://api.themoviedb.org/3/movie/{1}/trailers?api_key={0}";
+        private const string movieGetTranslationsUrl = "https://api.themoviedb.org/3/movie/{1}/translations?api_key={0}";
 
-        private const string personSearchUrl = "http://api.themoviedb.org/3/search/person?api_key={0}&query={1}&page={2}&include_adult=true";
-        private const string personGetInfoUrl = "http://api.themoviedb.org/3/person/{1}?api_key={0}";
-        private const string personGetCreditsUrl = "http://api.themoviedb.org/3/person/{1}/credits?api_key={0}";
-        private const string personGetImagesUrl = "http://api.themoviedb.org/3/person/{1}/images?api_key={0}";
+        private const string personSearchUrl = "https://api.themoviedb.org/3/search/person?api_key={0}&query={1}&page={2}&include_adult=true";
+        private const string personGetInfoUrl = "https://api.themoviedb.org/3/person/{1}?api_key={0}";
+        private const string personGetCreditsUrl = "https://api.themoviedb.org/3/person/{1}/credits?api_key={0}";
+        private const string personGetImagesUrl = "https://api.themoviedb.org/3/person/{1}/images?api_key={0}";
 
-        private const string collectionGetInfoUrl = "http://api.themoviedb.org/3/collection/{1}?api_key={0}";
+        private const string collectionGetInfoUrl = "https://api.themoviedb.org/3/collection/{1}?api_key={0}";
 
-        private const string companyGetInfoUrl = "http://api.themoviedb.org/3/company/{1}?api_key={0}";
-        private const string companyMoviesUrl = "http://api.themoviedb.org/3/company/{1}/movies?api_key={0}&page={2}";
+        private const string companyGetInfoUrl = "https://api.themoviedb.org/3/company/{1}?api_key={0}";
+        private const string companyMoviesUrl = "https://api.themoviedb.org/3/company/{1}/movies?api_key={0}&page={2}";
+
+        private const string tvSearchUrl = "https://api.themoviedb.org/3/search/tv?api_key={0}&query={1}&page={2}&include_adult=true";
+        private const string tvSearchWithCodeUrl = "https://api.themoviedb.org/3/search/tv?api_key={0}&query={1}&language={2}&page={3}&include_adult=true";
+        private const string tvGetSeriesDetailUrl = "https://api.themoviedb.org/3/tv/{1}?api_key={0}";
+        private const string tvGetSeriesCreditsUrl = "https://api.themoviedb.org/3/tv/{1}/credits?api_key={0}";
+        private const string tvGetImagesUrl = "https://api.themoviedb.org/3/tv/{1}/images?api_key={0}";
+        private const string tvGetSeasonDetailsUrl = "https://api.themoviedb.org/3/tv/{1}/season/{2}?api_key={0}";
+        private const string tvGetEpisodeDetailsUrl = "https://api.themoviedb.org/3/tv/{1}/season/{2}/episode/{3}?api_key={0}";
+        private const string tvGetEpisodeCreditsUrl = "https://api.themoviedb.org/3/tv/{1}/season/{2}/episode/{3}/credits?api_key={0}";
 
         private string apiKey;
+        private string defaultLanguageCode = "en";
 
         private TmdbConfiguration configuration;
-
-        private Collection<TmdbMovie> movies;
-
-        private Collection<TmdbPerson> people;
-
-        private Collection<TmdbCompanyMovie> companyMovies;
-
         private DateTime? lastAccessTime;
 
         private Logger logger;
@@ -168,7 +179,7 @@ namespace Lookups.Tmdb
         {
             initializeFunction();
 
-            movies = new Collection<TmdbMovie>();            
+            Collection<TmdbMovie> movies = new Collection<TmdbMovie>();            
 
             int pageNumber = 0;
             TmdbMovieSearchResults pageResults = null;
@@ -188,12 +199,7 @@ namespace Lookups.Tmdb
             while (pageNumber < totalPages);
 
             TmdbMovieSearchResults returnResults = new TmdbMovieSearchResults();
-            returnResults.Movies = new TmdbMovie[movies.Count];
-
-            for (int index = 0; index < movies.Count; index++)
-                returnResults.Movies[index] = movies[index];
-
-            returnResults.TotalResults = returnResults.Movies.Length;
+            returnResults.Movies = movies;
             returnResults.TotalPages = pageNumber;
 
             return returnResults;            
@@ -212,20 +218,8 @@ namespace Lookups.Tmdb
             string url = string.Format(movieSearchUrl, apiKey, escapeQueryString(title), page);
             string responseString = getData(url);
             logResponse("Movie Search", responseString);
-            
-            DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(TmdbMovieSearchResults));
-            MemoryStream stream = new MemoryStream(Encoding.Unicode.GetBytes(responseString));
 
-            try
-            {
-                return serializer.ReadObject(stream) as TmdbMovieSearchResults;
-            }
-            catch (SerializationException)
-            {
-                TmdbMovieSearchResults exceptionResults = new TmdbMovieSearchResults();
-                exceptionResults.Movies = new TmdbMovie[0];
-                return exceptionResults;
-            }          
+            return JsonConvert.DeserializeObject<TmdbMovieSearchResults>(responseString); 
         }
 
         /// <summary>
@@ -241,10 +235,7 @@ namespace Lookups.Tmdb
             string responseString = getData(url);
             logResponse("Movie Info", responseString);
 
-            DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(TmdbMovie));
-            MemoryStream stream = new MemoryStream(Encoding.Unicode.GetBytes(responseString));
-
-            return serializer.ReadObject(stream) as TmdbMovie;   
+            return JsonConvert.DeserializeObject<TmdbMovie>(responseString);  
         }
 
         /// <summary>
@@ -260,10 +251,7 @@ namespace Lookups.Tmdb
             string responseString = getData(url);
             logResponse("Alternative Titles", responseString);
 
-            DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(TmdbAlternativeTitles));
-            MemoryStream stream = new MemoryStream(Encoding.Unicode.GetBytes(responseString));
-
-            return serializer.ReadObject(stream) as TmdbAlternativeTitles;
+            return JsonConvert.DeserializeObject<TmdbAlternativeTitles>(responseString); 
         }
 
         /// <summary>
@@ -279,10 +267,7 @@ namespace Lookups.Tmdb
             string responseString = getData(url);
             logResponse("Movie Cast", responseString);
 
-            DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(TmdbCast));
-            MemoryStream stream = new MemoryStream(Encoding.Unicode.GetBytes(responseString));
-
-            return serializer.ReadObject(stream) as TmdbCast; 
+            return JsonConvert.DeserializeObject<TmdbCast>(responseString); 
         }
 
         /// <summary>
@@ -290,7 +275,7 @@ namespace Lookups.Tmdb
         /// </summary>
         /// <param name="id">The ID of the TMDb movie you are searching for.</param>
         /// <returns>The results object.</returns>
-        public TmdbMovieImages GetMovieImages(int id)
+        public TmdbImages GetMovieImages(int id)
         {
             initializeFunction();
 
@@ -298,10 +283,7 @@ namespace Lookups.Tmdb
             string responseString = getData(url);
             logResponse("Movie Images", responseString);
 
-            DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(TmdbMovieImages));
-            MemoryStream stream = new MemoryStream(Encoding.Unicode.GetBytes(responseString));
-
-            return serializer.ReadObject(stream) as TmdbMovieImages;
+            return JsonConvert.DeserializeObject<TmdbImages>(responseString); 
         }
 
         /// <summary>
@@ -317,10 +299,7 @@ namespace Lookups.Tmdb
             string responseString = getData(url);
             logResponse("Movie Keywords", responseString);
 
-            DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(TmdbMovieKeywords));
-            MemoryStream stream = new MemoryStream(Encoding.Unicode.GetBytes(responseString));
-
-            return serializer.ReadObject(stream) as TmdbMovieKeywords;
+            return JsonConvert.DeserializeObject<TmdbMovieKeywords>(responseString); 
         }
 
         /// <summary>
@@ -336,10 +315,7 @@ namespace Lookups.Tmdb
             string responseString = getData(url);
             logResponse("Movie Release Info", responseString);
 
-            DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(TmdbMovieReleaseInfo));
-            MemoryStream stream = new MemoryStream(Encoding.Unicode.GetBytes(responseString));
-
-            return serializer.ReadObject(stream) as TmdbMovieReleaseInfo;
+            return JsonConvert.DeserializeObject<TmdbMovieReleaseInfo>(responseString); 
         }
 
         /// <summary>
@@ -355,10 +331,7 @@ namespace Lookups.Tmdb
             string responseString = getData(url);
             logResponse("Movie Trailers", responseString);
 
-            DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(TmdbMovieTrailers));
-            MemoryStream stream = new MemoryStream(Encoding.Unicode.GetBytes(responseString));
-
-            return serializer.ReadObject(stream) as TmdbMovieTrailers;  
+            return JsonConvert.DeserializeObject<TmdbMovieTrailers>(responseString); 
         }
 
         /// <summary>
@@ -374,10 +347,7 @@ namespace Lookups.Tmdb
             string responseString = getData(url);
             logResponse("Movie Translations", responseString);
 
-            DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(TmdbMovieTranslations));
-            MemoryStream stream = new MemoryStream(Encoding.Unicode.GetBytes(responseString));
-
-            return serializer.ReadObject(stream) as TmdbMovieTranslations;
+            return JsonConvert.DeserializeObject<TmdbMovieTranslations>(responseString); 
         }
 
         /// <summary>
@@ -389,7 +359,7 @@ namespace Lookups.Tmdb
         {
             initializeFunction();
 
-            people = new Collection<TmdbPerson>();
+            Collection<TmdbPerson> people = new Collection<TmdbPerson>();
 
             int pageNumber = 0;
             TmdbPersonSearchResults pageResults = null;
@@ -405,12 +375,7 @@ namespace Lookups.Tmdb
             while (pageNumber < pageResults.TotalPages);
 
             TmdbPersonSearchResults returnResults = new TmdbPersonSearchResults();
-            returnResults.People = new TmdbPerson[people.Count];
-
-            for (int index = 0; index < people.Count; index++)
-                returnResults.People[index] = people[index];
-
-            returnResults.TotalResults = returnResults.People.Length;
+            returnResults.People = people;
             returnResults.TotalPages = pageNumber;
 
             return returnResults;
@@ -430,10 +395,7 @@ namespace Lookups.Tmdb
             string responseString = getData(url);
             logResponse("People Search", responseString);
 
-            DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(TmdbPersonSearchResults));
-            MemoryStream stream = new MemoryStream(Encoding.Unicode.GetBytes(responseString));
-
-            return serializer.ReadObject(stream) as TmdbPersonSearchResults; 
+            return JsonConvert.DeserializeObject<TmdbPersonSearchResults>(responseString); 
         }
 
         /// <summary>
@@ -449,10 +411,7 @@ namespace Lookups.Tmdb
             string responseString = getData(url);
             logResponse("Person Info", responseString);
 
-            DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(TmdbPerson));
-            MemoryStream stream = new MemoryStream(Encoding.Unicode.GetBytes(responseString));
-
-            return serializer.ReadObject(stream) as TmdbPerson;
+            return JsonConvert.DeserializeObject<TmdbPerson>(responseString); 
         }
 
         /// <summary>
@@ -468,10 +427,7 @@ namespace Lookups.Tmdb
             string responseString = getData(url);
             logResponse("Person Credits", responseString);
 
-            DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(TmdbPersonCredits));
-            MemoryStream stream = new MemoryStream(Encoding.Unicode.GetBytes(responseString));
-
-            return serializer.ReadObject(stream) as TmdbPersonCredits;
+            return JsonConvert.DeserializeObject<TmdbPersonCredits>(responseString);
         }
 
         /// <summary>
@@ -487,10 +443,7 @@ namespace Lookups.Tmdb
             string responseString = getData(url);
             logResponse("Person Images", responseString);
 
-            DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(TmdbPersonImages));
-            MemoryStream stream = new MemoryStream(Encoding.Unicode.GetBytes(responseString));
-
-            return serializer.ReadObject(stream) as TmdbPersonImages;
+            return JsonConvert.DeserializeObject<TmdbPersonImages>(responseString);
         }
 
         /// <summary>
@@ -506,10 +459,7 @@ namespace Lookups.Tmdb
             string responseString = getData(url);
             logResponse("Collection Info", responseString);
 
-            DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(TmdbCollectionInfo));
-            MemoryStream stream = new MemoryStream(Encoding.Unicode.GetBytes(responseString));
-
-            return serializer.ReadObject(stream) as TmdbCollectionInfo;
+            return JsonConvert.DeserializeObject<TmdbCollectionInfo>(responseString);
         }
 
         /// <summary>
@@ -525,10 +475,7 @@ namespace Lookups.Tmdb
             string responseString = getData(url);
             logResponse("Company Info", responseString);
 
-            DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(TmdbCompanyInfo));
-            MemoryStream stream = new MemoryStream(Encoding.Unicode.GetBytes(responseString));
-
-            return serializer.ReadObject(stream) as TmdbCompanyInfo;
+            return JsonConvert.DeserializeObject<TmdbCompanyInfo>(responseString);
         }
 
         /// <summary>
@@ -540,7 +487,7 @@ namespace Lookups.Tmdb
         {
             initializeFunction();
 
-            companyMovies = new Collection<TmdbCompanyMovie>();
+            Collection<TmdbCompanyMovie> companyMovies = new Collection<TmdbCompanyMovie>();
 
             int pageNumber = 0;
             TmdbCompanyMovies pageResults = null;
@@ -556,10 +503,7 @@ namespace Lookups.Tmdb
             while (companyMovies.Count < pageResults.Total_Results);
 
             TmdbCompanyMovies returnResults = new TmdbCompanyMovies();
-            returnResults.Movies = new TmdbCompanyMovie[companyMovies.Count];
-
-            for (int index = 0; index < companyMovies.Count; index++)
-                returnResults.Movies[index] = companyMovies[index];
+            returnResults.Movies = companyMovies;
 
             return returnResults;            
         }
@@ -578,10 +522,7 @@ namespace Lookups.Tmdb
             string responseString = getData(url);
             logResponse("Company Movies", responseString);
 
-            DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(TmdbCompanyMovies));
-            MemoryStream stream = new MemoryStream(Encoding.Unicode.GetBytes(responseString));
-
-            return serializer.ReadObject(stream) as TmdbCompanyMovies;
+            return JsonConvert.DeserializeObject<TmdbCompanyMovies>(responseString);
         }
 
         /// <summary>
@@ -648,6 +589,165 @@ namespace Lookups.Tmdb
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Get all TV series matching a search string..
+        /// </summary>
+        /// <param name="title">The title or partial title of the show to search for.</param>
+        /// <param name="languageCode">The language code or null if not specified.</param>
+        /// <returns>The results object.</returns>
+        public TmdbSeriesSearchResults SearchForSeries(string title, string languageCode)
+        {
+            initializeFunction();
+
+            TmdbSeriesSearchResults returnResults = new TmdbSeriesSearchResults();
+            returnResults.Series = new Collection<TmdbSeries>();
+
+            int pageNumber = 0;
+            TmdbSeriesSearchResults pageResults = null;
+            int totalPages = -1;
+
+            do
+            {
+                pageNumber++;                
+                pageResults = SearchForSeries(title, languageCode, pageNumber);
+
+                foreach (TmdbSeries tvShow in pageResults.Series)
+                    returnResults.Series.Add(tvShow);
+
+                if (totalPages == -1)
+                    totalPages = pageResults.TotalPages;
+            }
+            while (pageNumber < totalPages);
+            
+            returnResults.TotalPages = pageNumber;
+
+            return returnResults;
+        }
+
+        /// <summary>
+        /// Get a page of tv titles given a search string.
+        /// </summary>
+        /// <param name="title">The title of the movie to search for.</param>
+        /// <param name="languageCode">The language code or null if not specified.</param>
+        /// <param name="page">The page number.</param>
+        /// <returns>The results object.</returns>
+        public TmdbSeriesSearchResults SearchForSeries(string title, string languageCode, int page)
+        {
+            initializeFunction();
+
+            string url;
+            if (!string.IsNullOrWhiteSpace(languageCode))
+                url = string.Format(tvSearchWithCodeUrl, apiKey, escapeQueryString(title), languageCode, page);
+            else
+                url = string.Format(tvSearchUrl, apiKey, escapeQueryString(title), page);
+
+            string responseString = getData(url);
+            logResponse("TV Search", responseString);
+
+            return JsonConvert.DeserializeObject<TmdbSeriesSearchResults>(responseString);
+        }
+
+        /// <summary>
+        /// Retrieve details for a series.
+        /// </summary>
+        /// <param name="id">The ID of the TMDb series you are searching for.</param>
+        /// <returns>The results object.</returns>
+        public TmdbSeriesDetail GetSeriesDetail(int id)
+        {
+            initializeFunction();
+
+            string url = string.Format(tvGetSeriesDetailUrl, apiKey, id);
+            string responseString = getData(url);
+            logResponse("TV Series Detail", responseString);
+
+            return JsonConvert.DeserializeObject<TmdbSeriesDetail>(responseString);
+        }
+
+        /// <summary>
+        /// Retrieve cast information about a series.
+        /// </summary>
+        /// <param name="id">The ID of the TMDb series you are searching for.</param>
+        /// <returns>The results object.</returns>
+        public TmdbCast GetSeriesCast(int id)
+        {
+            initializeFunction();
+
+            string url = string.Format(tvGetSeriesCreditsUrl, apiKey, id);
+            string responseString = getData(url);
+            logResponse("TV Cast", responseString);
+
+            return JsonConvert.DeserializeObject<TmdbCast>(responseString);
+        }
+
+        /// <summary>
+        /// Retrieve images for a series.
+        /// </summary>
+        /// <param name="id">The ID of the TMDb series you are searching for.</param>
+        /// <returns>The results object.</returns>
+        public TmdbImages GetSeriesImages(int id)
+        {
+            initializeFunction();
+
+            string url = string.Format(tvGetImagesUrl, apiKey, id);
+            string responseString = getData(url);
+            logResponse("TV Images", responseString);
+
+            return JsonConvert.DeserializeObject<TmdbImages>(responseString);
+        }
+
+        /// <summary>
+        /// Retrieve details of a season.
+        /// </summary>
+        /// <param name="seriesId">The ID of the TMDb series you are searching for.</param>
+        /// <param name="seasonId">The ID of the TMDb seeason you are searching for.</param>
+        /// <returns>The results object.</returns>
+        public TmdbSeason GetSeasonDetails(int seriesId, int seasonId)
+        {
+            initializeFunction();
+
+            string url = string.Format(tvGetSeasonDetailsUrl, apiKey, seriesId, seasonId);
+            string responseString = getData(url);
+            logResponse("TV Season Details", responseString);
+
+            return JsonConvert.DeserializeObject<TmdbSeason>(responseString);
+        }
+
+        /// <summary>
+        /// Retrieve details of an episode.
+        /// </summary>
+        /// <param name="seriesId">The ID of the TMDb series you are searching for.</param>
+        /// <param name="seasonId">The ID of the TMDb seeason you are searching for.</param>
+        /// <param name="episodeId">The ID of the TMDb episode you are searching for.</param>
+        /// <returns>The results object.</returns>
+        public TmdbEpisode GetEpisodeDetails(int seriesId, int seasonId, int episodeId)
+        {
+            initializeFunction();
+
+            string url = string.Format(tvGetEpisodeDetailsUrl, apiKey, seriesId, seasonId, episodeId);
+            string responseString = getData(url);
+            logResponse("TV Episode Details", responseString);
+
+            return JsonConvert.DeserializeObject<TmdbEpisode>(responseString);
+        }
+
+        /// <summary>
+        /// Retrieve cast information about an episode.
+        /// </summary>
+        /// <param name="seriesId">The series ID.</param>
+        /// <param name="seasonNumber">The season number.</param>
+        /// <param name="episodeId">The episode ID.</param>
+        /// <returns>The results object.</returns>
+        public TmdbCast GetEpisodeCast(int seriesId, int seasonNumber, int episodeId)
+        {
+            initializeFunction();
+
+            string url = string.Format(tvGetEpisodeCreditsUrl, apiKey, seriesId, seasonNumber, episodeId);
+            string responseString = getData(url);
+            logResponse("TV Cast", responseString);
+
+            return JsonConvert.DeserializeObject<TmdbCast>(responseString);
         }
 
         private void initializeFunction()

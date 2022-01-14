@@ -19,38 +19,64 @@
 //                                                                              //  
 //////////////////////////////////////////////////////////////////////////////////
 
-using System.Collections.ObjectModel;
+using System;
+using System.Text;
 using System.Runtime.Serialization;
+using System.Collections.ObjectModel;
 
-namespace Lookups.Tvdb
+namespace Lookups.Tmdb
 {
     /// <summary>
-    /// The class that describes the results from a series episode search.
-    /// </summary>    
+    /// The class that describes a TV season.
+    /// </summary>
     [DataContract]
-    public class TvdbSeriesEpisodesResult
+    public class TmdbSeason
     {
-        /*/// <summary>
-        /// Get or set the errors.
-        /// </summary>        
-        [DataMember(Name = "errors")]
-        public TvdbErrors Errors { get; set; }*/
-
         /// <summary>
-        /// Get or set the page links.
-        /// </summary>        
-        [DataMember(Name = "links")]
-        public TvdbPageLink PageLinks { get; set; }
-
-        /// <summary>
-        /// Get or set the series.
-        /// </summary>        
-        [DataMember(Name = "data")]
-        public Collection<TvdbEpisode> Episodes { get; set; }
-
-        /// <summary>
-        /// Initialize a new instance of the TvdbSeriesInfoResult class.
+        /// Get or set the release date as a string.
         /// </summary>
-        public TvdbSeriesEpisodesResult() { }
+        [DataMember(Name = "air_date")]
+        public string AirDateString { get; set; }
+
+        /// <summary>
+        /// Get or set the episode list.
+        /// </summary>
+        [DataMember(Name = "episodes")]
+        public Collection<TmdbEpisode> Episodes { get; set; }
+
+        /// <summary>
+        /// Get or set the name.
+        /// </summary>
+        [DataMember(Name = "name")]
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Get or set the overview.
+        /// </summary>
+        [DataMember(Name = "overview")]
+        public string Overview { get; set; }
+
+        /// <summary>
+        /// Get or set the identity.
+        /// </summary>
+        [DataMember(Name = "id")]
+        public int Identity { get; set; }
+
+        /// <summary>
+        /// Get or set the poster path.
+        /// </summary>
+        [DataMember(Name = "poster_path")]
+        public string PosterPath { get; set; }
+        
+        /// <summary>
+        /// Get or set the season number.
+        /// </summary>
+        [DataMember(Name = "season_number")]
+        public int SeasonNumber { get; set; }
+
+        /// <summary>
+        /// Initialize a new instance of the TmdbMovie class.
+        /// </summary>
+        public TmdbSeason() { }
     }
 }

@@ -147,7 +147,7 @@ namespace DomainObjects
         /// <returns>A category instance or null if the category is undefined.</returns>
         protected static ProgramCategory FindCategory(Collection<ProgramCategory> categories, string categoryTag)
         {
-            if (categories == null)
+            if (categories == null || string.IsNullOrWhiteSpace(categoryTag))
                 return (null);
 
             foreach (ProgramCategory category in categories)

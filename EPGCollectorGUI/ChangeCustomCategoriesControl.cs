@@ -191,6 +191,11 @@ namespace EPGCentre
 
             return (message == null);
         }
+
+        private void categoryBindingSource_CurrentChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
 

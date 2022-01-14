@@ -19,81 +19,44 @@
 //                                                                              //  
 //////////////////////////////////////////////////////////////////////////////////
 
+using System.Collections.ObjectModel;
 using System.Runtime.Serialization;
 
-namespace Lookups.Tvdb
+namespace Lookups.Tmdb
 {
     /// <summary>
-    /// The class that describes a series banner.
+    /// The class that describes the results from a TV series search.
     /// </summary>
     [DataContract]
-    public class TvdbBanner
+    public class TmdbSeriesSearchResults
     {
         /// <summary>
-        /// Get or set the path.
+        /// Get or set the page number.
         /// </summary>
-        [DataMember(Name = "id")]
-        public int Identity { get; set; }
+        [DataMember(Name="page")]
+        public int Page { get; set; }
 
         /// <summary>
-        /// Get or set the key type.
+        /// Get or set the list of TV shows.
         /// </summary>
-        [DataMember(Name = "keyType")]
-        public string KeyType { get; set; }
+        [DataMember(Name = "results")]
+        public Collection<TmdbSeries> Series { get; set; }
 
         /// <summary>
-        /// Get or set the sub key.
+        /// Get or set the total number of pages.
         /// </summary>
-        [DataMember(Name = "subKey")]
-        public string SubKey { get; set; }
+        [DataMember(Name = "total_pages")]
+        public int TotalPages { get; set; }
 
         /// <summary>
-        /// Get or set the filename.
+        /// Get or set the total number of movies.
         /// </summary>
-        [DataMember(Name = "fileName")]
-        public string FileName { get; set; }
+        [DataMember(Name = "total_results")]
+        public int TotalResults { get; set; }
 
         /// <summary>
-        /// Get or set the resolution.
+        /// Initialize a new instance of the TmdbMovieSearchResults class.
         /// </summary>
-        [DataMember(Name = "resolution")]
-        public string Resolution { get; set; }
-
-        /// <summary>
-        /// Get or set the ratings info.
-        /// </summary>
-        [DataMember(Name = "ratingsInfo")]
-        public TvdbBannerRatingsInfo RatingsInfo { get; set; }
-
-        /// <summary>
-        /// Get or set the thumbnail filename.
-        /// </summary>
-        [DataMember(Name = "thumbnail")]
-        public string ThumbNail { get; set; }
-
-        /// <summary>
-        /// Initialize a new instance of the TvdbBanner class.
-        /// </summary>
-        public TvdbBanner() { }
-
-        /// <summary>
-        /// Check if the banner is a particular type.
-        /// </summary>
-        /// <param name="imageType">The banner type.</param>
-        /// <returns>True if the type matches; false otherwise.</returns>
-        public bool IsType(TvdbAPI.ImageType imageType)
-        {
-            switch (imageType)
-            {
-                case TvdbAPI.ImageType.Poster:
-                    return KeyType == "poster";
-                case TvdbAPI.ImageType.FanArt:
-                    return KeyType == "fanart";
-                case TvdbAPI.ImageType.Season:
-                    return KeyType == "season";
-                default:
-                    return false;
-            }
-        }
+        public TmdbSeriesSearchResults() { }
     }
 }

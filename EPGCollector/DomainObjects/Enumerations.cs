@@ -1787,5 +1787,20 @@ namespace DomainObjects
         /// </summary>
         Both
     }
+
+    /// <summary>
+    /// The providers of TV metadata.
+    /// </summary>
+    public enum TVLookupProvider
+    {
+        /// <summary>
+        /// The provider is TheTVDB database
+        /// </summary>
+        Tvdb,
+        /// <summary>
+        /// The provider is the TMDB database.
+        /// </summary>
+        Tmdb
+    }
 }
 

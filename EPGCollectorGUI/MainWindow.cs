@@ -938,11 +938,7 @@ namespace EPGCentre
 
             string fullPath = Path.Combine(RunParameters.DataDirectory, CustomProgramCategory.FileName + ".cfg");
             if (!File.Exists(fullPath))
-            {
-                fullPath = Path.Combine(RunParameters.ConfigDirectory, Path.Combine("Program Categories", CustomProgramCategory.FileName + ".cfg"));
-                if (!File.Exists(fullPath))
-                    fullPath = null;
-            }
+                fullPath = Path.Combine(RunParameters.ConfigDirectory, Path.Combine("Program Categories", CustomProgramCategory.FileName + ".cfg"));                
 
             Cursor.Current = Cursors.WaitCursor;
             changeCustomCategoriesControl.Process(fullPath);

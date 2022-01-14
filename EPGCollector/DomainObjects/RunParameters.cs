@@ -143,7 +143,7 @@ namespace DomainObjects
         /// <summary>
         /// Get the current fixpack number.
         /// </summary>
-        public static string Fixpack { get { return ("29"); } }
+        public static string Fixpack { get { return ("31"); } }
 
         /// <summary>
         /// Get the privilege level.
@@ -472,6 +472,15 @@ namespace DomainObjects
         {
             get { return (tvLookupEnabled); }
             set { tvLookupEnabled = value; }
+        }
+
+        /// <summary>
+        /// Get or set the TV lookups provider.
+        /// </summary>
+        public TVLookupProvider LookupTVProvider
+        {
+            get { return (lookupTVProvider); }
+            set { lookupTVProvider = value; }
         }
 
         /// <summary>
@@ -1143,7 +1152,7 @@ namespace DomainObjects
         private int movieLowTime = 90;
         private int movieHighTime = 150;
         private string moviePhraseSeparator = ",";
-        private bool tvLookupEnabled;
+        private bool tvLookupEnabled;        
         private LookupImageType downloadTVThumbnail = LookupImageType.Poster;
         private int lookupTimeLimit = 60;
         private int lookupErrorLimit = 5;
@@ -1164,6 +1173,7 @@ namespace DomainObjects
         private bool lookupOverwrite;
         private EpisodeSearchPriority lookupEpisodeSearchPriority = EpisodeSearchPriority.SeasonEpisode;
         private string lookupTVDBPin;
+        private TVLookupProvider lookupTVProvider = TVLookupProvider.Tvdb;
 
         private string xmltvIconTagPathPrefix;
 
@@ -1560,6 +1570,10 @@ namespace DomainObjects
                         case "LOOKUPTVDBPIN":
                             Logger.Instance.Write("Processing ini parameter: " + line);
                             reply = processLookupTVDBPin(parts[1]);
+                            break;
+                        case "LOOKUPTVPROVIDER":
+                            Logger.Instance.Write("Processing ini parameter: " + line);
+                            reply = processLookupTVProvider(parts[1]);
                             break;
                         case "CHANNELUPDATEENABLED":
                             Logger.Instance.Write("Processing ini parameter: " + line);
@@ -4591,6 +4605,35 @@ namespace DomainObjects
             return (ExitCode.OK);
         }
 
+        private ExitCode processLookupTVProvider(string parts)
+        {
+            if (string.IsNullOrWhiteSpace(parts.Trim()))
+            {
+                lastError = "INI file format error: The LookupTVProvider line parameter is missing.";
+                Logger.Instance.Write(lastError);
+                return (ExitCode.ParameterError);
+            }
+
+            try
+            {
+                lookupTVProvider = (TVLookupProvider)Enum.Parse(typeof(TVLookupProvider), parts, true);
+            }
+            catch (ArgumentException)
+            {
+                lastError = "INI file format error: The LookupTVProvider line parameter is incorrect.";
+                Logger.Instance.Write(lastError);
+                return (ExitCode.ParameterError);
+            }
+            catch (OverflowException)
+            {
+                lastError = "INI file format error: The LookupTVProvider line parameter is incorrect.";
+                Logger.Instance.Write(lastError);
+                return (ExitCode.ParameterError);
+            }
+
+            return (ExitCode.OK);
+        }
+
         private ExitCode processChannelUpdateEnabled(string parts)
         {
             if (string.IsNullOrWhiteSpace(parts.Trim()))
@@ -6188,6 +6231,10 @@ namespace DomainObjects
             if (TVLookupEnabled)
             {
                 streamWriter.WriteLine("TVLookupEnabled=yes");
+                streamWriter.WriteLine("LookupTVProvider=" + LookupTVProvider);
+
+                if (LookupTVDBPin != null)
+                    streamWriter.WriteLine("LookupTVDBPin=" + LookupTVDBPin); 
                 
                 switch (DownloadTVThumbnail)
                 {
@@ -6282,9 +6329,6 @@ namespace DomainObjects
                 streamWriter.WriteLine("LookupOverwrite=no");
 
             streamWriter.WriteLine("LookupEpisodeSearchPriority=" + LookupEpisodeSearchPriority);
-
-            if (LookupTVDBPin != null)
-                streamWriter.WriteLine("LookupTVDBPin=" + LookupTVDBPin); 
         }
 
         private void outputChannelUpdateParameters(StreamWriter streamWriter)

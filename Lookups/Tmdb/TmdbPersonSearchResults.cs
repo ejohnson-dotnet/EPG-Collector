@@ -19,6 +19,7 @@
 //                                                                              //  
 //////////////////////////////////////////////////////////////////////////////////
 
+using System.Collections.ObjectModel;
 using System.Runtime.Serialization;
 
 namespace Lookups.Tmdb
@@ -39,7 +40,7 @@ namespace Lookups.Tmdb
         /// Get or set the results.
         /// </summary>
         [DataMember(Name = "results")]
-        public TmdbPerson[] People { get; set; }
+        public Collection<TmdbPerson> People { get; set; }
 
         /// <summary>
         /// Get or set the total number of pages.

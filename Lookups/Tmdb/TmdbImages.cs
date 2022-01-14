@@ -19,49 +19,32 @@
 //                                                                              //  
 //////////////////////////////////////////////////////////////////////////////////
 
+using System.Collections.ObjectModel;
 using System.Runtime.Serialization;
 
-namespace Lookups.Tvdb
+namespace Lookups.Tmdb
 {
     /// <summary>
-    /// The class that describes the image summary structure.
+    /// The class that describes a list of images.
     /// </summary>
     [DataContract]
-    public class TvdbImageSummary
+    public class TmdbImages
     {
         /// <summary>
-        /// Get or set the fan art count.
+        /// Get or set the backdrops.
         /// </summary>
-        [DataMember(Name = "fanart")]
-        public int FanArtCount { get; set; }
+        [DataMember(Name = "backdrops")]
+        public Collection<TmdbImage> Backdrops { get; set; }
 
         /// <summary>
-        /// Get or set the poster count.
+        /// Get or set a movies posters.
         /// </summary>
-        [DataMember(Name = "poster")]
-        public int PosterCount { get; set; }
+        [DataMember(Name = "posters")]
+        public Collection<TmdbImage> Posters { get; set; }
 
         /// <summary>
-        /// Get or set the season count.
+        /// Initialize a new instance of the TmdbMovieImages class.
         /// </summary>
-        [DataMember(Name = "season")]
-        public int SeasonCount { get; set; }
-
-        /// <summary>
-        /// Get or set the season wide count.
-        /// </summary>
-        [DataMember(Name = "seasonwide")]
-        public int SeasonWide { get; set; }
-
-        /// <summary>
-        /// Get or set the series count.
-        /// </summary>
-        [DataMember(Name = "series")]
-        public int SeriesCount { get; set; }
-
-        /// <summary>
-        /// Initialize a new instance of the TvdbImageSummary class.
-        /// </summary>
-        public TvdbImageSummary() { }
+        public TmdbImages() { }
     }
 }

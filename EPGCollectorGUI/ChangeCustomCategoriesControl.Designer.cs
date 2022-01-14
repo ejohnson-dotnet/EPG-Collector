@@ -100,8 +100,9 @@
             // categoryBindingSource
             // 
             this.categoryBindingSource.AllowNew = true;
-            this.categoryBindingSource.DataSource = typeof(DomainObjects.CustomProgramCategory);
+            this.categoryBindingSource.DataSource = typeof(DomainObjects.ProgramCategory);
             this.categoryBindingSource.Sort = "";
+            this.categoryBindingSource.CurrentChanged += new System.EventHandler(this.categoryBindingSource_CurrentChanged);
             // 
             // categoryTagColumn
             // 
@@ -117,7 +118,6 @@
             this.xmltvDescriptionColumn.DataPropertyName = "XmltvDescription";
             this.xmltvDescriptionColumn.HeaderText = "XMLTV Description";
             this.xmltvDescriptionColumn.Name = "xmltvDescriptionColumn";
-            this.xmltvDescriptionColumn.ReadOnly = true;
             this.xmltvDescriptionColumn.Width = 114;
             // 
             // wmcDescriptionColumn

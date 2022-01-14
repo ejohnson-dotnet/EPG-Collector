@@ -1848,7 +1848,13 @@ namespace DVBServices
                 epgEntry.EpisodeNumber = episode;
 
                 if (!OptionEntry.IsDefined(OptionName.NoRemoveData))
-                    epgEntry.ShortDescription = epgEntry.ShortDescription.Substring(parts[0].Length + parts[1].Length + 2);
+                {
+                    int length = parts[0].Length + parts[1].Length + 2;
+                    if (length < epgEntry.ShortDescription.Length)
+                        epgEntry.ShortDescription = epgEntry.ShortDescription.Substring(length);
+                    else
+                        epgEntry.ShortDescription = string.Empty;
+                }
             }
             catch (FormatException) { }
             catch (OverflowException) { }

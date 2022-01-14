@@ -36,13 +36,19 @@ namespace Lookups.Tmdb
         /// Get or set the cast members.
         /// </summary>
         [DataMember(Name = "cast")]
-        public TmdbCastMember[] Cast { get; set; }
+        public Collection<TmdbCastMember> Cast { get; set; }
 
         /// <summary>
         /// Get or set the crew members.
         /// </summary>
         [DataMember(Name = "crew")]
-        public TmdbCrewMember[] Crew { get; set; }
+        public Collection<TmdbCrewMember> Crew { get; set; }
+
+        /// <summary>
+        /// Get or set the guest stars.
+        /// </summary>
+        [DataMember(Name = "guest_stars")]
+        public Collection<TmdbCastMember> GuestStars { get; set; }
 
         /// <summary>
         /// Get the collection of cast names.
@@ -163,6 +169,25 @@ namespace Lookups.Tmdb
                 }
 
                 return others;
+            }
+        }
+
+        /// <summary>
+        /// Get the collection of guest star names.
+        /// </summary>
+        public Collection<string> GuestStarNames
+        {
+            get
+            {
+                if (GuestStars == null)
+                    return null;
+
+                Collection<string> guestStarNames = new Collection<string>();
+
+                foreach (TmdbCastMember guestStar in GuestStars)
+                    guestStarNames.Add(guestStar.Name);
+
+                return guestStarNames;
             }
         }
 

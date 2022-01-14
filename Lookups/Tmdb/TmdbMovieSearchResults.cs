@@ -19,6 +19,7 @@
 //                                                                              //  
 //////////////////////////////////////////////////////////////////////////////////
 
+using System.Collections.ObjectModel;
 using System.Runtime.Serialization;
 
 namespace Lookups.Tmdb
@@ -39,7 +40,7 @@ namespace Lookups.Tmdb
         /// Get or set the list of movies.
         /// </summary>
         [DataMember(Name = "results")]
-        public TmdbMovie[] Movies { get; set; }
+        public Collection<TmdbMovie> Movies { get; set; }
 
         /// <summary>
         /// Get or set the total number of pages.
