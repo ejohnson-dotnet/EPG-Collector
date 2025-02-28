@@ -97,9 +97,10 @@ namespace DVBServices
         /// </summary>
         /// <param name="category">The category.</param>
         /// <param name="description">The full category description.</param>
-        public static void AddCategory(int category, string description)
+        /// <returns>True if category added; false otherwise.</returns>
+        public static bool AddCategory(int category, string description)
         {
-            ProgramCategory.AddCategory(categories, category, description);
+            return ProgramCategory.AddCategory(categories, category, description);
         }
 
         /// <summary>

@@ -2358,9 +2358,6 @@ namespace EPGCentre
                 e.Cancel = !checkSaveAllFiles();
 
             if (!e.Cancel)
-                RunParameters.Instance.CloseHttpProxy();
-
-            if (!e.Cancel)
                 Logger.Instance.Write("EPG Centre closing down");
         }
 

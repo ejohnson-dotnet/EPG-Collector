@@ -19,6 +19,8 @@
 //                                                                              //  
 //////////////////////////////////////////////////////////////////////////////////
 
+using System.IO;
+
 namespace DomainObjects
 {
     /// <summary>
@@ -75,7 +77,13 @@ namespace DomainObjects
         /// <returns>A string describing this instance.</returns>
         public override string ToString()
         {
-            return (path);
+            FileInfo fileInfo = new FileInfo(path);
+
+            string[] parts = fileInfo.Name.Split(new char[] { ' ' });
+            if (parts.Length != 5 || parts[1] != "-" || (parts[2] != "V" && parts[2] != "H"))
+                return path;
+
+            return parts[0] + " - " + parts[2];
         }
 
         /// <summary>

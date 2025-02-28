@@ -138,7 +138,7 @@ namespace DVBServices
 
         private void getChannelSections(ISampleDataProvider dataProvider, BackgroundWorker worker)
         {
-            Logger.Instance.Write("Collecting channel data", false, true);
+            Logger.Instance.Write("Collecting channel data");
             Channel.Channels.Clear();
 
             dataProvider.ChangePidMapping(new int[] { 0x231 });            
@@ -157,7 +157,7 @@ namespace DVBServices
                     return;
 
                 Thread.Sleep(2000);
-                Logger.Instance.Write(".", false, false);
+                LogBufferSpaceUsed("channel data", dataProvider);
 
                 Collection<Mpeg2Section> sections = new Collection<Mpeg2Section>();
 
@@ -184,7 +184,6 @@ namespace DVBServices
                 lastCount = Channel.Channels.Count;
             }
 
-            Logger.Instance.Write("", true, false);
             Logger.Instance.Write("Stopping channel reader for PID 0x231");
             channelReader.Stop();
 
@@ -195,7 +194,7 @@ namespace DVBServices
 
         private void getCategorySections(ISampleDataProvider dataProvider, BackgroundWorker worker)
         {
-            Logger.Instance.Write("Collecting category data", false, true);
+            Logger.Instance.Write("Collecting category data");
             
             categoryReader = new TSStreamReader(0xc8, 2000, dataProvider.BufferAddress);
             categoryReader.Run();
@@ -211,7 +210,7 @@ namespace DVBServices
                     return;
 
                 Thread.Sleep(2000);
-                Logger.Instance.Write(".", false, false);
+                LogBufferSpaceUsed("category data", dataProvider);
 
                 Collection<Mpeg2Section> sections = new Collection<Mpeg2Section>();
 
@@ -238,7 +237,6 @@ namespace DVBServices
                 lastCount = MediaHighwayProgramCategory.Categories.Count;
             }
 
-            Logger.Instance.Write("", true, false);
             Logger.Instance.Write("Stopping category reader for PID 0x231");
             categoryReader.Stop();
 
@@ -249,7 +247,7 @@ namespace DVBServices
 
         private void getTitleSections(ISampleDataProvider dataProvider, BackgroundWorker worker)
         {
-            Logger.Instance.Write("Collecting title data", false, true);
+            Logger.Instance.Write("Collecting title data");
 
             dataProvider.ChangePidMapping(new int[] { 0x234 });            
 
@@ -268,7 +266,7 @@ namespace DVBServices
                     return;
 
                 Thread.Sleep(1000);
-                Logger.Instance.Write(".", false, false);
+                LogBufferSpaceUsed("title data", dataProvider);
 
                 Collection<Mpeg2Section> sections = new Collection<Mpeg2Section>();
 
@@ -277,7 +275,8 @@ namespace DVBServices
                 if (titleReader.Sections.Count != 0)
                 {
                     foreach (Mpeg2Section section in titleReader.Sections)
-                        sections.Add(section);
+                        sections.Add(section);                    
+
                     titleReader.Sections.Clear();
                 }
 
@@ -301,7 +300,6 @@ namespace DVBServices
                 lastCount = titleDataCount;
             }
 
-            Logger.Instance.Write("", true, false);
             Logger.Instance.Write("Stopping title reader for PID 0x234");
             titleReader.Stop();
 
@@ -312,7 +310,7 @@ namespace DVBServices
 
         private void getSummarySections(ISampleDataProvider dataProvider, BackgroundWorker worker)
         {
-            Logger.Instance.Write("Collecting summary data", false, true);
+            Logger.Instance.Write("Collecting summary data");
 
             dataProvider.ChangePidMapping(new int[] { 0x236 });
 
@@ -330,8 +328,7 @@ namespace DVBServices
                     return;
 
                 Thread.Sleep(1000);
-
-                Logger.Instance.Write(".", false, false);
+                LogBufferSpaceUsed("summary data", dataProvider);
 
                 Collection<Mpeg2Section> sections = new Collection<Mpeg2Section>();
 
@@ -360,7 +357,6 @@ namespace DVBServices
                 lastCount = MediaHighwaySummary.Summaries.Count;
             }
 
-            Logger.Instance.Write("", true, false);
             Logger.Instance.Write("Stopping summary reader for PID 0x236");
             summaryReader.Stop();
 
@@ -385,16 +381,13 @@ namespace DVBServices
                         {
                             MediaHighwayChannel channel = new MediaHighwayChannel();
                             channel.ChannelID = channelSection.Channels.IndexOf(channelInfoEntry) + 1;
-
-                            if (channel.ChannelID > 51)
-                                channel.ChannelID++;
-
+                            
                             channel.OriginalNetworkID = channelInfoEntry.OriginalNetworkID;
                             channel.TransportStreamID = channelInfoEntry.TransportStreamID;
                             channel.ServiceID = channelInfoEntry.ServiceID;
                             channel.ChannelName = channelInfoEntry.Name;
                             channel.UserChannel = Channel.Channels.Count + 1;
-                            channel.Unknown = channelInfoEntry.Unknown;
+                            channel.ChannelType = channelSection.SectionNumber;
                             Channel.AddChannel(channel);
                         }
                     }
@@ -415,7 +408,10 @@ namespace DVBServices
                     if (categorySection.Categories != null)
                     {
                         foreach (MediaHighwayCategoryEntry categoryEntry in categorySection.Categories)
-                            MediaHighwayProgramCategory.AddCategory(categoryEntry.Number, categoryEntry.Description);
+                        {
+                            if (MediaHighwayProgramCategory.AddCategory(categoryEntry.Number, categoryEntry.Description + "=" + categoryEntry.Description))
+                                Logger.Instance.Write("Added category from broadcast data: " + categoryEntry.Number + " - " + categoryEntry.Description);
+                        }
                     }
                 }
             }
@@ -433,8 +429,8 @@ namespace DVBServices
                 {
                     foreach (MediaHighway2TitleData titleData in titleSection.Titles)
                     {
-                        MediaHighwayChannel channel = (MediaHighwayChannel)MediaHighwayChannel.FindChannel(titleData.ChannelID + 1);
-                        if (channel != null)
+                        Collection<Channel> channels = MediaHighwayChannel.FindChannels(titleData.ChannelID + 1);
+                        if (channels.Count != 0)
                         {
                             MediaHighwayTitle title = new MediaHighwayTitle();
                             title.CategoryID = titleData.CategoryID;
@@ -446,8 +442,17 @@ namespace DVBServices
                             title.Unknown = titleData.Unknown;
                             title.MainCategory = titleData.MainCategory;
                             title.SubCategory = titleData.SubCategory;
-                            channel.AddTitleData(title);
+
+                            foreach (MediaHighwayChannel channel in channels)
+                            {
+                                MediaHighwayTitle existingTitle = channel.AddTitleData(title);
+                                if (existingTitle != null && existingTitle.EventID != title.EventID)
+                                    Logger.Instance.Write("Title already exists with different event ID");
+                            }
                         }
+                        else
+                            Logger.Instance.Write("Title data has no matching channel - channel ID is " + (titleData.ChannelID + 1));
+
                     }
                 }
             }
@@ -497,29 +502,65 @@ namespace DVBServices
             }
 
             MediaHighwayProgramCategory.LogUsage(MediaHighwayProgramCategory.Categories, MediaHighwayProgramCategory.UndefinedCategories, "MHW2");            
-            Channel.LogChannelsInChannelIDOrder();            
+            //Channel.LogChannelsInChannelIDOrder();            
         }
 
         private void creatStationsFromChannels()
         {
+            Logger.Instance.Write("Creating stations from MHW2 channels");
+
+            Collection<MediaHighwayChannel> sortedChannels = new Collection<MediaHighwayChannel>();
+
             foreach (MediaHighwayChannel channel in MediaHighwayChannel.Channels)
             {
-                TVStation station = TVStation.FindStation(RunParameters.Instance.StationCollection, 
-                    channel.OriginalNetworkID, channel.TransportStreamID, channel.ServiceID);
-                if (station == null)
+                if (channel.ChannelType != 0x03)
                 {
-                    station = new TVStation(channel.ChannelName);
-                    station.OriginalNetworkID = channel.OriginalNetworkID;
-                    station.TransportStreamID = channel.TransportStreamID;
-                    station.ServiceID = channel.ServiceID;
-                    TVStation.AddStation(RunParameters.Instance.StationCollection, station);
+                    TVStation station = TVStation.FindStation(RunParameters.Instance.StationCollection,
+                        channel.OriginalNetworkID, channel.TransportStreamID, channel.ServiceID);
+                    if (station == null)
+                    {
+                        station = new TVStation(channel.ChannelName);
+                        station.OriginalNetworkID = channel.OriginalNetworkID;
+                        station.TransportStreamID = channel.TransportStreamID;
+                        station.ServiceID = channel.ServiceID;
+
+                        TVStation.AddStation(RunParameters.Instance.StationCollection, station);
+                        addNewChannel(sortedChannels, channel);
+                    }
+                    else
+                        Logger.Instance.Write("Channel " + channel.ChannelName + "(" + channel.OriginalNetworkID + "," + channel.TransportStreamID + "," + channel.ServiceID + ") already exists");
+
+                    station.Name = channel.ChannelName;
+
+                    if (station.LogicalChannelNumber == -1)
+                        station.LogicalChannelNumber = channel.UserChannel;
                 }
-
-                station.Name = channel.ChannelName;
-
-                if (station.LogicalChannelNumber == -1)
-                    station.LogicalChannelNumber = channel.UserChannel;
+                else
+                    Logger.Instance.Write("Channel " + channel.ChannelName + "(" + channel.OriginalNetworkID + "," + channel.TransportStreamID + "," + channel.ServiceID + ") type 0x03 ignored");
             }
+
+            Logger.Instance.Write("Duplicate channels: " + (MediaHighwayChannel.Channels.Count - sortedChannels.Count));
+
+            foreach (MediaHighwayChannel channel in sortedChannels)
+                Logger.Instance.Write("Station: " + channel.ChannelName + " (" +
+                    channel.OriginalNetworkID + "," + channel.TransportStreamID + "," + channel.ServiceID + ") Channel ID " + channel.ChannelID + " Type 0x" + channel.ChannelType.ToString("x2"));
+
+            Logger.Instance.Write("Station count now: " + RunParameters.Instance.StationCollection.Count);
+        }
+
+        private void addNewChannel(Collection<MediaHighwayChannel> sortedChannels, MediaHighwayChannel newChannel)
+        {
+            foreach (MediaHighwayChannel channel in sortedChannels)
+            {
+                int result = channel.ChannelName.CompareTo(newChannel.ChannelName);
+                if (result > 0)
+                {
+                    sortedChannels.Insert(sortedChannels.IndexOf(channel), newChannel);
+                    return;
+                }
+            }
+
+            sortedChannels.Add(newChannel);
         }
 
         internal static string FixString(string description, int offset)

@@ -458,7 +458,13 @@ namespace XmltvParser
             if (string.IsNullOrWhiteSpace(fileSpec.TimeZone))
             {
                 epgEntry.StartTime = (programme.StartTime.Time.Value - programme.StartTime.Offset.Value).ToLocalTime();
-                epgEntry.Duration = (programme.StopTime.Time.Value - programme.StopTime.Offset.Value).ToLocalTime() - epgEntry.StartTime;
+
+                if (programme.StopTime != null &&
+                    programme.StopTime.Time != null && programme.StopTime.Time.HasValue &&
+                    programme.StopTime.Offset != null && programme.StopTime.Offset.HasValue)
+                    epgEntry.Duration = (programme.StopTime.Time.Value - programme.StopTime.Offset.Value).ToLocalTime() - epgEntry.StartTime;
+                else
+                    epgEntry.Duration = new TimeSpan();
             }
             else
             {
@@ -768,12 +774,22 @@ namespace XmltvParser
                     epgEntry.EpisodeSystemType = episodeNumber.System;
 
                     string[] parts = episodeNumber.Episode.Split(new char[] { '.' });
-                    epgEntry.SeasonNumber = getEpisodeData(parts[0]);
+                    Tuple<int, int> seasonParts = getEpisodeData(parts[0]);
+                    epgEntry.SeasonNumber = seasonParts.Item1;
+                    epgEntry.SeasonCount = seasonParts.Item2;
+                    
                     if (parts.Length > 1)
                     {
-                        epgEntry.EpisodeNumber = getEpisodeData(parts[1]);
+                        Tuple<int, int> episodeParts = getEpisodeData(parts[1]);
+                        epgEntry.EpisodeNumber = episodeParts.Item1;
+                        epgEntry.EpisodeCount = episodeParts.Item2;
+
                         if (parts.Length > 2)
-                            epgEntry.PartNumber = parts[2].Trim();
+                        {
+                            Tuple<int, int> partParts = getEpisodeData(parts[2]);
+                            epgEntry.PartNumber = partParts.Item1;
+                            epgEntry.PartCount = partParts.Item2;
+                        }
                     }
 
                     epgEntry.AddSeriesEpisodeToDescription();
@@ -831,21 +847,25 @@ namespace XmltvParser
             }            
         }
 
-        private int getEpisodeData(string part)
+        private Tuple<int, int> getEpisodeData(string part)
         {
             string[] parts = part.Split(new char[] { '/' });
 
             try
             {
-                return (Int32.Parse(parts[0]) + 1);
+
+                if (parts.Length == 1)
+                    return Tuple.Create<int, int>(Int32.Parse(parts[0]) + 1, -1);
+                else
+                    return Tuple.Create<int, int>(Int32.Parse(parts[0]) + 1, Int32.Parse(parts[1]) + 1);
             }
             catch (FormatException)
             {
-                return (-1);
+                return Tuple.Create<int, int>(-1, -1);
             }
             catch (OverflowException)
             {
-                return (-1);
+                return Tuple.Create<int, int>(-1, -1);
             }
         }
 
@@ -856,13 +876,6 @@ namespace XmltvParser
 
             if (imageDownloadErrors >= imageDownloadErrorsLimit)
                 return url;
-
-            if (RunParameters.Instance.HttpProxy == null)
-            {
-                Logger.Instance.Write("HTTP proxy not available - images cannot be stored locally");
-                imageDownloadErrors = imageDownloadErrorsLimit;
-                return url;
-            }
 
             if (streamLogger == null)
                 streamLogger = new Logger("EPG Collector Stream.log");

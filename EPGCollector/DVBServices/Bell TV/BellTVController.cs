@@ -118,7 +118,7 @@ namespace DVBServices
 
         private void getBellTVData(ISampleDataProvider dataProvider, BackgroundWorker worker)
         {
-            Logger.Instance.Write("Collecting Bell TV data", false, true);
+            Logger.Instance.Write("Collecting Bell TV data");
 
             dataProvider.ChangePidMapping(0x441);
 
@@ -135,7 +135,7 @@ namespace DVBServices
                     return;
 
                 Thread.Sleep(2000);
-                Logger.Instance.Write(".", false, false);
+                LogBufferSpaceUsed("Bell TV data", dataProvider);
 
                 Collection<Mpeg2Section> sections = new Collection<Mpeg2Section>();
 
@@ -164,7 +164,6 @@ namespace DVBServices
                 lastCount = epgCount;
             }
 
-            Logger.Instance.Write("", true, false);
             Logger.Instance.Write("Stopping reader");
             bellTVReader.Stop();
 

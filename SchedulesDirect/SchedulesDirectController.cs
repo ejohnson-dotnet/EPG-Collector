@@ -1659,13 +1659,6 @@ namespace SchedulesDirect
             if (imageDownloadErrors >= imageDownloadErrorsLimit)
                 return url;
 
-            if (RunParameters.Instance.HttpProxy == null)
-            {
-                Logger.Instance.Write("HTTP proxy not available - images cannot be stored locally");
-                imageDownloadErrors = imageDownloadErrorsLimit;
-                return url;
-            }
-
             if (streamLogger == null)
                 streamLogger = new Logger("EPG Collector Stream.log");
 

@@ -1345,6 +1345,151 @@ namespace DVBServices
 
             return (true);
         }
+        internal static int? GetSeasonEpisodeNumber(string text, int offset, string leadin, bool ignoreCase, out int startIndex, out int endIndex)
+        {
+            startIndex = -1;
+            endIndex = -1;
+
+            int index = offset;
+
+            for (; index < text.Length - leadin.Length; index++)
+            {
+                if ((!ignoreCase && text[index] == leadin[0]) || (ignoreCase && Char.ToLowerInvariant(text[index]) == Char.ToLowerInvariant(leadin[0])))
+                {
+                    startIndex = index;
+
+                    int textIndex = index + 1;
+                    int leadinIndex = 1;
+
+                    bool leadinFound = true;
+
+                    while (leadinIndex < leadin.Length)
+                    {
+                        if ((!ignoreCase && text[textIndex] != leadin[leadinIndex]) || (ignoreCase && Char.ToLowerInvariant(text[textIndex]) != Char.ToLowerInvariant(leadin[leadinIndex])))
+                        {
+                            leadinFound = false;
+                            break;
+                        }
+                        else
+                        {
+                            leadinIndex++;
+                            textIndex++;
+                        }
+                    }
+
+                    if (leadinFound && checkIfFound(text, leadin, startIndex))
+                    {
+                        while (textIndex < text.Length && text[textIndex] == ' ')
+                            textIndex++;
+
+                        if (textIndex == text.Length)
+                            return null;
+
+                        if (Char.IsDigit(text[textIndex]))
+                        {
+                            int number = 0;
+
+                            while (textIndex < text.Length && Char.IsDigit(text[textIndex]))
+                            {
+                                number = (number * 10) + text[textIndex] - '0';
+                                textIndex++;
+                            }
+
+                            endIndex = textIndex - 1;
+
+                            return number;
+                        }
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        private static bool checkIfFound(string text, string leadin, int index)
+        {
+            if (leadin == "/")
+                return true;
+
+            if (index == 0)
+                return true;
+
+            if (text[index - 1] == ' ' || text[index - 1] == '(' || text[index - 1] == '[' || text[index - 1] == '/')
+                return true;
+
+            return false;
+        }
+        internal static bool GetEpisodeNumberAndCount(string text, int offset, out int number1, out int number2, out int startIndex, out int endIndex)
+        {
+            number1 = -1;
+            number2 = -1;
+            startIndex = -1;
+            endIndex = -1;
+
+            int index = offset;
+
+            for (; index < text.Length; index++)
+            {
+                if (Char.IsDigit(text[index]) && (index == 0 || (index > 0 && text[index - 1] == ' ')))
+                {
+                    startIndex = index;
+
+                    int tempNumber1 = 0;
+
+                    while (index < text.Length && Char.IsDigit(text[index]))
+                    {
+                        tempNumber1 = (tempNumber1 * 10) + text[index] - '0';
+                        index++;
+                    }
+
+                    if (index == text.Length)
+                        return false;
+
+                    while (index < text.Length && text[index] == ' ')
+                        index++;
+
+                    if (index == text.Length)
+                        return false;
+
+                    if (text[index] == '/')
+                    {
+                        index++;
+
+                        if (index == text.Length)
+                            return false;
+
+                        while (index < text.Length && text[index] == ' ')
+                            index++;
+
+                        if (index == text.Length)
+                            return false;
+
+                        int tempNumber2 = 0;
+
+                        if (Char.IsDigit(text[index]))
+                        {
+                            while (index < text.Length && Char.IsDigit(text[index]))
+                            {
+                                tempNumber2 = (tempNumber2 * 10) + text[index] - '0';
+                                index++;
+                            }
+
+                            if (index == text.Length || (index < text.Length &&
+                                (text[index] == '.') || text[index] == ' ' || text[index] == ')' || text[index] == ';' || text[index] == ':'))                                
+                            {
+                                number1 = tempNumber1;
+                                number2 = tempNumber2;
+                                endIndex = index - 1;
+
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
 
         private Utils() { }
     }

@@ -124,13 +124,6 @@ namespace Lookups
             Logger.Instance.Write("Lookup processing time limit is " + RunParameters.Instance.LookupTimeLimit + " minutes");
             DateTime startTime = DateTime.Now;
 
-            if (RunParameters.Instance.HttpProxy == null)
-            {
-                Logger.Instance.Write("HTTP proxy not available - metadata lookup not available");
-                Logger.Instance.WriteSeparator("End Of Metadata Lookup Processing");
-                return;
-            }
-            
             Logger streamLogger = new Logger(Logger.StreamFilePath);
             
             movieLookup = new MovieLookup(streamLogger, "Metadata Lookup");

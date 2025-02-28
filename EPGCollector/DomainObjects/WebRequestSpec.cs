@@ -146,6 +146,14 @@ namespace DomainObjects
 
         private WebRequestSpec() { }
 
+        static WebRequestSpec()
+        {
+            ServicePointManager.Expect100Continue = false;
+            ServicePointManager.DefaultConnectionLimit = 4;
+            ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+        }
+
         /// <summary>
         /// Create an instance of the WebRequestSpec class with a specified URL.
         /// </summary>
@@ -207,10 +215,7 @@ namespace DomainObjects
 
             forceCanonicalPathAndQuery(DestinationUri);
 
-            UriBuilder uriBuilder = new UriBuilder(RunParameters.Instance.HttpProxy.ProxyUrl);
-            uriBuilder.Port = RunParameters.Instance.HttpProxy.ProxyPort;  
-
-            httpWebRequest = (HttpWebRequest)WebRequest.Create(uriBuilder.Uri);
+            httpWebRequest = (HttpWebRequest)WebRequest.Create(DestinationUri);
             httpWebRequest.Method = Method;
             httpWebRequest.Host = DestinationUri.Host;
             httpWebRequest.KeepAlive = true;
@@ -224,10 +229,8 @@ namespace DomainObjects
                     httpWebRequest.Headers.Add(header.Item1, header.Item2);
             }
 
-            httpWebRequest.Headers.Add("authority", DestinationUri.Host);
-            httpWebRequest.Headers.Add("Actual-Destination", destinationUri);
+            httpWebRequest.Headers.Add("authority", DestinationUri.Host);            
             
-            httpWebRequest.Headers.Add("Proxy-Timeout", timeout.ToString());
             httpWebRequest.Timeout = timeout + 5000;
         }
 

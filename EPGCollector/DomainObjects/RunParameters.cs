@@ -143,7 +143,7 @@ namespace DomainObjects
         /// <summary>
         /// Get the current fixpack number.
         /// </summary>
-        public static string Fixpack { get { return ("31"); } }
+        public static string Fixpack { get { return ("32"); } }
 
         /// <summary>
         /// Get the privilege level.
@@ -255,28 +255,6 @@ namespace DomainObjects
                 if (satIpUniqueIdentifiers == null)
                     satIpUniqueIdentifiers = new Collection<string>();
                 return (satIpUniqueIdentifiers);
-            }
-        }
-
-        /// <summary>
-        /// Get the HTTP proxy instance.
-        /// </summary>
-        public HttpProxy HttpProxy
-        {
-            get
-            {
-                if (httpProxy == null)
-                {
-                    httpProxy = new HttpProxy();
-                    string reply = httpProxy.Initialize();
-                    if (reply != null)
-                    {
-                        Logger.Instance.Write(reply);
-                        httpProxy = null;
-                    }
-                }
-
-                return httpProxy;
             }
         }
 
@@ -1097,8 +1075,6 @@ namespace DomainObjects
 
         private ParameterSet parameterSet = ParameterSet.Collector;
         private RunType runType = RunType.Collection;
-
-        private HttpProxy httpProxy;
 
         private string translationApiKey;
         private string translationLanguage;
@@ -7309,15 +7285,6 @@ namespace DomainObjects
                 legalName = legalName.Replace(illegalChar, replacer);
 
             return (legalName);
-        }
-
-        /// <summary>
-        /// Close the HTTP proxy process.
-        /// </summary>
-        public void CloseHttpProxy()
-        {
-            if (httpProxy != null)
-                httpProxy.Close();
         }
     }
 }

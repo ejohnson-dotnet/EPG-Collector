@@ -402,15 +402,6 @@ namespace Lookups
             if (epgEntry.SeasonNumber != -1 || epgEntry.EpisodeNumber != -1)
                 return false;
 
-            if (!RunParameters.Instance.LookupIgnoreCategories)
-            {
-                if (epgEntry.EventCategory != null)
-                {
-                    if (epgEntry.EventCategory.GetDescription(EventCategoryMode.Xmltv).Contains("movie") || epgEntry.EventCategory.GetDescription(EventCategoryMode.Wmc).Contains("movie"))
-                        return (true);
-                }
-            }
-
             if (RunParameters.Instance.LookupMoviePhrases != null && epgEntry.EventName != null)
             {
                 foreach (string phrase in RunParameters.Instance.LookupMoviePhrases)
@@ -420,6 +411,25 @@ namespace Lookups
                 }
             }
 
+            if (!RunParameters.Instance.LookupIgnoreCategories)
+            {
+                if (epgEntry.EventCategory != null)
+                {
+                    string categoryDescription = epgEntry.EventCategory.GetDescription(EventCategoryMode.Xmltv);
+                    if (!string.IsNullOrWhiteSpace(categoryDescription) && categoryDescription.ToLowerInvariant().Contains("movie"))
+                        return checkMovieTime(epgEntry);
+
+                    categoryDescription = epgEntry.EventCategory.GetDescription(EventCategoryMode.Wmc);
+                    if (!string.IsNullOrWhiteSpace(categoryDescription) && categoryDescription.ToLowerInvariant().Contains("movie"))
+                        return checkMovieTime(epgEntry);
+                }
+            }
+
+            return checkMovieTime(epgEntry);
+        }
+
+        private bool checkMovieTime(EPGEntry epgEntry)
+        {
             if (RunParameters.Instance.MovieLowTime != 0 || RunParameters.Instance.MovieHighTime != 0)
             {
                 if (epgEntry.Duration.TotalMinutes >= RunParameters.Instance.MovieLowTime && epgEntry.Duration.TotalMinutes <= RunParameters.Instance.MovieHighTime)

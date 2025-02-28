@@ -188,19 +188,20 @@ namespace DomainObjects
         /// <param name="categories">The collection of categories to update.</param>
         /// <param name="categoryTag">The category tag.</param>
         /// <param name="description">The category description.</param>
-        public static void AddCategory(Collection<ProgramCategory> categories, string categoryTag, string description)
+        /// <returns>True if category added; false otherwise.</returns>
+        public static bool AddCategory(Collection<ProgramCategory> categories, string categoryTag, string description)
         {
             foreach (ProgramCategory category in categories)
             {
                 if (category.CategoryTag == categoryTag)
-                    return;
+                    return false;
             }
             
             string[] parts = description.Split(new char[] { '=' });
             if (parts.Length == 0 || parts.Length > 4)
             {
                 Logger.Instance.Write("Invalid category description '" + categoryTag + "' - category ignored ");
-                return;
+                return false;
             }
 
             ProgramCategory newCategory = new ProgramCategory(categoryTag.Trim());
@@ -214,6 +215,8 @@ namespace DomainObjects
                 newCategory.DVBViewerDescription = parts[3].Trim();
 
             categories.Add(newCategory);
+
+            return true;
         }
 
         /// <summary>
@@ -222,9 +225,10 @@ namespace DomainObjects
         /// <param name="categories">The collection of categies to update.</param>
         /// <param name="categoryNumber">The category number.</param>
         /// <param name="description">The category description.</param>
-        public static void AddCategory(Collection<ProgramCategory> categories, int categoryNumber, string description)
+        /// <returns>True if category added; false otherrwise.</returns>
+        public static bool AddCategory(Collection<ProgramCategory> categories, int categoryNumber, string description)
         {
-            AddCategory(categories, categoryNumber.ToString(), description);
+            return AddCategory(categories, categoryNumber.ToString(), description);
         }
 
         /// <summary>
@@ -267,7 +271,7 @@ namespace DomainObjects
 
             categories.Clear();
 
-            StreamReader streamReader = new StreamReader(fileStream);
+            StreamReader streamReader = new StreamReader(fileStream, Encoding.UTF8);
 
             while (!streamReader.EndOfStream)
             {
@@ -627,7 +631,8 @@ namespace DomainObjects
                             first = false;
                         }
 
-                        Logger.Instance.Write(category.CategoryTag + ": " +
+                        Logger.Instance.Write(category.CategoryTag + ": " + 
+                            " Description: " + (!string.IsNullOrWhiteSpace(category.XmltvDescription) ? category.XmltvDescription : "No XMLTV Description") +
                             " Used: " + category.UsedCount +
                             (category.SampleEvent != null ? " Sample Event: " + category.SampleEvent : string.Empty));
                     }

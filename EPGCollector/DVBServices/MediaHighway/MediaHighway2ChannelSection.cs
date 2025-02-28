@@ -32,6 +32,11 @@ namespace DVBServices
     public class MediaHighway2ChannelSection
     {
         /// <summary>
+        /// Get the channel section number.
+        /// </summary>
+        public int SectionNumber { get; private set; }
+
+        /// <summary>
         /// Get the collection of channels.
         /// </summary>
         public Collection<MediaHighwayChannelInfoEntry> Channels
@@ -66,9 +71,10 @@ namespace DVBServices
         {
             lastIndex = index;
 
-            /*if (byteData[lastIndex] != 0x00 && byteData[lastIndex] != 0x02 && byteData[lastIndex] != 0x03)*/
-            if (byteData[lastIndex] != 0x00)
+            if (byteData[lastIndex] != 0x00 && byteData[lastIndex] != 0x02 && byteData[lastIndex] != 0x03)            
                 return (false);
+
+            SectionNumber = byteData[lastIndex];
 
             try
             {

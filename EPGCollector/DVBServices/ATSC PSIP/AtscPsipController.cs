@@ -131,7 +131,7 @@ namespace DVBServices
 
         private void getMasterGuideData(ISampleDataProvider dataProvider, BackgroundWorker worker)
         {
-            Logger.Instance.Write("Collecting Master Guide data", false, true);
+            Logger.Instance.Write("Collecting Master Guide data");
 
             dataProvider.ChangePidMapping(new int[] { 0x1ffb });
             guideReader = new TSStreamReader(0xc7, 2000, dataProvider.BufferAddress);
@@ -147,7 +147,7 @@ namespace DVBServices
                     return;
 
                 Thread.Sleep(2000);
-                Logger.Instance.Write(".", false, false);
+                LogBufferSpaceUsed("Master Guide data", dataProvider);
 
                 Collection<Mpeg2Section> sections = new Collection<Mpeg2Section>();
 
@@ -169,7 +169,6 @@ namespace DVBServices
                     done = (repeats == RunParameters.Instance.Repeats);                
             }
 
-            Logger.Instance.Write("", true, false);
             Logger.Instance.Write("Stopping reader");
             guideReader.Stop();
 
@@ -179,7 +178,7 @@ namespace DVBServices
 
         private void getVirtualChannelData(ISampleDataProvider dataProvider, BackgroundWorker worker)
         {
-            Logger.Instance.Write("Collecting Virtual Channel data", false, true);
+            Logger.Instance.Write("Collecting Virtual Channel data");
             VirtualChannelTable.Clear();
 
             dataProvider.ChangePidMapping(new int[] { 0x1ffb });
@@ -199,7 +198,7 @@ namespace DVBServices
                     return;
 
                 Thread.Sleep(2000);
-                Logger.Instance.Write(".", false, false);
+                LogBufferSpaceUsed("Virtual Channel data", dataProvider);
 
                 Collection<Mpeg2Section> sections = new Collection<Mpeg2Section>();
 
@@ -223,7 +222,6 @@ namespace DVBServices
                 }
             }
 
-            Logger.Instance.Write("", true, false);
             Logger.Instance.Write("Stopping reader");
             guideReader.Stop();
 
@@ -234,13 +232,12 @@ namespace DVBServices
 
         private void getRatingRegionData(ISampleDataProvider dataProvider, BackgroundWorker worker)
         {
-            Logger.Instance.Write("Collecting Rating Region data", false, true);
+            Logger.Instance.Write("Collecting Rating Region data");
             RatingRegionTable.Clear();
 
             int[] rrtPids = masterGuideTable.GetRRTPids();
             if (rrtPids.Length == 0)
             {
-                Logger.Instance.Write("", true, false);
                 Logger.Instance.Write("No Rating Region PID's in the Master Guide Table");
                 return;
             }
@@ -259,7 +256,7 @@ namespace DVBServices
                     return;
 
                 Thread.Sleep(2000);
-                Logger.Instance.Write(".", false, false);
+                LogBufferSpaceUsed("Rating Region data", dataProvider);
 
                 Collection<Mpeg2Section> sections = new Collection<Mpeg2Section>();
 
@@ -284,7 +281,6 @@ namespace DVBServices
                     repeats = 0;
             }
 
-            Logger.Instance.Write("", true, false);
             Logger.Instance.Write("Stopping reader");
             guideReader.Stop();
 
@@ -297,13 +293,12 @@ namespace DVBServices
 
         private void getExtendedTextData(ISampleDataProvider dataProvider, BackgroundWorker worker)
         {
-            Logger.Instance.Write("Collecting Extended Text data", false, true);
+            Logger.Instance.Write("Collecting Extended Text data");
             ExtendedTextTable.Clear();
 
             int[] extendedTextPids = masterGuideTable.GetETTPids();
             if (extendedTextPids.Length == 0)
             {
-                Logger.Instance.Write("", true, false);
                 Logger.Instance.Write("No Extended Text PID's in Master Guide Table");
                 return;
             }
@@ -323,7 +318,7 @@ namespace DVBServices
                     return;
 
                 Thread.Sleep(2000);
-                Logger.Instance.Write(".", false, false);
+                LogBufferSpaceUsed("Extended Text data", dataProvider);
 
                 Collection<Mpeg2Section> sections = new Collection<Mpeg2Section>();
 
@@ -350,7 +345,6 @@ namespace DVBServices
                 lastCount = ExtendedTextTable.TextEntries.Count;
             }
 
-            Logger.Instance.Write("", true, false);
             Logger.Instance.Write("Stopping reader");
             guideReader.Stop();
 
@@ -363,12 +357,11 @@ namespace DVBServices
 
         private void getEventInformationData(ISampleDataProvider dataProvider, BackgroundWorker worker)
         {
-            Logger.Instance.Write("Collecting Event Information data", false, true);
+            Logger.Instance.Write("Collecting Event Information data");
 
             int[] eitPids = masterGuideTable.GetEITPids();
             if (eitPids.Length == 0)
             {
-                Logger.Instance.Write("", true, false);
                 Logger.Instance.Write("No Event Information PID's in Master Guide Table");
                 return;
             }
@@ -388,7 +381,7 @@ namespace DVBServices
                     return;
 
                 Thread.Sleep(2000);
-                Logger.Instance.Write(".", false, false);
+                LogBufferSpaceUsed("Event Information data", dataProvider);
 
                 Collection<Mpeg2Section> sections = new Collection<Mpeg2Section>();
 
@@ -415,7 +408,6 @@ namespace DVBServices
                 lastCount = VirtualChannelTable.EPGCount;
             }
 
-            Logger.Instance.Write("", true, false);
             Logger.Instance.Write("Stopping reader"); 
             guideReader.Stop();
 

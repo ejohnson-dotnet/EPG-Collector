@@ -232,7 +232,7 @@ namespace DVBServices
                 return;
             }
             
-            Logger.Instance.Write("Collecting MHEG5 data from PID 0x" + pid.ToString("X").ToLowerInvariant(), false, true);
+            Logger.Instance.Write("Collecting MHEG5 data from PID 0x" + pid.ToString("X").ToLowerInvariant());
 
             dataProvider.ChangePidMapping(new int[] { pid });
             
@@ -245,7 +245,7 @@ namespace DVBServices
                     return;
 
                 Thread.Sleep(2000);
-                Logger.Instance.Write(".", false, false);
+                LogBufferSpaceUsed("MHEG5 data", dataProvider);
 
                 Collection<Mpeg2Section> sections = new Collection<Mpeg2Section>();
 
@@ -274,7 +274,6 @@ namespace DVBServices
                 }
             }
 
-            Logger.Instance.Write("", true, false);
             Logger.Instance.Write("Stopping reader for frequency " + dataProvider.Frequency + " PID 0x" + pid.ToString("X").ToLowerInvariant());
             dsmccReader.Stop();
             

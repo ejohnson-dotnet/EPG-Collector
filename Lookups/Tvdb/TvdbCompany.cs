@@ -61,7 +61,7 @@ namespace Lookups.Tvdb
         /// Get or set the primary company type.
         /// </summary>
         [DataMember(Name = "primaryCompanyType")]
-        public int PrimaryCompanyType { get; set; }
+        public int? PrimaryCompanyType { get; set; }
 
         /// <summary>
         /// Get or set the slug.

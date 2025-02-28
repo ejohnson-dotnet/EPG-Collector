@@ -309,6 +309,8 @@ namespace DVBServices
                     {
                         Logger.Instance.Write("<E> An exception of type " + e.GetType().Name + " has occurred while extracting sesonepisode numbers");
                         Logger.Instance.Write("<E> " + e.Message);
+                        Logger.Instance.Write("<E> " + e.StackTrace);
+                        Logger.Instance.Write("<E> Description: " + epgEntry.ShortDescription);
                     }
 
                     if (!sePresent)
@@ -393,17 +395,65 @@ namespace DVBServices
 
         private string getSubTitle(string description)
         {
-            if (description == null || (description.Length > 0 && description[0] == '('))
+            if (string.IsNullOrWhiteSpace(description))
                 return (null);
+
+            string[] subtitleParts = description.Split(new char[] { ':' });
+            if (subtitleParts.Length < 2)
+                return null;
+
+            if (DebugEntry.IsDefined(DebugName.LogSubtitles))
+                Logger.Instance.Write("Subtitle: " + description.Replace(":", "||"));
+
+            string lastPart = subtitleParts[subtitleParts.Length - 1];
+            
+            if (lastPart.Length < 2 || !lastPart.StartsWith(" "))
+            {
+                if (DebugEntry.IsDefined(DebugName.LogSubtitles))
+                    Logger.Instance.Write("**** Not a subtitle - last segment not starting with space");
+                return null;
+            }
+
+            if (!Char.IsUpper(lastPart[1]))
+            {
+                if (DebugEntry.IsDefined(DebugName.LogSubtitles))
+                    Logger.Instance.Write("**** Not a subtitle - last segment first character not upper case");
+                return null;
+            }
+
+            string subtitle = subtitleParts[subtitleParts.Length - 2].Trim();
+            string[] subParts = subtitle.Split(new char[] { '.' });
+
+            string actualSubtitle = subParts[subParts.Length - 1].Trim();
+
+            if (actualSubtitle.ToLowerInvariant() == "director" || actualSubtitle.ToLowerInvariant() == "starring" || actualSubtitle.ToLowerInvariant() == "stars")
+            {
+                if (DebugEntry.IsDefined(DebugName.LogSubtitles))
+                    Logger.Instance.Write("**** Not a subtitle - director or starring present");
+                return null;
+            }
+
+            if (actualSubtitle.Contains(";"))
+            {
+                if (DebugEntry.IsDefined(DebugName.LogSubtitles))
+                    Logger.Instance.Write("**** Not a subtitle - semicolon present");
+                return null;
+            }
+
+            if (actualSubtitle.Length > 60)
+            {
+                if (DebugEntry.IsDefined(DebugName.LogSubtitles))
+                    Logger.Instance.Write("**** Not a subtitle - possible subtitle > 60 characters");
+                return null;
+            }
+
+            if (DebugEntry.IsDefined(DebugName.LogSubtitles))
+                Logger.Instance.Write("**** Subtitle found - " + actualSubtitle);
 
             if (RunParameters.Instance.CurrentFrequency.AdvancedRunParamters.CountryCode == Country.Netherlands)
                 return null;
 
-            int index = description.IndexOf(':');
-            if (index < 5 ||index > 60)
-                index = -1;
-
-            return (index < 1 ? null : description.Substring(0, index).Trim());
+            return actualSubtitle;
         }
 
         private bool getSeasonEpisodeNumbers(EPGEntry epgEntry, EITEntry eitEntry)
@@ -428,13 +478,31 @@ namespace DVBServices
                     break;
             }
 
+            if (DebugEntry.IsDefined(DebugName.LogNoSeasonEpisode))
+            {
+                if (!string.IsNullOrWhiteSpace(epgEntry.ShortDescription))
+                {
+                    foreach (char textChar in epgEntry.ShortDescription)
+                    {
+                        if (Char.IsDigit(textChar))
+                        {
+                            Logger.Instance.Write("Potential season/episode:" +
+                                " season " + epgEntry.SeasonNumber + (epgEntry.SeasonCount != -1 ? "/" + epgEntry.SeasonCount : "") +  
+                                " episode " + epgEntry.EpisodeNumber + (epgEntry.EpisodeCount != -1 ? "/" + epgEntry.EpisodeCount : "") +
+                                " part " + epgEntry.PartNumber + (epgEntry.PartCount != -1 ? "/" + epgEntry.PartCount : "") + 
+                                " " + epgEntry.ShortDescription);
+                            break;
+                        }
+                    }
+                }
+            }
+
             if (epgEntry.SeasonNumber == -1)
                 epgEntry.SeasonNumber = eitEntry.SeasonNumber; 
             if (epgEntry.EpisodeNumber == -1)
                 epgEntry.EpisodeNumber = eitEntry.EpisodeNumber;
             if (epgEntry.EpisodeCount == -1)
                 epgEntry.EpisodeCount = eitEntry.EpisodeCount;
-            
 
             return sePresent;
         }
@@ -622,191 +690,168 @@ namespace DVBServices
             if (string.IsNullOrWhiteSpace(epgEntry.ShortDescription))
                 return false;
 
-            int startIndex = epgEntry.ShortDescription.IndexOf("(S");
-            if (startIndex != -1)
-                return getGBRSeasonEpisodeNumbersFormat1(epgEntry, startIndex);
+            int? episodeCountReply = null;
 
-            startIndex = epgEntry.ShortDescription.IndexOf("(Ep");
-            if (startIndex != -1)
-                return getGBRSeasonEpisodeNumbersFormat2(epgEntry, startIndex);
+            int number1;
+            int number2;
 
-            startIndex = epgEntry.ShortDescription.IndexOf("/Ep");
-            if (startIndex != -1)
-                return getGBRSeasonEpisodeNumbersFormat3(epgEntry, startIndex);
+            int startIndex;
+            int endIndex;
 
-            startIndex = epgEntry.ShortDescription.IndexOf(" Ep");
-            if (startIndex != -1)
-                return getGBRSeasonEpisodeNumbersFormat4(epgEntry, startIndex);
+            string seasonLeadin = "Season";
+            
+            int? seasonReply = Utils.GetSeasonEpisodeNumber(epgEntry.ShortDescription, 0, seasonLeadin, false, out startIndex, out endIndex);
+            if (seasonReply == null)
+            {
+                seasonLeadin = "Series";
+                seasonReply = Utils.GetSeasonEpisodeNumber(epgEntry.ShortDescription, 0, seasonLeadin, false, out startIndex, out endIndex);
+                if (seasonReply == null)
+                {
+                    seasonLeadin = "S";
+                    seasonReply = Utils.GetSeasonEpisodeNumber(epgEntry.ShortDescription, 0, seasonLeadin, false, out startIndex, out endIndex);
+                }
+            }
+
+            if (seasonReply == null)
+                startIndex = 0;
+           
+            int episodeStartIndex;
+            int episodeEndIndex;
+
+            string episodeLeadin = "Episode";
+            
+            int? episodeReply = Utils.GetSeasonEpisodeNumber(epgEntry.ShortDescription, startIndex, episodeLeadin, true, out episodeStartIndex, out episodeEndIndex);
+            if (episodeReply == null)
+            {
+                episodeLeadin = "Ep";
+                episodeReply = Utils.GetSeasonEpisodeNumber(epgEntry.ShortDescription, startIndex, episodeLeadin, true, out episodeStartIndex, out episodeEndIndex);
+                if (episodeReply == null)
+                {
+                    episodeLeadin = "E";
+                    episodeReply = Utils.GetSeasonEpisodeNumber(epgEntry.ShortDescription, startIndex, episodeLeadin, true, out episodeStartIndex, out episodeEndIndex);
+                }
+            }
+            
+            if (episodeReply != null)
+            {
+                endIndex = episodeEndIndex;
+
+                if (endIndex + 1 < epgEntry.ShortDescription.Length && epgEntry.ShortDescription[endIndex + 1] == '/')
+                {
+                    int episodeCountStartIndex;
+                    int episodeCountEndIndex;
+                    episodeCountReply = Utils.GetSeasonEpisodeNumber(epgEntry.ShortDescription, endIndex, "/", false, out episodeCountStartIndex, out episodeCountEndIndex);
+                    if (episodeCountReply != null)
+                        endIndex = episodeCountEndIndex;
+                }
+            }
+            
+            if (seasonReply != null && episodeReply == null)
+            {
+                int numberStartIndex;
+                int numberEndIndex;
+
+                if (Utils.GetEpisodeNumberAndCount(epgEntry.ShortDescription, endIndex + 1, out number1, out number2, out numberStartIndex, out numberEndIndex))
+                {
+                    if (number1 <= number2)
+                    {
+                        episodeReply = number1;
+                        episodeCountReply = number2;
+
+                        endIndex = numberEndIndex + 1;
+                        if (endIndex < epgEntry.ShortDescription.Length && epgEntry.ShortDescription[endIndex] == '.')
+                            endIndex++;
+                    }
+                }
+            }
+
+            if (seasonReply != null && episodeReply == null && seasonLeadin == "S")
+                seasonReply = null;
+
+            if (seasonReply != null || episodeReply != null)
+            {
+                if (seasonReply != null)
+                    epgEntry.SeasonNumber = seasonReply.Value;
+                if (episodeReply != null)
+                {
+                    epgEntry.EpisodeNumber = episodeReply.Value;
+                    if (episodeCountReply != null)
+                        epgEntry.EpisodeCount = episodeCountReply.Value;
+                }
+
+                if (!OptionEntry.IsDefined(OptionName.NoRemoveData))
+                {
+                    if (startIndex != 0 && (epgEntry.ShortDescription[startIndex - 1] == '(' || epgEntry.ShortDescription[startIndex - 1] == '['))
+                        startIndex--;
+
+                    while (endIndex < epgEntry.ShortDescription.Length && epgEntry.ShortDescription[endIndex] != ' ')
+                        endIndex++;
+
+                    if (endIndex != epgEntry.ShortDescription.Length)
+                        endIndex++;
+
+                    epgEntry.ShortDescription = epgEntry.ShortDescription.Remove(startIndex, endIndex - startIndex).Trim();                    
+                }
+
+                return true;
+            }
+
+            if (Utils.GetEpisodeNumberAndCount(epgEntry.ShortDescription, 0, out number1, out number2, out startIndex, out endIndex))   // format xx/yy
+            {
+                if (number1 <= number2)
+                {
+                    epgEntry.EpisodeNumber = number1;
+                    epgEntry.EpisodeCount = number2;
+
+                    if (!OptionEntry.IsDefined(OptionName.NoRemoveData))
+                    {
+                        endIndex++;
+                        if (endIndex < epgEntry.ShortDescription.Length && epgEntry.ShortDescription[endIndex] == '.')
+                            endIndex++;
+                        epgEntry.ShortDescription = epgEntry.ShortDescription.Remove(startIndex, endIndex - startIndex).Trim();
+                    }
+
+                    return true;
+                }
+            }
+                
+            int? partReply = Utils.GetSeasonEpisodeNumber(epgEntry.ShortDescription, 0, "Part", true, out startIndex, out endIndex);    //format part x of y
+            if (partReply != null)
+            {
+                epgEntry.PartNumber = partReply.Value;
+
+                int ofStartIndex;
+                int ofEndIndex;
+                int? ofReply = Utils.GetSeasonEpisodeNumber(epgEntry.ShortDescription, startIndex, "of", false, out ofStartIndex, out ofEndIndex);
+                if (ofReply != null)
+                {
+                    endIndex = ofEndIndex;
+                    epgEntry.PartCount = ofReply.Value;
+                }
+
+                if (!OptionEntry.IsDefined(OptionName.NoRemoveData))
+                {
+                    if (startIndex != 0 && (epgEntry.ShortDescription[startIndex - 1] == '(' || epgEntry.ShortDescription[startIndex - 1] == '['))
+                        startIndex--;
+
+                    while (endIndex < epgEntry.ShortDescription.Length && epgEntry.ShortDescription[endIndex] != ' ')
+                        endIndex++;
+
+                    if (endIndex != epgEntry.ShortDescription.Length)
+                        endIndex++;
+
+                    epgEntry.ShortDescription = epgEntry.ShortDescription.Remove(startIndex, endIndex - startIndex).Trim();
+                }
+
+                return true;                
+            }
+
+            epgEntry.SeasonNumber = -1;
+            epgEntry.EpisodeNumber = -1;
+            epgEntry.PartNumber = -1;
 
             return false;
         }
-
-        private bool getGBRSeasonEpisodeNumbersFormat1(EPGEntry epgEntry, int startIndex)
-        {
-            int season = -1;
-            int episode = -1;
-            
-            int endIndex = epgEntry.ShortDescription.IndexOf(")", startIndex);
-            if (endIndex == -1)
-                return false;
-
-            string seasonEpisodeString = epgEntry.ShortDescription.Substring(startIndex, endIndex - startIndex + 1);
-
-            int scanIndex = 2;
-            season = 0;
-
-            while (Char.IsDigit(seasonEpisodeString[scanIndex]))
-            {
-                season = (season * 10) + (seasonEpisodeString[scanIndex] - '0');
-                scanIndex++;
-            }
-
-            while (seasonEpisodeString[scanIndex] == ' ')
-                scanIndex++;
-
-            if (seasonEpisodeString[scanIndex] == '/')
-                scanIndex++;
-
-            while (seasonEpisodeString[scanIndex] == ' ')
-                scanIndex++;
-
-            if (seasonEpisodeString[scanIndex] == 'E' && seasonEpisodeString[scanIndex + 1] == 'p')
-            {
-                episode = 0;
-                scanIndex += 2;
-
-                if (seasonEpisodeString[scanIndex] == ' ')
-                    scanIndex++;
-
-                while (Char.IsDigit(seasonEpisodeString[scanIndex]))
-                {
-                    episode = (episode * 10) + (seasonEpisodeString[scanIndex] - '0');
-                    scanIndex++;
-                }
-
-                if (seasonEpisodeString[scanIndex] != ')' && seasonEpisodeString[scanIndex] != '/')
-                    return false;
-            }
-            else
-            {
-                if (seasonEpisodeString[scanIndex] != ')')
-                    return false;
-            }
-
-            epgEntry.SeasonNumber = season;
-            epgEntry.EpisodeNumber = episode;
-
-            if (!OptionEntry.IsDefined(OptionName.NoRemoveData))
-                epgEntry.ShortDescription = epgEntry.ShortDescription.Remove(startIndex, endIndex - startIndex + 1).Trim();
-
-            return true;
-        }
-
-        private bool getGBRSeasonEpisodeNumbersFormat2(EPGEntry epgEntry, int startIndex)
-        {
-            int endIndex = epgEntry.ShortDescription.IndexOf(")", startIndex);
-            if (endIndex == -1)
-                return false;
-
-            int episode = 0;
-            string episodeString = epgEntry.ShortDescription.Substring(startIndex, endIndex - startIndex + 1);
-
-            int scanIndex = 3;
-            if (episodeString[scanIndex] == ' ')
-                scanIndex++;
-
-            while (Char.IsDigit(episodeString[scanIndex]))
-            {
-                episode = (episode * 10) + (episodeString[scanIndex] - '0');
-                scanIndex++;
-            }
-
-            if (episodeString[scanIndex] != ')')
-                return false;
-
-            epgEntry.EpisodeNumber = episode;
-
-            if (!OptionEntry.IsDefined(OptionName.NoRemoveData))
-                epgEntry.ShortDescription = epgEntry.ShortDescription.Remove(startIndex, endIndex - startIndex + 1).Trim();
-
-            return true;
-        }
-
-        private bool getGBRSeasonEpisodeNumbersFormat3(EPGEntry epgEntry, int startIndex)
-        {
-            int season = 0;
-            int episode = 0;
-
-            int episodeIndex = startIndex + 3;
-
-            while (startIndex != -1 && epgEntry.ShortDescription[startIndex] != 'S')
-                startIndex--;
-
-            if (startIndex == -1)
-                return false;
-
-            int seasonIndex = startIndex + 1;
-
-            while (Char.IsDigit(epgEntry.ShortDescription[seasonIndex]))
-            {
-                season = (season * 10) + (epgEntry.ShortDescription[seasonIndex] - '0');
-                seasonIndex++;
-            }
-
-            while (episodeIndex < epgEntry.ShortDescription.Length && Char.IsDigit(epgEntry.ShortDescription[episodeIndex]))
-            {
-                episode = (episode * 10) + (epgEntry.ShortDescription[episodeIndex] - '0');
-                episodeIndex++;
-            }
-
-            epgEntry.SeasonNumber = season;
-            epgEntry.EpisodeNumber = episode;
-
-            if (!OptionEntry.IsDefined(OptionName.NoRemoveData))
-                epgEntry.ShortDescription = epgEntry.ShortDescription.Remove(startIndex, episodeIndex - startIndex).Trim();
-
-            return true;
-        }
-
-        private bool getGBRSeasonEpisodeNumbersFormat4(EPGEntry epgEntry, int startIndex)
-        {
-            if (startIndex + 3 == epgEntry.ShortDescription.Length || !Char.IsDigit(epgEntry.ShortDescription[startIndex + 3]))
-                return false;
-
-            int season = 0;
-            int episode = 0;
-
-            int episodeIndex = startIndex + 3;
-
-            while (startIndex != -1 && epgEntry.ShortDescription[startIndex] != 'S')
-                startIndex--;
-
-            if (startIndex == -1)
-                return false;
-
-            int seasonIndex = startIndex + 1;
-
-            while (Char.IsDigit(epgEntry.ShortDescription[seasonIndex]))
-            {
-                season = (season * 10) + (epgEntry.ShortDescription[seasonIndex] - '0');
-                seasonIndex++;
-            }
-
-            while (episodeIndex < epgEntry.ShortDescription.Length && Char.IsDigit(epgEntry.ShortDescription[episodeIndex]))
-            {
-                episode = (episode * 10) + (epgEntry.ShortDescription[episodeIndex] - '0');
-                episodeIndex++;
-            }
-
-            epgEntry.SeasonNumber = season;
-            epgEntry.EpisodeNumber = episode;
-
-            if (!OptionEntry.IsDefined(OptionName.NoRemoveData))
-                epgEntry.ShortDescription = epgEntry.ShortDescription.Remove(startIndex, episodeIndex - startIndex).Trim();
-
-            return true;
-        }
-
         private void getSeriesEpisodeIds(EPGEntry epgEntry, EITEntry eitEntry)
         {
             if (eitEntry.SeriesId == null && eitEntry.EpisodeId == null)

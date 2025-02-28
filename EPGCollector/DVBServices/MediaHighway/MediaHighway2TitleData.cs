@@ -204,18 +204,24 @@ namespace DVBServices
             if (Logger.ProtocolLogger == null)
                 return;
 
+            if (channelID != 51)
+                return;
+
+            DateTime actualTime = baseDate + new TimeSpan(hours, minutes, 0);
+
             Logger.ProtocolLogger.Write(Logger.ProtocolIndent + "MHW2 TITLE DATA: Channel ID: " + channelID +
+                " Event ID: " + eventID +
+                " Actual time: " + actualTime +                
+                " Main cat: " + mainCategory +
+                //" Base date: " + baseDate +
+                //" Hours: " + hours +
+                //" Minutes: " + minutes +
+                " Duration: " + duration +
+                " Sub cat: " + mainCategory +
+                " Event name: " + eventName +
                 " Unknown0: " + Utils.ConvertToHex(unknown0) +
                 " Unknown1: " + Utils.ConvertToHex(unknown1) +
-                " Main cat: " + mainCategory +
-                " Base date: " + baseDate +
-                " Hours: " + hours +
-                " Minutes: " + minutes +
-                " Unknown2: " + Utils.ConvertToHex(unknown2) +
-                " Duration: " + duration +
-                " Event name: " + eventName +
-                " Sub cat: " + mainCategory +
-                " Event ID: " + eventID);
+                " Unknown2: " + Utils.ConvertToHex(unknown2));
         }
     }
 }

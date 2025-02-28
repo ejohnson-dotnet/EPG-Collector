@@ -439,14 +439,20 @@ namespace DomainObjects
             if (newProgramme.SeriesId != null && precedence == DataPrecedence.File)
                 oldProgramme.SeriesId = newProgramme.SeriesId;
             if (newProgramme.EpisodeId != null && precedence == DataPrecedence.File)
-                oldProgramme.EpisodeId = newProgramme.EpisodeId;
-            if (newProgramme.PartNumber != null && precedence == DataPrecedence.File)
-                oldProgramme.PartNumber = newProgramme.PartNumber;
+                oldProgramme.EpisodeId = newProgramme.EpisodeId;            
 
             if (newProgramme.SeasonNumber != -1 && precedence == DataPrecedence.File)
                 oldProgramme.SeasonNumber = newProgramme.SeasonNumber;
+            if (newProgramme.SeasonCount != -1 && precedence == DataPrecedence.File)
+                oldProgramme.SeasonCount = newProgramme.SeasonCount;
             if (newProgramme.EpisodeNumber != -1 && precedence == DataPrecedence.File)
                 oldProgramme.EpisodeNumber = newProgramme.EpisodeNumber;
+            if (newProgramme.EpisodeCount != -1 && precedence == DataPrecedence.File)
+                oldProgramme.EpisodeCount = newProgramme.EpisodeCount;
+            if (newProgramme.PartNumber != -1 && precedence == DataPrecedence.File)
+                oldProgramme.PartNumber = newProgramme.PartNumber;
+            if (newProgramme.PartCount != -1 && precedence == DataPrecedence.File)
+                oldProgramme.PartCount = newProgramme.PartCount;
 
             if (newProgramme.Directors != null && precedence == DataPrecedence.File)
                 oldProgramme.Directors = newProgramme.Directors;

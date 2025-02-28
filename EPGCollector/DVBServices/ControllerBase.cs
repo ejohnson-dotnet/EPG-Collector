@@ -311,11 +311,7 @@ namespace DVBServices
         /// <param name="pids">The PID's to scan.</param>
         protected void GetNetworkInformation(ISampleDataProvider dataProvider, BackgroundWorker worker, int[] pids)
         {
-            if (!TraceEntry.IsDefined(TraceName.Bda))
-                Logger.Instance.Write("Collecting network information data from PID(s) " + getPidString(pids), false, true);
-            else
-                Logger.Instance.Write("Collecting network information data from PID(s) " + getPidString(pids));
-
+            Logger.Instance.Write("Collecting network information from PID(s) " + getPidString(pids));
             NetworkInformationSection.NetworkInformationSections.Clear();
 
             dataProvider.ChangePidMapping(pids);
@@ -339,11 +335,7 @@ namespace DVBServices
                 }
 
                 Thread.Sleep(2000);
-
-                if (!TraceEntry.IsDefined(TraceName.Bda))
-                    Logger.Instance.Write(".", false, false);
-                else
-                    Logger.Instance.Write("Buffer space used " + dataProvider.BufferSpaceUsed);
+                LogBufferSpaceUsed("network information", dataProvider);
 
                 Collection<Mpeg2Section> sections = new Collection<Mpeg2Section>();
 
@@ -377,9 +369,6 @@ namespace DVBServices
                     lastCount = NetworkInformationSection.NetworkInformationSections.Count;
                 }
             }
-
-            if (!TraceEntry.IsDefined(TraceName.Bda))
-                Logger.Instance.Write("", true, false);
 
             Logger.Instance.Write("Stopping network information reader for frequency " + dataProvider.Frequency);
             nitReader.Stop();
@@ -556,11 +545,7 @@ namespace DVBServices
         /// <param name="pids">The PID's to scan.</param>
         protected void GetBouquetSections(ISampleDataProvider dataProvider, BackgroundWorker worker, int[] pids)
         {
-            if (!TraceEntry.IsDefined(TraceName.Bda))
-                Logger.Instance.Write("Collecting bouquet data from PID(s) " + getPidString(pids), false, true);
-            else
-                Logger.Instance.Write("Collecting bouquet data from PID(s) " + getPidString(pids));
-
+            Logger.Instance.Write("Collecting bouquet data from PID(s) " + getPidString(pids));
             BouquetAssociationSection.BouquetAssociationSections.Clear();
             
             dataProvider.ChangePidMapping(pids);
@@ -580,7 +565,7 @@ namespace DVBServices
                     return;
 
                 Thread.Sleep(2000);
-                Logger.Instance.Write(".", false, false);
+                LogBufferSpaceUsed("bouquet data", dataProvider);
 
                 Collection<Mpeg2Section> sections = new Collection<Mpeg2Section>();
 
@@ -607,9 +592,6 @@ namespace DVBServices
 
                 lastCount = BouquetAssociationSection.BouquetAssociationSections.Count;
             }
-
-            if (!TraceEntry.IsDefined(TraceName.Bda))
-                Logger.Instance.Write("", true, false);
 
             Logger.Instance.Write("Stopping bouquet reader for frequency " + dataProvider.Frequency);
             bouquetReader.Stop();
@@ -659,10 +641,7 @@ namespace DVBServices
                 return;
             }
 
-            if (!TraceEntry.IsDefined(TraceName.Bda))
-                Logger.Instance.Write("Collecting time zone data from PID(s) 0x14", false, true);
-            else
-                Logger.Instance.Write("Collecting time zone data from PID(s) 0x14");
+            Logger.Instance.Write("Collecting time zone data from PID(s) 0x14");
 
             dataProvider.ChangePidMapping(new int[] { 0x14 });
 
@@ -677,7 +656,7 @@ namespace DVBServices
                     return;
 
                 Thread.Sleep(2000);
-                Logger.Instance.Write(".", false, false);
+                LogBufferSpaceUsed("time offset sections", dataProvider);
 
                 Collection<Mpeg2Section> sections = new Collection<Mpeg2Section>();
 
@@ -695,8 +674,6 @@ namespace DVBServices
 
                 timeOffsetSectionsDone = (TimeOffsetEntry.TimeOffsets.Count != 0);
             }
-
-            Logger.Instance.Write("", true, false);
 
             foreach (TimeOffsetEntry timeOffsetEntry in TimeOffsetEntry.TimeOffsets)
                 Logger.Instance.Write("Time offset: " + timeOffsetEntry.CountryCode + " region " + timeOffsetEntry.Region +
@@ -831,6 +808,16 @@ namespace DVBServices
                 return (true);
 
             return (startTime <= DateTime.Now.AddDays(RunParameters.Instance.CurrentFrequency.AdvancedRunParamters.EPGDays));
+        }
+
+        /// <summary>
+        /// Log the buffer space used.
+        /// </summary>
+        /// <param name="title"></param>
+        /// <param name="dataProvider"></param>
+        public static void LogBufferSpaceUsed(string title, ISampleDataProvider dataProvider)
+        {
+            Logger.Instance.Write("Collecting " + title + " - buffer space used " + dataProvider.BufferSpaceUsed); 
         }
 
         /// <summary>

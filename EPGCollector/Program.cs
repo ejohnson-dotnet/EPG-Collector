@@ -365,8 +365,6 @@ namespace EPGCollector
             HistoryRecord.Current.CollectionResult = CommandLine.GetCompletionCodeShortDescription(ExitCode.SoftwareException);
             Logger.Write(HistoryRecord.Current);
 
-            RunParameters.Instance.CloseHttpProxy();
-            
             Logger.Instance.Write("<E> Exiting with code = " + (int)ExitCode.SoftwareException);
             System.Environment.Exit((int)ExitCode.SoftwareException);
         }

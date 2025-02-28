@@ -228,7 +228,7 @@ namespace DVBServices
 
         private void getFreeSatSections(ISampleDataProvider dataProvider, BackgroundWorker worker)
         {
-            Logger.Instance.Write("Collecting FreeSat data", false, true);
+            Logger.Instance.Write("Collecting FreeSat data");
 
             dataProvider.ChangePidMapping(new int[] { 0xbbb, 0xc1f, 0xf02 });
 
@@ -245,7 +245,7 @@ namespace DVBServices
                     return;
 
                 Thread.Sleep(2000);
-                Logger.Instance.Write(".", false, false);
+                LogBufferSpaceUsed("FreeSat data", dataProvider);
 
                 Collection<Mpeg2Section> sections = new Collection<Mpeg2Section>();
 
@@ -274,7 +274,6 @@ namespace DVBServices
                 lastCount = epgCount;
             }
 
-            Logger.Instance.Write("", true, false);
             Logger.Instance.Write("Stopping reader");
             freeSatReader.Stop();
 
@@ -287,7 +286,7 @@ namespace DVBServices
         {
             dataProvider.ChangePidMapping(new int[] { 0xbbe });
 
-            Logger.Instance.Write("Collecting other data", false, true);
+            Logger.Instance.Write("Collecting other data");
 
             TSStreamReader otherReader = new TSStreamReader(2000, dataProvider.BufferAddress);
             otherReader.Run();
@@ -300,8 +299,7 @@ namespace DVBServices
                     return;
 
                 Thread.Sleep(1000);
-
-                Logger.Instance.Write(".", false, false);
+                LogBufferSpaceUsed("other data", dataProvider);
 
                 Collection<Mpeg2Section> sections = new Collection<Mpeg2Section>();
 
@@ -325,7 +323,6 @@ namespace DVBServices
                 repeats++;
             }
 
-            Logger.Instance.Write("", true, false);
             Logger.Instance.Write("Stopping other reader");
             otherReader.Stop();
         }

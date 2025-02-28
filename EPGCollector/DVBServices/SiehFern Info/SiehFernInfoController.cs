@@ -99,7 +99,7 @@ namespace DVBServices
 
         private void getChannelSections(ISampleDataProvider dataProvider, BackgroundWorker worker)
         {
-            Logger.Instance.Write("Collecting Channel data", false, true);
+            Logger.Instance.Write("Collecting Channel data");
 
             dataProvider.ChangePidMapping(new int[] { 0x711 });
 
@@ -115,7 +115,7 @@ namespace DVBServices
                     return;
 
                 Thread.Sleep(2000);
-                Logger.Instance.Write(".", false, false);
+                LogBufferSpaceUsed("Channel data", dataProvider);
 
                 Collection<Mpeg2Section> sections = new Collection<Mpeg2Section>();
 
@@ -144,7 +144,6 @@ namespace DVBServices
                     lastCount = SiehFernInfoEPGSection.Sections.Count;
             }
 
-            Logger.Instance.Write("", true, false);
             Logger.Instance.Write("Stopping reader");
             guideReader.Stop();
 
@@ -155,7 +154,7 @@ namespace DVBServices
 
         private void getEPGSections(ISampleDataProvider dataProvider, BackgroundWorker worker)
         {
-            Logger.Instance.Write("Collecting EPG data", false, true);
+            Logger.Instance.Write("Collecting EPG data");
 
             dataProvider.ChangePidMapping(new int[] { 0x711 });
 
@@ -172,7 +171,7 @@ namespace DVBServices
                     return;
 
                 Thread.Sleep(2000);
-                Logger.Instance.Write(".", false, false);
+                LogBufferSpaceUsed("EPG data", dataProvider);
 
                 Collection<Mpeg2Section> sections = new Collection<Mpeg2Section>();
 
@@ -200,7 +199,6 @@ namespace DVBServices
                     lastCount = SiehFernInfoEPGSection.Sections.Count;
             }
 
-            Logger.Instance.Write("", true, false);
             Logger.Instance.Write("Stopping reader");
             guideReader.Stop();
 

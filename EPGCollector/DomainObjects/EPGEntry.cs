@@ -300,15 +300,6 @@ namespace DomainObjects
         }
 
         /// <summary>
-        /// Get or set the part number within the episode of the program.
-        /// </summary>
-        public string PartNumber
-        {
-            get { return (partNumber); }
-            set { partNumber = value; }
-        }
-
-        /// <summary>
         /// Get or set the season number of the program.
         /// </summary>
         public int SeasonNumber
@@ -342,6 +333,24 @@ namespace DomainObjects
         {
             get { return (episodeCount); }
             set { episodeCount = value; }
+        }
+
+        /// <summary>
+        /// Get or set the part number.
+        /// </summary>
+        public int PartNumber
+        {
+            get { return (partNumber); }
+            set { partNumber = value; }
+        }
+
+        /// <summary>
+        /// Get or set the count of parts.
+        /// </summary>
+        public int PartCount
+        {
+            get { return (partCount); }
+            set { partCount = value; }
         }
 
         /// <summary>
@@ -806,11 +815,13 @@ namespace DomainObjects
         
         private string seriesId;
         private string episodeId;
-        private string partNumber;
+        
         private int seasonNumber = -1;
         private int seasonCount = -1;
         private int episodeNumber = -1;
         private int episodeCount = -1;
+        private int partNumber = -1;
+        private int partCount = -1;
         private string seasonCrid;
         private string episodeCrid;
         private string episodeTag;
@@ -915,10 +926,13 @@ namespace DomainObjects
             newEntry.aspectRatio = aspectRatio;
             newEntry.idPrefix = idPrefix;
             newEntry.seriesId = seriesId;
-            newEntry.episodeId = episodeId;
-            newEntry.partNumber = partNumber;
+            newEntry.episodeId = episodeId;            
             newEntry.seasonNumber = seasonNumber;
+            newEntry.seasonCount = seasonCount;
             newEntry.episodeNumber = episodeNumber;
+            newEntry.episodeCount = episodeCount;
+            newEntry.partNumber = partNumber;
+            newEntry.partCount = partCount;
             newEntry.SeasonCrid = seasonCrid;
             newEntry.EpisodeCrid = episodeCrid;
             newEntry.EpisodeSystemType = episodeSystemType;

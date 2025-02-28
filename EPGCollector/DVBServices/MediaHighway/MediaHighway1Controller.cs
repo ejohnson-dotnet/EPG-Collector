@@ -148,7 +148,7 @@ namespace DVBServices
 
         private void getChannelSections(ISampleDataProvider dataProvider, BackgroundWorker worker)
         {
-            Logger.Instance.Write("Collecting channel data", false, true);
+            Logger.Instance.Write("Collecting channel data");
             Channel.Channels.Clear();
 
             dataProvider.ChangePidMapping(new int[] { pid2 });
@@ -167,7 +167,7 @@ namespace DVBServices
                     return;
 
                 Thread.Sleep(2000);
-                Logger.Instance.Write(".", false, false);
+                LogBufferSpaceUsed("channel data", dataProvider);
 
                 Collection<Mpeg2Section> sections = new Collection<Mpeg2Section>();
 
@@ -194,7 +194,6 @@ namespace DVBServices
                 lastCount = Channel.Channels.Count;
             }
 
-            Logger.Instance.Write("", true, false);
             Logger.Instance.Write("Stopping channel reader for PID 0x" + pid2.ToString("X").ToLowerInvariant());
             channelReader.Stop();
 
@@ -205,7 +204,7 @@ namespace DVBServices
 
         private void getCategorySections(ISampleDataProvider dataProvider, BackgroundWorker worker)
         {
-            Logger.Instance.Write("Collecting category data", false, true);
+            Logger.Instance.Write("Collecting category data");
             
             dataProvider.ChangePidMapping(new int[] { pid2 });
 
@@ -223,7 +222,7 @@ namespace DVBServices
                     return;
 
                 Thread.Sleep(2000);
-                Logger.Instance.Write(".", false, false);
+                LogBufferSpaceUsed("category data", dataProvider);
 
                 Collection<Mpeg2Section> sections = new Collection<Mpeg2Section>();
 
@@ -250,7 +249,6 @@ namespace DVBServices
                 lastCount = MediaHighwayProgramCategory.Categories.Count;
             }
 
-            Logger.Instance.Write("", true, false);
             Logger.Instance.Write("Stopping category reader for PID 0x" + pid2.ToString("X").ToLowerInvariant());
             categoryReader.Stop();
 
@@ -261,7 +259,7 @@ namespace DVBServices
 
         private void getTitleSections(ISampleDataProvider dataProvider, BackgroundWorker worker)
         {
-            Logger.Instance.Write("Collecting title data", false, true);
+            Logger.Instance.Write("Collecting title data");
 
             dataProvider.ChangePidMapping(new int[] { pid1 });
             
@@ -280,7 +278,7 @@ namespace DVBServices
                     return;
 
                 Thread.Sleep(1000);
-                Logger.Instance.Write(".", false, false);
+                LogBufferSpaceUsed("title data", dataProvider);
 
                 Collection<Mpeg2Section> sections = new Collection<Mpeg2Section>();
 
@@ -313,7 +311,6 @@ namespace DVBServices
                 lastCount = titleDataCount;
             }
 
-            Logger.Instance.Write("", true, false);
             Logger.Instance.Write("Stopping title reader for PID 0x" + pid1.ToString("X").ToLowerInvariant());
             titleReader.Stop();
 
@@ -324,7 +321,7 @@ namespace DVBServices
 
         private void getSummarySections(ISampleDataProvider dataProvider, BackgroundWorker worker)
         {
-            Logger.Instance.Write("Collecting summary data", false, true);
+            Logger.Instance.Write("Collecting summary data");
 
             dataProvider.ChangePidMapping(new int[] { pid2 });
             
@@ -342,8 +339,7 @@ namespace DVBServices
                     return;
 
                 Thread.Sleep(1000);
-
-                Logger.Instance.Write(".", false, false);
+                LogBufferSpaceUsed("summary data", dataProvider);
 
                 Collection<Mpeg2Section> sections = new Collection<Mpeg2Section>();
 
@@ -372,7 +368,6 @@ namespace DVBServices
                 lastCount = MediaHighwaySummary.Summaries.Count;
             }
 
-            Logger.Instance.Write("", true, false);
             Logger.Instance.Write("Stopping summary reader for PID 0x" + pid2.ToString("X").ToLowerInvariant());
             summaryReader.Stop();
 

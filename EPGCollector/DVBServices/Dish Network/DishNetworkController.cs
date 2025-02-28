@@ -142,7 +142,7 @@ namespace DVBServices
             int sectionCount = 0;
             int totalSectionsProcessed = 0;            
 
-            Logger.Instance.Write("Buffer scan " + bufferFill + " of " + RunParameters.Instance.BufferFills + " starting", false, true);                        
+            Logger.Instance.Write("Buffer scan " + bufferFill + " of " + RunParameters.Instance.BufferFills + " starting");                        
 
             while (!dishNetworkSectionsDone)
             {
@@ -150,7 +150,7 @@ namespace DVBServices
                     return;
 
                 Thread.Sleep(5000);
-                Logger.Instance.Write(".", false, false);
+                LogBufferSpaceUsed("Dish Network data", dataProvider);
 
                 Collection<Mpeg2Section> sections = new Collection<Mpeg2Section>();
 
@@ -175,7 +175,6 @@ namespace DVBServices
 
                     if (dishNetworkSectionsDone)
                     {
-                        Logger.Instance.Write("", true, false);
                         Logger.Instance.Write("Buffer scan " + bufferFill + " of " + RunParameters.Instance.BufferFills +
                             " finished: " + 
                             " sections processed: " + sectionCount + 

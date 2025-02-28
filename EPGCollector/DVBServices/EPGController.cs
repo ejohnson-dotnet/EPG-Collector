@@ -265,8 +265,6 @@ namespace DVBServices
             if (!string.IsNullOrWhiteSpace(RunParameters.Instance.TranslationApiKey))
                 TextTranslation.Process(RunParameters.Instance.StationCollection, RunParameters.Instance.TranslationSpecs);
 
-            RunParameters.Instance.CloseHttpProxy();
-
             if (RunParameters.Instance.AbandonRequested)
                 return false;
 

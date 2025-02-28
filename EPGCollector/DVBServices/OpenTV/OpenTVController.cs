@@ -19,6 +19,7 @@
 //                                                                              //  
 //////////////////////////////////////////////////////////////////////////////////
 
+using System;
 using System.Collections.ObjectModel;
 using System.Threading;
 using System.ComponentModel;
@@ -175,7 +176,7 @@ namespace DVBServices
 
             dataProvider.ChangePidMapping(new int[] { 0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37 });
             
-            Logger.Instance.Write("Collecting title data", false, true);
+            Logger.Instance.Write("Collecting title data");
 
             Collection<byte> tables = new Collection<byte>();
             tables.Add(0xa0);
@@ -197,7 +198,7 @@ namespace DVBServices
                     return;
 
                 Thread.Sleep(1000);
-                Logger.Instance.Write(".", false, false);
+                ControllerBase.LogBufferSpaceUsed("title data", dataProvider);
 
                 Collection<Mpeg2Section> sections = new Collection<Mpeg2Section>();
 
@@ -234,7 +235,6 @@ namespace DVBServices
                 lastCount = titleDataCount;
             }
 
-            Logger.Instance.Write("", true, false);
             Logger.Instance.Write("Stopping title reader");
             titleReader.Stop();
 
@@ -248,7 +248,7 @@ namespace DVBServices
         {
             dataProvider.ChangePidMapping(new int[] { 0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47 });
             
-            Logger.Instance.Write("Collecting summary data", false, true);
+            Logger.Instance.Write("Collecting summary data");
 
             Collection<byte> tables = new Collection<byte>();
             tables.Add(0xa8);
@@ -271,9 +271,8 @@ namespace DVBServices
                     return;
 
                 Thread.Sleep(1000);
-
-                Logger.Instance.Write(".", false, false);
-
+                ControllerBase.LogBufferSpaceUsed("summary data", dataProvider);
+                
                 Collection<Mpeg2Section> sections = new Collection<Mpeg2Section>();
                 OpenTVSummarySection.OpenTVSummarySections.Clear();
 
@@ -310,7 +309,6 @@ namespace DVBServices
                 lastCount = summaryCount;
             }
 
-            Logger.Instance.Write("", true, false);
             Logger.Instance.Write("Stopping summary reader");
             summaryReader.Stop();
 
@@ -323,7 +321,7 @@ namespace DVBServices
         {
             dataProvider.ChangePidMapping(new int[] { 0x55, 0x60 });
 
-            Logger.Instance.Write("Collecting other data", false, true);
+            Logger.Instance.Write("Collecting other data");
 
             otherReader = new TSStreamReader(2000, dataProvider.BufferAddress);
             otherReader.Run();
@@ -338,8 +336,7 @@ namespace DVBServices
                     return;
 
                 Thread.Sleep(1000);
-
-                Logger.Instance.Write(".", false, false);
+                LogBufferSpaceUsed("other data", dataProvider);
 
                 Collection<Mpeg2Section> sections = new Collection<Mpeg2Section>();
                 OpenTVSummarySection.OpenTVSummarySections.Clear();
@@ -365,7 +362,6 @@ namespace DVBServices
                 otherSectionsDone = (otherCount * 5 == RunParameters.Instance.Repeats);
             }
 
-            Logger.Instance.Write("", true, false);
             Logger.Instance.Write("Stopping other reader");
             summaryReader.Stop();
 

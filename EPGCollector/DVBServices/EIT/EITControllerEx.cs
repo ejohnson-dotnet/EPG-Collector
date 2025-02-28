@@ -268,7 +268,7 @@ namespace DVBServices
 
         private void getEITSections(ISampleDataProvider dataProvider, BackgroundWorker worker)
         {
-            Logger.Instance.Write("Collecting EIT data", false, true);
+            Logger.Instance.Write("Collecting EIT data");
 
             int actualPid;
             if (RunParameters.Instance.CurrentFrequency.AdvancedRunParamters.EITPid == -1)
@@ -311,7 +311,6 @@ namespace DVBServices
 
                             if (RunParameters.Instance.BufferFills != 1)
                             {
-                                Logger.Instance.Write("", true, false);
                                 Logger.Instance.Write("Buffer scan " + bufferFill + " of " + RunParameters.Instance.BufferFills +
                                     " finished:" +
                                     " buffer space used " + dataProvider.BufferSpaceUsed);
@@ -344,7 +343,6 @@ namespace DVBServices
                 }
             }
 
-            Logger.Instance.Write("", true, false);
             Logger.Instance.Write("Stopping reader");
             eitReader.Stop();
 

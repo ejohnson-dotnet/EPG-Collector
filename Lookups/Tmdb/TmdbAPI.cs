@@ -200,6 +200,7 @@ namespace Lookups.Tmdb
 
             TmdbMovieSearchResults returnResults = new TmdbMovieSearchResults();
             returnResults.Movies = movies;
+            returnResults.TotalResults = movies.Count;
             returnResults.TotalPages = pageNumber;
 
             return returnResults;            

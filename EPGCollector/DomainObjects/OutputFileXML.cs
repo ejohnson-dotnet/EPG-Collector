@@ -72,9 +72,9 @@ namespace DomainObjects
                 settings.Encoding = new UTF8Encoding();
             else
                 settings.Encoding = new UnicodeEncoding();
-            
+
             settings.CloseOutput = true;
-            
+
             if (DebugEntry.IsDefined(DebugName.IgnoreXmlChars))
                 settings.CheckCharacters = false;
 
@@ -93,7 +93,7 @@ namespace DomainObjects
                     Collection<TVStation> sortedStations = sortStations(RunParameters.Instance.StationCollection);
 
                     foreach (TVStation tvStation in sortedStations)
-                        processStationHeader(xmlWriter, tvStation);                    
+                        processStationHeader(xmlWriter, tvStation);
 
                     foreach (TVStation tvStation in sortedStations)
                         processStationEPG(xmlWriter, tvStation);
@@ -218,11 +218,11 @@ namespace DomainObjects
             if (station1.ChannelID == null)
             {
                 if (!OptionEntry.IsDefined(OptionName.UseChannelId))
-                    return(station1.ServiceID.CompareTo(station2.ServiceID));
+                    return (station1.ServiceID.CompareTo(station2.ServiceID));
                 else
                 {
                     if (station1.LogicalChannelNumber != -1)
-                        return(station1.LogicalChannelNumber.CompareTo(station2.LogicalChannelNumber));
+                        return (station1.LogicalChannelNumber.CompareTo(station2.LogicalChannelNumber));
                     else
                         return (station1.ServiceID.CompareTo(station2.ServiceID));
                 }
@@ -296,11 +296,11 @@ namespace DomainObjects
                     if (!logoPath.EndsWith(Path.DirectorySeparatorChar.ToString()))
                         logoPath = logoPath + Path.DirectorySeparatorChar;
                     stationName = removeIllegalCharacters(tvStation.Name);
-                }                
+                }
 
                 logoPath = logoPath + stationName + ".png";
             }
-            
+
             if (logoPath != null)
             {
                 xmlWriter.WriteStartElement("icon");
@@ -374,7 +374,7 @@ namespace DomainObjects
             xmlWriter.WriteAttributeString("channel", channelNumber);
 
             if (epgEntry.EventName != null)
-                xmlWriter.WriteElementString("title", whitespace.Replace(epgEntry.EventName, " "));                
+                xmlWriter.WriteElementString("title", whitespace.Replace(epgEntry.EventName, " "));
             else
                 xmlWriter.WriteElementString("title", "No Title");
 
@@ -468,7 +468,7 @@ namespace DomainObjects
                 if (!string.IsNullOrWhiteSpace(eventDescription))
                 {
                     string[] categories = eventDescription.Split(new char[] { ',' });
-                    
+
                     if (categories.Length > 1 && (categories[0] == "Movies" || categories[0] == "Series"))
                     {
                         for (int index = 1; index < categories.Length; index++)
@@ -503,7 +503,7 @@ namespace DomainObjects
             if (epgEntry.StarRating != null)
             {
                 xmlWriter.WriteStartElement("star-rating");
-                
+
                 switch (epgEntry.StarRating)
                 {
                     case "+":
@@ -569,7 +569,7 @@ namespace DomainObjects
                 xmlWriter.WriteEndElement();
             }
 
-            createEpisodeTag(xmlWriter, epgEntry);            
+            createEpisodeTag(xmlWriter, epgEntry);
 
             if (epgEntry.PreviousPlayDate != DateTime.MinValue)
             {
@@ -683,7 +683,7 @@ namespace DomainObjects
 
         private static void createEpisodeTag(XmlWriter xmlWriter, EPGEntry epgEntry)
         {
-            if (OptionEntry.IsDefined(OptionName.CreatePlexEpisodeNumTag) && 
+            if (OptionEntry.IsDefined(OptionName.CreatePlexEpisodeNumTag) &&
                 (epgEntry.EventCategory != null && !epgEntry.EventCategory.GetDescription(EventCategoryMode.Xmltv).StartsWith("Movie")))
             {
                 xmlWriter.WriteStartElement("episode-num");
@@ -736,29 +736,41 @@ namespace DomainObjects
                 createVBoxEpisodeTag(xmlWriter, epgEntry);
                 return;
             }
-                
+
             createValidEpisodeTag(xmlWriter, epgEntry);
         }
 
         private static void createValidEpisodeTag(XmlWriter xmlWriter, EPGEntry epgEntry)
         {
-            if (epgEntry.SeasonNumber == -1 && epgEntry.EpisodeNumber == -1)
+            if (epgEntry.SeasonNumber == -1 && epgEntry.EpisodeNumber == -1 && epgEntry.PartNumber == -1)
                 return;
 
             int xmltvSeasonNumber = epgEntry.SeasonNumber > 0 ? epgEntry.SeasonNumber - 1 : -1;
             int xmltvEpisodeNumber = epgEntry.EpisodeNumber > 0 ? epgEntry.EpisodeNumber - 1 : -1;
+            int xmltvPartNumber = epgEntry.PartNumber > 0 ? epgEntry.PartNumber - 1 : -1;
 
             string seasonString = xmltvSeasonNumber != -1 ? xmltvSeasonNumber.ToString() : string.Empty;
             if (epgEntry.SeasonCount != -1)
-                seasonString += "/" + (epgEntry.SeasonCount - 1);
+                seasonString += "/" + (epgEntry.SeasonCount);
 
             string episodeString = xmltvEpisodeNumber != -1 ? xmltvEpisodeNumber.ToString() : string.Empty;
             if (epgEntry.EpisodeCount != -1)
-                episodeString += "/" + (epgEntry.EpisodeCount - 1);
+                episodeString += "/" + (epgEntry.EpisodeCount);
+
+            string partString;
+
+            if (!OptionEntry.IsDefined(OptionName.OmitPartNumber))
+            {
+                partString = xmltvPartNumber != -1 ? xmltvPartNumber.ToString() : "0/1";
+                if (epgEntry.PartCount != -1)
+                    partString += "/" + (epgEntry.PartCount);
+            }
+            else
+                partString = string.Empty;
 
             xmlWriter.WriteStartElement("episode-num");
             xmlWriter.WriteAttributeString("system", "xmltv_ns");
-            xmlWriter.WriteString(seasonString + " . " + episodeString + " . " + (OptionEntry.IsDefined(OptionName.OmitPartNumber) ? string.Empty : "0/1"));
+            xmlWriter.WriteString(seasonString + " . " + episodeString + " . " + partString);
             xmlWriter.WriteEndElement();            
         }
 

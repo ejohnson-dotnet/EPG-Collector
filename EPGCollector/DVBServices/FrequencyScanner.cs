@@ -170,10 +170,7 @@ namespace DVBServices
                 pidString.Append("0x" + pid.ToString("X"));
             }
 
-            if (!TraceEntry.IsDefined(TraceName.Bda))
-                Logger.Instance.Write("Collecting station data from PID(s) " + pidString, false, true);
-            else
-                Logger.Instance.Write("Collecting station data from PID(s) " + pidString);
+            Logger.Instance.Write("Collecting station data from PID(s) " + pidString);
 
             Collection<TVStation> tvStations = new Collection<TVStation>();            
 
@@ -200,12 +197,8 @@ namespace DVBServices
                 }
 
                 Thread.Sleep(2000);
+                ControllerBase.LogBufferSpaceUsed("station data", dataProvider);
 
-                if (!TraceEntry.IsDefined(TraceName.Bda))
-                    Logger.Instance.Write(".", false, false);
-                else
-                    Logger.Instance.Write("BDA Buffer space used " + dataProvider.BufferSpaceUsed);
-                
                 sections = new Collection<Mpeg2Section>();
 
                 stationReader.Lock("ProcessSDTSections");
@@ -235,9 +228,6 @@ namespace DVBServices
 
                 lastCount = tvStations.Count;
             }
-
-            if (!TraceEntry.IsDefined(TraceName.Bda))
-                Logger.Instance.Write("", true, false);
 
             Logger.Instance.Write("Stopping station reader for frequency " + dataProvider.Frequency);
             stationReader.Stop();
@@ -280,11 +270,7 @@ namespace DVBServices
         private void processPATSections(Collection<TVStation> tvStations)
         {
             dataProvider.ChangePidMapping(new int[] { BDAGraph.PatPid } );
-
-            if (!TraceEntry.IsDefined(TraceName.Bda))
-                Logger.Instance.Write("Collecting PAT data from PID 0x" + BDAGraph.PatPid.ToString("x2"), false, true);
-            else
-                Logger.Instance.Write("Collecting PAT data from PID 0x" + BDAGraph.PatPid.ToString("x2"));
+            Logger.Instance.Write("Collecting PAT data from PID 0x" + BDAGraph.PatPid.ToString("x2"));
 
             TSReaderBase patReader = new TSStreamReader(BDAGraph.PatTable, 2000, dataProvider.BufferAddress);
             patReader.Run();
@@ -308,11 +294,7 @@ namespace DVBServices
                 }
 
                 Thread.Sleep(2000);
-
-                if (!TraceEntry.IsDefined(TraceName.Bda))
-                    Logger.Instance.Write(".", false, false);
-                else
-                    Logger.Instance.Write("BDA Buffer space used " + dataProvider.BufferSpaceUsed);
+                ControllerBase.LogBufferSpaceUsed("PAT data", dataProvider);
 
                 sections.Clear();
 
@@ -355,9 +337,6 @@ namespace DVBServices
                     lastCount = sectionNumbers.Count;
                 }
             }
-
-            if (!TraceEntry.IsDefined(TraceName.Bda))
-                Logger.Instance.Write("", true, false);
 
             Logger.Instance.Write("Stopping PAT reader for frequency " + dataProvider.Frequency);
             patReader.Stop();
@@ -506,11 +485,7 @@ namespace DVBServices
             }
 
             dataProvider.ChangePidMapping(pids);
-
-            if (!TraceEntry.IsDefined(TraceName.Bda))
-                Logger.Instance.Write("Collecting PMT data from " + programInfos.Count + " pids", false, true);
-            else
-                Logger.Instance.Write("Collecting PMT data from " + programInfos.Count + " pids");
+            Logger.Instance.Write("Collecting PMT data from " + programInfos.Count + " pids");
 
             TSReaderBase pmtReader = new TSStreamReader(BDAGraph.PmtTable, 2000, dataProvider.BufferAddress);
             pmtReader.Run();
@@ -524,12 +499,8 @@ namespace DVBServices
             while (!done)
             {
                 Thread.Sleep(2000);
+                ControllerBase.LogBufferSpaceUsed("PMT data", dataProvider);
 
-                if (!TraceEntry.IsDefined(TraceName.Bda))
-                    Logger.Instance.Write(".", false, false);
-                else
-                    Logger.Instance.Write("BDA Buffer space used " + dataProvider.BufferSpaceUsed);
-                                                                
                 pmtReader.Lock("ProcessPMTSections");
                 if (pmtReader.Sections.Count != 0)
                 {
@@ -570,9 +541,6 @@ namespace DVBServices
                     }
                 }
             }
-
-            if (!TraceEntry.IsDefined(TraceName.Bda))
-                Logger.Instance.Write("", true, false);
 
             Logger.Instance.Write("Stopping PMT reader for frequency " + dataProvider.Frequency);
             pmtReader.Stop();
@@ -726,8 +694,7 @@ namespace DVBServices
 
         private Collection<TVStation> findAtscStations(TunerType tunerType)
         {
-            Logger.Instance.Write("Collecting ATSC Channel data", false, true);
-
+            Logger.Instance.Write("Collecting ATSC Channel data");
             Collection<TVStation> tvStations = new Collection<TVStation>();
 
             VirtualChannelTable.Clear();
@@ -749,7 +716,7 @@ namespace DVBServices
                     return (tvStations);
 
                 Thread.Sleep(2000);
-                Logger.Instance.Write(".", false, false);
+                ControllerBase.LogBufferSpaceUsed("ATSC Channel data", dataProvider);
 
                 Collection<Mpeg2Section> sections = new Collection<Mpeg2Section>();
 
@@ -773,7 +740,6 @@ namespace DVBServices
                 }
             }
 
-            Logger.Instance.Write("", true, false);
             Logger.Instance.Write("Stopping reader");
             guideReader.Stop();
 

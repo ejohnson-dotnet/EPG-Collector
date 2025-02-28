@@ -45,6 +45,10 @@ namespace DomainObjects
         /// </summary>
         long SignalStrength { get; }
         /// <summary>
+        /// Return true if data is flowing; false otherwise.
+        /// </summary>
+        bool DataFlowing { get; }
+        /// <summary>
         /// Get the current tuner object.
         /// </summary>
         Tuner Tuner { get; }

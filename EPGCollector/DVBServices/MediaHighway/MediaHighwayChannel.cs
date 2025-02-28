@@ -42,15 +42,6 @@ namespace DVBServices
         }
 
         /// <summary>
-        /// Get or set the unknown data.
-        /// </summary>
-        public byte[] Unknown
-        {
-            get { return (unknown); }
-            set { unknown = value; }
-        }
-
-        /// <summary>
         /// Get the title data for the channel.
         /// </summary>
         public Collection<MediaHighwayTitle> Titles
@@ -63,10 +54,19 @@ namespace DVBServices
             }
         }
 
+        /// <summary>
+        /// Get or set the channel type.
+        /// </summary>
+        public int ChannelType
+        {
+            get { return (channelType); }
+            set { channelType = value; }
+        }
+
         private Collection<MediaHighwayTitle> titles;
         
         private string channelName;
-        private byte[] unknown;
+        private int channelType;
 
         /// <summary>
         /// Initialize a new instance of the MediaHighwayChannel class.
@@ -77,21 +77,23 @@ namespace DVBServices
         /// Add title data to the channel.
         /// </summary>
         /// <param name="newTitle">The title to be added.</param>
-        public void AddTitleData(MediaHighwayTitle newTitle)
+        /// <returns>The matching title object if it alread exists; otherwise null.</returns>
+        public MediaHighwayTitle AddTitleData(MediaHighwayTitle newTitle)
         {
             foreach (MediaHighwayTitle oldTitle in Titles)
             {
                 if (oldTitle.StartTime == newTitle.StartTime)
-                    return;
+                    return oldTitle;
 
                 if (oldTitle.StartTime > newTitle.StartTime)
                 {
                     Titles.Insert(Titles.IndexOf(oldTitle), newTitle);
-                    return;
+                    return null;
                 }
             }
 
             Titles.Add(newTitle);
+            return null;
         }
 
         /// <summary>
@@ -265,6 +267,19 @@ namespace DVBServices
             return (null);
         }
 
+        internal static Collection<Channel> FindChannels(int channelID)
+        {
+            Collection<Channel> channels = new Collection<Channel>();
+
+            foreach (MediaHighwayChannel channel in MediaHighwayChannel.Channels)
+            {
+                if (channel.ChannelID == channelID)
+                    channels.Add(channel);
+            }
+
+            return channels;
+        }
+
         private MediaHighwayTitle findTitle(int eventID)
         {
             foreach (MediaHighwayTitle title in Titles)
@@ -299,7 +314,12 @@ namespace DVBServices
             {
                 ProgramCategory overrideCategory = getCustomCategory(title, description);
                 if (overrideCategory != null)
+                {
+                    overrideCategory.UsedCount++;
+                    if (overrideCategory.SampleEvent == null)
+                        overrideCategory.SampleEvent = title;
                     return new EventCategorySpec(overrideCategory);
+                }
                 else
                     return (null);
             }
@@ -309,22 +329,43 @@ namespace DVBServices
             {
                 ProgramCategory overrideCategory = getCustomCategory(title, description);
                 if (overrideCategory != null)
+                {
+                    overrideCategory.UsedCount++;
+                    if (overrideCategory.SampleEvent == null)
+                        overrideCategory.SampleEvent = title;
                     return new EventCategorySpec(overrideCategory);
+                }
             }
             
             ProgramCategory category = MediaHighwayProgramCategory.FindCategory(categoryID);
             if (category != null)
+            {
+                category.UsedCount++;
+                if (category.SampleEvent == null)
+                    category.SampleEvent = title;
                 return new EventCategorySpec(category);
+            }
 
             if (OptionEntry.IsDefined(RunParameters.Instance.CurrentFrequency.AdvancedRunParamters.Options,
                 OptionName.CustomCategoryOverride))
+            {
+                MediaHighwayProgramCategory.AddUndefinedCategory(categoryID, title);
                 return (null);
+            }
 
             ProgramCategory customCategory = getCustomCategory(title, description);
             if (customCategory != null)
+            {
+                customCategory.UsedCount++;
+                if (customCategory.SampleEvent == null)
+                    customCategory.SampleEvent = title;
                 return new EventCategorySpec(customCategory);
+            }
             else
+            {
+                MediaHighwayProgramCategory.AddUndefinedCategory(categoryID, title);
                 return null;
+            }
         }
 
         private ProgramCategory getCustomCategory(string title, string description)
@@ -1257,17 +1298,10 @@ namespace DVBServices
             else
                 stationName = "** No Station **";
 
-            string unknownString;
-            if (unknown == null)
-                unknownString = "n/a";
-            else
-                unknownString = Utils.ConvertToHex(unknown);
-
             return ("ONID " + OriginalNetworkID +
                 " TSID " + TransportStreamID +
                 " SID " + ServiceID +
                 " Channel ID: " + ChannelID +
-                " Unknown: " + unknownString +
                 " Name: " + channelName +
                 " Station: " + stationName);
         }

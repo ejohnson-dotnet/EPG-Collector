@@ -92,7 +92,7 @@ namespace DVBServices
 
         private void getGuideSections(ISampleDataProvider dataProvider, BackgroundWorker worker)
         {
-            Logger.Instance.Write("Collecting NagraGuide data", false, true);
+            Logger.Instance.Write("Collecting NagraGuide data");
 
             dataProvider.ChangePidMapping(new int[] { 0xc8 });            
 
@@ -109,7 +109,7 @@ namespace DVBServices
                     return;
 
                 Thread.Sleep(2000);
-                Logger.Instance.Write(".", false, false);
+                LogBufferSpaceUsed("NagraGuide data", dataProvider);
 
                 Collection<Mpeg2Section> sections = new Collection<Mpeg2Section>();
 
@@ -138,7 +138,6 @@ namespace DVBServices
                 lastCount = epgCount;
             }
 
-            Logger.Instance.Write("", true, false);
             Logger.Instance.Write("Stopping reader");
             guideReader.Stop();
 

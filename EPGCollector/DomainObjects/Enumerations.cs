@@ -1347,13 +1347,13 @@ namespace DomainObjects
         /// </summary>
         CatXref,
         /// <summary>
-        /// Create channels if they don't exist.
+        /// Don't log gaps in the guide.
         /// </summary>        
         DontLogGaps,
         /// <summary>
         /// Don't log programme start time overlaps.
         /// </summary>
-        DontLogOverlaps,
+        DontLogOverlaps,        
         /// <summary>
         /// Finish MHEG5 collections even if the data is incomplete.
         /// </summary>
@@ -1495,6 +1495,10 @@ namespace DomainObjects
         /// </summary>
         LogNetworkMap,
         /// <summary>
+        /// Log the network map.
+        /// </summary>
+        LogNoSeasonEpisode,
+        /// <summary>
         /// Log the BellTV or Dish Network original description.
         /// </summary>
         LogOriginal,
@@ -1538,6 +1542,10 @@ namespace DomainObjects
         /// Log the stream data.
         /// </summary>
         LogStreamInfo,
+        /// <summary>
+        /// Log possible subtitles.
+        /// </summary>
+        LogSubtitles,
         /// <summary>
         /// Log the programme titles.
         /// </summary>

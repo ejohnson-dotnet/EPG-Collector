@@ -278,7 +278,7 @@ namespace DVBServices
 
         private void getEITSections(ISampleDataProvider dataProvider, BackgroundWorker worker)
         {
-            Logger.Instance.Write("Collecting EIT data", false, true);
+            Logger.Instance.Write("Collecting EIT data");
 
             int actualPid;
             if (RunParameters.Instance.CurrentFrequency.AdvancedRunParamters.EITPid == -1)
@@ -300,7 +300,6 @@ namespace DVBServices
             {
                 if (worker.CancellationPending)
                 {
-                    Logger.Instance.Write("", true, false);
                     Logger.Instance.Write("Stopping reader");
                     eitReader.Stop();
 
@@ -312,7 +311,7 @@ namespace DVBServices
                 }
 
                 Thread.Sleep(2000);
-                Logger.Instance.Write(".", false, false);
+                LogBufferSpaceUsed("EIT data", dataProvider);
 
                 Collection<Mpeg2Section> sections = new Collection<Mpeg2Section>();
 
@@ -339,7 +338,6 @@ namespace DVBServices
 
                         if (RunParameters.Instance.BufferFills != 1)
                         {
-                            Logger.Instance.Write("", true, false);
                             Logger.Instance.Write("Buffer scan " + bufferFill + " of " + RunParameters.Instance.BufferFills +
                                 " finished:" +
                                 " buffer space used " + dataProvider.BufferSpaceUsed);
@@ -369,8 +367,6 @@ namespace DVBServices
                 lastCount = TVStation.TotalEpgCount;
             }
 
-            if (!TraceEntry.IsDefined(TraceName.Bda))
-                Logger.Instance.Write("", true, false);
             Logger.Instance.Write("Stopping reader");
             eitReader.Stop();
 
@@ -736,65 +732,6 @@ namespace DVBServices
                 }
             }
         }
-
-        /*private void getAITSections(ISampleDataProvider dataProvider, BackgroundWorker worker)
-        {
-            Logger.Instance.Write("Collecting AIT data", false, true);
-
-            int aitPid = 0;
-
-            foreach (TVStation station in RunParameters.Instance.StationCollection)
-            {
-                if (station.AitPid != 0)
-                    aitPid = station.AitPid; 
-            }
-
-            if (aitPid == 0)
-            {
-                Logger.Instance.Write("", true, false);
-                Logger.Instance.Write("No AIT pid available");
-                return;
-            }
-
-            Logger.Instance.Write("Collecting AIT data from PID 0x" + aitPid.ToString("X"), false, true);
-
-            dataProvider.ChangePidMapping(new int[] { aitPid });
-
-            aitReader = new TSStreamReader(0X74, 2000, dataProvider.BufferAddress);
-            aitReader.Run();
-
-            int repeats = 0;
-
-            while (!aitSectionsDone)
-            {
-                if (worker.CancellationPending)
-                    return;
-
-                Thread.Sleep(2000);
-                Logger.Instance.Write(".", false, false);
-
-                Collection<Mpeg2Section> sections = new Collection<Mpeg2Section>();
-
-                aitReader.Lock("LoadMessages");
-                if (aitReader.Sections.Count != 0)
-                {
-                    foreach (Mpeg2Section section in aitReader.Sections)
-                        sections.Add(section);
-                    aitReader.Sections.Clear();
-                }
-                aitReader.Release("LoadMessages");
-
-                if (sections.Count != 0)
-                    processAITSections(sections);
-
-                repeats++;
-                aitSectionsDone = repeats > 10;
-            }
-
-            Logger.Instance.Write("", true, false);
-            Logger.Instance.Write("Stopping reader");
-            aitReader.Stop();
-        }*/
 
         /// <summary>
         /// Create the EPG entries.

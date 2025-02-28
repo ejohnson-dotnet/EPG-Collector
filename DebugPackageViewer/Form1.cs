@@ -48,35 +48,35 @@ namespace DebugPackageViewer
 
             while (!eof)
             {
-                int nameLength = getLength(reader, 1);
-                if (nameLength == -1)
+                Tuple<int, bool> nameLength = getLength(reader, 1);
+                if (nameLength == null)
                     eof = true;
                 else
                 {
-                    byte[] nameBytes = getBytes(reader, nameLength);
+                    byte[] nameBytes = getBytes(reader, nameLength.Item1);
                     if (nameBytes == null)
                         eof = true;
                     else
                     {
                         string name = Encoding.ASCII.GetString(nameBytes);
 
-                        int dataLength = getLength(reader, 4);
-                        if (dataLength == -1)
+                        Tuple<int, bool> dataLength = getLength(reader, 4);
+                        if (dataLength == null)
                             eof = true;
                         else
                         {
-                            byte[] dataBytes = new byte[dataLength];
-                            int bytesRead = reader.Read(dataBytes, 0, dataLength);
-                            if (bytesRead != dataLength)
+                            byte[] dataBytes = new byte[dataLength.Item1];
+                            int bytesRead = reader.Read(dataBytes, 0, dataLength.Item1);
+                            if (bytesRead != dataLength.Item1)
                                 eof = true;
 
-                            if (dataLength > 1024)
+                            if (dataLength.Item2)
                             {
                                 byte[] uncompressedBytes = uncompressBytes(dataBytes);
                                 lbFiles.Items.Add(name + " size = " + getSizeDescription(uncompressedBytes.Length));
                             }
                             else
-                                lbFiles.Items.Add(name + " size = " + getSizeDescription(dataLength));                            
+                                lbFiles.Items.Add(name + " size = " + getSizeDescription(dataLength.Item1));                            
                         }
                     }
                 }
@@ -85,26 +85,26 @@ namespace DebugPackageViewer
             reader.Close();
         }
 
-        private int getLength(BinaryReader reader, int length)
+        private Tuple<int, bool> getLength(BinaryReader reader, int length)
         {
-            byte[] buffer = new byte[length];
-            int bytesRead = reader.Read(buffer, 0, length);
-            if (bytesRead != length)
-                return -1;
+            byte[] buffer = new byte[length + 1];
+            int bytesRead = reader.Read(buffer, 0, buffer.Length);
+            if (bytesRead != buffer.Length)
+                return null;
 
             int result = 0;
 
             for (int index = length - 1; index > -1; index--)
                 result = (result * 256) + buffer[index];
 
-            return result;
+            return Tuple.Create<int, bool>(result, buffer[buffer.Length - 1] != 0);
         }
 
         private byte[] getBytes(BinaryReader reader, int length)
         {
             byte[] buffer = new byte[length];
             int bytesRead = reader.Read(buffer, 0, length);
-            if (bytesRead != length)
+            if (bytesRead != buffer.Length)
                 return null;
 
             return buffer;
@@ -167,18 +167,18 @@ namespace DebugPackageViewer
 
             while (!eof)
             {
-                int nameLength = getLength(reader, 1);
-                if (nameLength == -1)
+                Tuple<int, bool> nameLength = getLength(reader, 1);
+                if (nameLength == null)
                     eof = true;
                 else
                 {
-                    byte[] nameBytes = getBytes(reader, nameLength);
+                    byte[] nameBytes = getBytes(reader, nameLength.Item1);
                     if (nameBytes == null)
                         eof = true;
                     else
                     {
-                        int dataLength = getLength(reader, 4);
-                        if (dataLength == -1)
+                        Tuple<int, bool> dataLength = getLength(reader, 4);
+                        if (dataLength == null)
                             eof = true;
                         else
                         {
@@ -189,12 +189,12 @@ namespace DebugPackageViewer
                                 string fullName = Path.Combine(browseFile.SelectedPath, name);
                                 Logger.Instance.Write("Extracting " + fullName + " data length = " + dataLength);
 
-                                byte[] dataBytes = new byte[dataLength];
-                                int bytesRead = reader.Read(dataBytes, 0, dataLength);
-                                if (bytesRead != dataLength)
+                                byte[] dataBytes = new byte[dataLength.Item1];
+                                int bytesRead = reader.Read(dataBytes, 0, dataLength.Item1);
+                                if (bytesRead != dataLength.Item1)
                                     eof = true;
 
-                                if (dataLength > 1024)
+                                if (dataLength.Item2)
                                 {
                                     byte[] uncompressedBytes = uncompressBytes(dataBytes);
                                     Logger.Instance.Write("Uncompressed size = " + uncompressedBytes.Length);
@@ -217,7 +217,7 @@ namespace DebugPackageViewer
                                 filesExtracted++;
                             }
                             else
-                                reader.BaseStream.Position += dataLength;
+                                reader.BaseStream.Position += dataLength.Item1;
                         }
                     }
                 }

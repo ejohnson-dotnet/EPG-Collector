@@ -123,7 +123,7 @@ namespace DirectShow
 
             ModulationType modulationType = ModulationType.ModNotSet;
 
-            switch (tuningSpec.Modulation)
+            /*switch (tuningSpec.Modulation)
             {
                 case SignalModulation.Modulation.QPSK:
                     modulationType = ModulationType.Mod8Vsb;
@@ -131,12 +131,25 @@ namespace DirectShow
                 case SignalModulation.Modulation.PSK8:
                     modulationType = ModulationType.Mod8Vsb;
                     break;
-                /*case ModulationType.Mod16Apsk:
-                    modulationType = ModulationType.Mod16Vsb;
+                //case ModulationType.Mod16Apsk:
+                 //   modulationType = ModulationType.Mod16Vsb;
+               //     break;
+                //case ModulationType.Mod32Apsk:
+                //    modulationType = ModulationType.ModOqpsk;
+                //    break;
+                default:
                     break;
-                case ModulationType.Mod32Apsk:
-                    modulationType = ModulationType.ModOqpsk;
-                    break;*/
+            }*/
+
+            // From DigitalEverywhere S2 handler
+            switch (tuningSpec.Modulation)
+            {
+                case SignalModulation.Modulation.QPSK:
+                    modulationType = ModulationType.ModNbcQpsk;
+                    break;
+                case SignalModulation.Modulation.PSK8:
+                    modulationType = ModulationType.ModNbc8Psk;
+                    break;
                 default:
                     break;
             }
