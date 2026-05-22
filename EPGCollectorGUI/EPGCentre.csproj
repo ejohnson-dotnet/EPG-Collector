@@ -2799,4 +2799,7 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <PropertyGroup>
+    <PostBuildEvent>if exist "$(ProjectDir)Configuration" xcopy "$(ProjectDir)Configuration\*" "$(TargetDir)Configuration\" /E /I /Y</PostBuildEvent>
+  </PropertyGroup>
 </Project>
